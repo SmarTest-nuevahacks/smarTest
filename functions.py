@@ -14,7 +14,7 @@ def isInit():
 
 def newname(filename):
     split = os.path.splitext(filename)
-    num=random.randint(1,3788544534)
+    num=random.randint(1,3788544534436)
     return str(num)+str(split[1])
 
 
@@ -28,26 +28,32 @@ def isTeacher(username):
     else:
         return False
 
-def generate_question_sql():
-    pass
 
 def start_add_test(username,name,desc,start_date,end_date,length,group):
     db = sqlite3.connect("smartest.db")
     cursor = db.cursor()
+    cursor.execute('''INSERT INTO tests(name,desc,start_date,end_date,time,teacher,type) VALUES(?,?,?,?,?,?,?)''', (name,desc,start_date,end_date,length,username,group))
     cursor.execute("SELECT MAX(id) FROM tests")
     id=cursor.fetchone()[0]
-    print(id)
-    cursor.execute('''INSERT INTO tests(name,desc,start_date,end_date,time,teacher,type) VALUES(?,?,?,?,?,?,?)''', (name,desc,start_date,end_date,length,username,group))
+    sql="CREATE TABLE IF NOT EXISTS test_questions"+str(id)+"(name TEXT, type TEXT, picture TEXT, answer1 TEXT, answer2 TEXT,answer3 TEXT,answer4 TEXT,correct TEXT, points TEXT)"
+    cursor.execute(sql)
     db.commit()
     db.close()
     return id
 
-def end_add_test(username):
+def makeQuestion(id,name,type,points,newFilename,option1,option2,option3,option4,correct):
     db = sqlite3.connect("smartest.db")
     cursor = db.cursor()
-    sql="CREATE TABLE IF NOT EXISTS test_questions"+id+"(question_i TEXT, answer_i TEXT, picture_i TEXT)"
-    sql1="CREATE TABLE IF NOT EXISTS test_results"+id+"(student TEXT,question_i TEXT, question_j TEXT)"
-    cursor.execute(sql)
-    cursor.execute(sql1)
+    sql="INSERT INTO test_questions"+str(id)+"(name,type,picture,answer1,answer2,answer3,answer4,correct,points) VALUES(?,?,?,?,?,?,?,?,?)"
+    cursor.execute(sql, (name,type,newFilename,option1,option2,option3,option4,correct,points))
     db.commit()
     db.close()
+
+def end_add_test(username,id):
+    pass
+    #db = sqlite3.connect("smartest.db")
+    #cursor = db.cursor()
+    #sql="CREATE TABLE IF NOT EXISTS test_results"+id+"(student TEXT,question_i TEXT, question_j TEXT)"
+    #cursor.execute(sql)
+    #db.commit()
+    #db.close()

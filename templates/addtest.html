@@ -40,7 +40,7 @@
   <!-- Navigation -->
   <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
     <div class="container">
-      <a class="navbar-brand" href="#">smarTest</a>
+      <a class="navbar-brand" href="/index">smarTest</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -70,11 +70,23 @@
   </nav>
 
 
-  {% if test %}
-      <a class="nav-link" href="/delete_test">Test creation in progress! Publish test: {{ test }} </a>
-  {% else %}
-      <p>Teacher homepage</p>
-  {% endif %}
+  <section>
+    <div class="container">
+      <center>
+        <h1>Add test</h1>
+        <form action="{{ url_for('starttest') }}" method="post" enctype="multipart/form-data" id="addtest">
+          Name:<input type="text" name="name" required><br/>
+          Description:<textarea name="description" required></textarea><br/>
+          Start Date:<input type="date" name="start_date" required><br/>
+          End Date:<input type="date" name="end_date" required><br/>
+          Duration:<input type="number" name="duration" min="1" max="240" required><br/>
+          Group:<input type="text" name="type" required><br/>
+          <br/>
+          <input type="submit">
+        </form>
+      </center>
+    </div>
+  </section>
 
 
 

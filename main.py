@@ -35,8 +35,22 @@ def index():
     else:
         return redirect(url_for('login'))
 
-@app.route('/addtest', methods=['GET', 'POST'])
+@app.route('/addtest')
 def addtest():
+    if 'username' in session:
+        if isTeacher(session.get('username')):
+            if 'editedtest' in session:
+                return render_template('addquestion.html', username = session.get('username'))
+            else:
+                return render_template('addtest.html', username = session.get('username'))
+        else:
+            return render_template('student.html', username = session.get('username'))
+    else:
+        return redirect(url_for('login'))
+
+
+@app.route('/starttest', methods=['GET', 'POST'])
+def starttest():
     name=request.form['name']
     desc=request.form['description']
     start_date=request.form['start_date']
@@ -44,29 +58,35 @@ def addtest():
     length=request.form['duration']
     group=request.form['type']
     session['editedtest']=start_add_test(session.get('username'),name,desc,start_date,end_date,length,group)
-    return redirect(url_for('question'))
-
-@app.route('/question', methods=['GET','POST'])
-def question():
-    return redirect(url_for('index'))
+    return render_template('addquestion.html', username = session.get('username'))
 
 @app.route('/addquestion', methods=['GET','POST'])
 def addquestion():
     if request.method == 'POST':
         # check if the post request has the file part
+        newFilename=""
         if 'file1' not in request.files:
             print("aaa")
         file = request.files['file1']
         # if user does not select file, browser also
         # submit an empty part without filename
         if file.filename == '':
-            flash('No selected file')
-            return redirect(request.url)
+            print("bbb")
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], newname(filename)))
-            return redirect(url_for('index'))
-    return redirect(url_for('index'))
+            newFilename =  newname(filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], newFilename))
+        name=request.form['name']
+        points=request.form['points']
+        type=request.form['type']
+        option1=request.form['option1']
+        option2=request.form['option2']
+        option3=request.form['option3']
+        option4=request.form['option4']
+        correct=request.form['correct']
+        id=session.get('editedtest')
+        makeQuestion(id,name,type,points,newFilename,option1,option2,option3,option4,correct)
+    return redirect(url_for('addtest'))
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -112,6 +132,7 @@ def logout():
 @app.route('/delete_test', methods=['GET', 'POST'])
 def delete_test():
     del session['editedtest']
+    end_add_test()
     return redirect('/')
 
 if __name__=='__main__':

@@ -40,7 +40,7 @@
   <!-- Navigation -->
   <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
     <div class="container">
-      <a class="navbar-brand" href="#">smarTest</a>
+      <a class="navbar-brand" href="/index">smarTest</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -70,11 +70,33 @@
   </nav>
 
 
-  {% if test %}
-      <a class="nav-link" href="/delete_test">Test creation in progress! Publish test: {{ test }} </a>
-  {% else %}
-      <p>Teacher homepage</p>
-  {% endif %}
+  <section>
+    <div class="container">
+      <center>
+        <h1>Add question to test</h1>
+        <form action="{{ url_for('addquestion') }}" method="post" enctype="multipart/form-data" id="addquestion">
+          <!---Repeatable--->
+          <p>Question i</p>
+          Question:<input type="text" name="name" required><br/>
+          Picture:<input type="file" name="file1"><br/>
+          Points:<input type="number" name="points" required><br/>
+          Type:<select name="type" required>
+            <option value="closed">Closed</option>
+            <option value="open">Open</option>
+            <option value="drawn">Drawn</option>
+          </select><br/>
+          <!---Closed--->
+          <input type="text" placeholder="option 1" name="option1">
+          <input type="text" placeholder="option 2" name="option2">
+          <input type="text" placeholder="option 3" name="option3">
+          <input type="text" placeholder="option 4" name="option4"><br/>
+          Correct answer:<input type="number" name="correct" min="1" max="4"><br/>
+          <input type="submit">
+        </form>
+        <a href="delete_test"><button>Save and publish test</button></a>
+      </center>
+    </div>
+  </section>
 
 
 
