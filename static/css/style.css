@@ -1,0 +1,40 @@
+#mapid { 
+	z-index: -1;
+	height: 500px; 
+	width: 500px;
+}
+
+#mapfilter { 
+	z-index: 50;
+}
+
+#gymfilter { 
+	color: red;
+}
+
+.container-fluid {
+padding-right: 15px;
+padding-left: 15px;
+margin-right: auto;
+margin-left: auto;
+max-width: 900px;
+overflow:hidden;
+height: auto;
+min-height:0px !important;    
+}
+
+
+#map-wrapper {
+    width: 100%;
+    height: 500px;
+    position: relative;
+    border: 1px solid black;
+}
+
+
+#button-wrapper {
+    position: absolute;
+    bottom: 10px;
+    width: 100%;
+    border: 1px solid red;
+}
