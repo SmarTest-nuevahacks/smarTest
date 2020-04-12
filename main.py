@@ -1,10 +1,19 @@
 import os, os.path, random, hashlib, sys, json
 from flask import Flask, flash, render_template, redirect, request, url_for, jsonify, session, Response
+from werkzeug.utils import secure_filename
 from login import signup_f, login_f
 from functions import *
 
+UPLOAD_FOLDER = '/home/kknopp/Desktop/smarTest/static/test_pics'
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+
 app = Flask(__name__)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.secret_key = '9je0jaj09jk9dkakdwjnjq'
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @app.route('/')
 def main():
@@ -20,11 +29,44 @@ def main():
 def index():
     if 'username' in session:
         if isTeacher(session.get('username')):
-            return render_template('teacher.html', username = session.get('username'))
+            return render_template('teacher.html', username = session.get('username'), test = session.get('editedtest'))
         else:
             return render_template('student.html', username = session.get('username'))
     else:
         return redirect(url_for('login'))
+
+@app.route('/addtest', methods=['GET', 'POST'])
+def addtest():
+    name=request.form['name']
+    desc=request.form['description']
+    start_date=request.form['start_date']
+    end_date=request.form['end_date']
+    length=request.form['duration']
+    group=request.form['type']
+    session['editedtest']=start_add_test(session.get('username'),name,desc,start_date,end_date,length,group)
+    return redirect(url_for('question'))
+
+@app.route('/question', methods=['GET','POST'])
+def question():
+    return redirect(url_for('index'))
+
+@app.route('/addquestion', methods=['GET','POST'])
+def addquestion():
+    if request.method == 'POST':
+        # check if the post request has the file part
+        if 'file1' not in request.files:
+            print("aaa")
+        file = request.files['file1']
+        # if user does not select file, browser also
+        # submit an empty part without filename
+        if file.filename == '':
+            flash('No selected file')
+            return redirect(request.url)
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], newname(filename)))
+            return redirect(url_for('index'))
+    return redirect(url_for('index'))
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -65,6 +107,11 @@ def signup():
 def logout():
     del session['username']
     del session['password']
+    return redirect('/')
+
+@app.route('/delete_test', methods=['GET', 'POST'])
+def delete_test():
+    del session['editedtest']
     return redirect('/')
 
 if __name__=='__main__':

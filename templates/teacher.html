@@ -72,21 +72,43 @@
 
   <section>
     <div class="container">
-      <div class="row align-items-center">
-        <div class="col-lg-6 order-lg-2">
-          <div class="p-5">
-            <img class="img-fluid rounded-circle" src="{{ url_for('static',filename='pics/icon1.jpg') }}" alt="">
-          </div>
-        </div>
-        <div class="col-lg-6 order-lg-1">
-          <div class="p-5">
-            <h2 class="display-4" style="color: #75407a">Teacher</h2>
-            <p style="text-align: justify;">Teacher tab</p>
-          </div>
-        </div>
-      </div>
+      <center>
+        <h1>Add test</h1>
+        <form action="{{ url_for('addtest') }}" method="post" enctype="multipart/form-data" id="addtest">
+          Name:<input type="text" name="name"><br/>
+          Description:<textarea name="description"></textarea><br/>
+          Start Date:<input type="date" name="start_date"><br/>
+          Start Date:<input type="date" name="end_date"><br/>
+          Duration:<input type="text" name="duration"><br/>
+          Group:<input type="text" name="type"><br/>
+          <br/><br/><br/><br/>
+          <input type="submit">
+        </form>
+      </center>
     </div>
   </section>
+
+  {% if test %}
+      <a class="nav-link" href="/delete_test">Delete test: {{ test }} </a>
+  {% else %}
+      <p>placeholder</p>
+  {% endif %}
+  <!---Repeatable--->
+  <p>Question i</p>
+  Name:<input type="text" name="name"><br/>
+  Picture:<input type="file" name="file1"><br/>
+  Points:<input type="number"><br/>
+  Type:<select name="type">
+    <option>Closed</option>
+    <option>Open</option>
+    <option>Drawn</option>
+  </select><br/>
+  <!---Closed--->
+  <input type="text" placeholder="option 1" name="option1">
+  <input type="text" placeholder="option 2" name="option2">
+  <input type="text" placeholder="option 3" name="option3">
+  <input type="text" placeholder="option 4" name="option4"><br/>
+  Correct answer:<input type="number" name="correct" min="1" max="4"><br/>
 
 
 
