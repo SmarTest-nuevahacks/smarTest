@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+	<title>smarTest</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
+ integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+ crossorigin=""/>
+ <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
+ integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
+ crossorigin=""></script>
+ <script src="https://kit.fontawesome.com/301b488078.js" crossorigin="anonymous"></script>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	  <link href="{{ url_for('static',filename='vendor1/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+		<link href="{{ url_for('static',filename='vendor1/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+		<link href="{{ url_for('static',filename='fonts/Linearicons-Free-v1.0.0/icon-font.min.css') }}" rel="stylesheet">
+		<link href="{{ url_for('static',filename='fonts/font-awesome-4.7.0/css/font-awesome.min.css') }}" rel="stylesheet">
+		<link href="{{ url_for('static',filename='vendor1/animate/animate.css') }}" rel="stylesheet">
+		<link href="{{ url_for('static',filename='vendor1/css-hamburgers/hamburgers.min.css') }}" rel="stylesheet">
+		<link href="{{ url_for('static',filename='vendor1/animsition/css/animsition.min.css') }}" rel="stylesheet">
+		<link href="{{ url_for('static',filename='vendor1/select2/select2.min.css') }}" rel="stylesheet">
+		<link href="{{ url_for('static',filename='vendor1/daterangepicker/daterangepicker.css') }}" rel="stylesheet">
+		<link href="{{ url_for('static',filename='vendor1/daterangepicker/daterangepicker.css') }}" rel="stylesheet">
+		<link href="{{ url_for('static',filename='css/login.css') }}" rel="stylesheet">
+		<link rel="icon" href="{{ url_for('static',filename='pics/favicon.png') }}" type="image/x-icon"/>
+
+</head>
+<body>
+
+	<div class="limiter">
+		<div class="container-login100" style="background-image: url('../static/pics/login.jpg');">
+			<div class="wrap-login100 p-t-30 p-b-50">
+				<span class="login100-form-title p-b-41">
+					Login
+				</span>
+				<form class="login100-form validate-form p-b-33 p-t-5" method="POST" enctype=multipart/form-data>
+
+					<div class="wrap-input100 validate-input" data-validate = "Enter a login">
+						<input class="input100" type="text" name="user" placeholder="Login">
+						<span class="focus-input100" data-placeholder="&#xe82a;"></span>
+					</div>
+
+					<div class="wrap-input100 validate-input" data-validate="Enter a password">
+						<input class="input100" type="password" name="password" placeholder="Password">
+						<span class="focus-input100" data-placeholder="&#xe80f;"></span>
+					</div>
+
+					<div class="container-login100-form-btn m-t-32">
+						<button class="login100-form-btn">
+							Submit
+						</button>
+					</div>
+          <div class="container-login100-form-btn m-t-32">
+          <a href="signup">I don't have an account yet!</a>
+        </div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+
+	<div id="dropDownSelect1"></div>
+
+
+	<script type = "text/javascript" src = "{{ url_for('static', filename = 'vendor1/jquery/jquery-3.2.1.min.js') }}" ></script>
+	<script type = "text/javascript" src = "{{ url_for('static', filename = 'vendor1/animsition/js/animsition.min.js') }}" ></script>
+	<script type = "text/javascript" src = "{{ url_for('static', filename = 'vendor1/bootstrap/js/popper.js') }}" ></script>
+	<script type = "text/javascript" src = "{{ url_for('static', filename = 'vendor1/bootstrap/js/bootstrap.min.js') }}" ></script>
+
+	<script type = "text/javascript" src = "{{ url_for('static', filename = 'vendor1/select2/select2.min.js') }}" ></script>
+	<script type = "text/javascript" src = "{{ url_for('static', filename = 'vendor1/daterangepicker/moment.min.js') }}" ></script>
+	<script type = "text/javascript" src = "{{ url_for('static', filename = 'vendor1/daterangepicker/daterangepicker.js') }}" ></script>
+	<script type = "text/javascript" src = "{{ url_for('static', filename = 'vendor1/countdowntime/countdowntime.js') }}" ></script>
+	<script type = "text/javascript" src = "{{ url_for('static', filename = 'js/login.js') }}" ></script>
+
+
+</body>
+</html>
