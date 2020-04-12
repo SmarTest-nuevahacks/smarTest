@@ -84,7 +84,14 @@
         <div class="col-lg-6 order-lg-1">
           <div class="p-5">
             <h2 class="display-4" style="color: #75407a">Student</h2>
-            <p style="text-align: justify;">Student tab</p>
+            <p style="text-align: justify;">
+              {% for i in content %}
+              <h3>{{ i[0] }}     -     {{ i[1] }}</h3>
+              <h4>{{ i[2] }}, {{ i[3] }}</h4>
+              <p>{{ i[4] }}</p>
+              <hr/>
+              {% endfor %}
+            </p>
           </div>
         </div>
       </div>

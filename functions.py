@@ -1,4 +1,5 @@
 import os, sqlite3, random
+import datetime
 
 def isInit():
     db = sqlite3.connect("smartest.db")
@@ -57,3 +58,23 @@ def end_add_test(username,id):
     #cursor.execute(sql)
     #db.commit()
     #db.close()
+
+
+
+def sendMessage(username, recipient, header, content):
+    date_now=datetime.date.today()
+    time_now=datetime.time(datetime.datetime.now().hour,datetime.datetime.now().minute)
+    db = sqlite3.connect("smartest.db")
+    cursor = db.cursor()
+    cursor.execute('''INSERT INTO messages(sender,recipient,date,time,header,content,read) VALUES(?,?,?,?,?,?,?)''', (username,recipient,date_now,time_now,header,content,"no"))
+    db.commit()
+    db.close()
+
+def getMessages(username):
+    db = sqlite3.connect("smartest.db")
+    cursor = db.cursor()
+    cursor.execute('''SELECT header,content,date,time FROM messages WHERE recipient=?''', (username,))
+    tab=cursor.fetchall()
+    db.commit()
+    db.close()
+    return tab

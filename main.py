@@ -35,6 +35,9 @@ def index():
     else:
         return redirect(url_for('login'))
 
+
+
+#Adding tests by teachers
 @app.route('/addtest')
 def addtest():
     if 'username' in session:
@@ -87,6 +90,12 @@ def addquestion():
         id=session.get('editedtest')
         makeQuestion(id,name,type,points,newFilename,option1,option2,option3,option4,correct)
     return redirect(url_for('addtest'))
+
+#Messages
+@app.route('/message')
+def message():
+    return render_template("messages.html", username=session.get('username'), content=getMessages(session.get('username')))
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
