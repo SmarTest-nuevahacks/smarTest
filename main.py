@@ -3,6 +3,7 @@ from flask import Flask, flash, render_template, redirect, request, url_for, jso
 from werkzeug.utils import secure_filename
 from login import signup_f, login_f
 from functions import *
+from datetime import date
 
 UPLOAD_FOLDER = '/home/kknopp/Desktop/smarTest/static/test_pics'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
@@ -29,12 +30,21 @@ def main():
 def index():
     if 'username' in session:
         if isTeacher(session.get('username')):
-            if (session.get('editedtest') == None):
-                return render_template('teacher.html', username = session.get('username'), test = None, published = getPublishedTests(session.get('username')))
-            else:
-                return render_template('teacher.html', username = session.get('username'), test = getTestName(session.get('editedtest')), published = getPublishedTests(session.get('username')))
+            return render_template(
+                'teacher.html', 
+                username = session.get('username'), 
+                test = getTest(session.get('editedtest', 'name')), 
+                published = getPublishedTests(session.get('username')),
+                completed = getCompletedTests(session.get('username')),
+                checked = getCheckedTests(session.get('username')),
+                date = date.today().strftime("%Y-%m-%d"))
         else:
-            return render_template('student.html', username = session.get('username'), today=getTodayTests_student(session.get('username')))
+            return render_template(
+                'student.html',
+                username = session.get('username'),
+                tests = getClassTests(session.get('username'), 'after'),
+                pastTests = getClassTests(session.get('username'), 'before'),
+                date = date.today().strftime("%Y-%m-%d"))
     else:
         return redirect(url_for('login'))
 
@@ -159,13 +169,25 @@ def logout():
     del session['password']
     return redirect('/')
 
-@app.route('/delete_test', methods=['GET', 'POST'])
-def delete_test():
+@app.route('/endAddTest', methods=['GET', 'POST'])
+def endAddTest():
     print(session.get('questioncount'))
     end_add_test(session.get('editedtest'),session.get('questioncount')+1,session.get('sumpoints'))
     del session['editedtest']
     del session['questioncount']
     del session['sumpoints']
+    return redirect('/')
+
+@app.route('/unpublishTest', methods=['GET', 'POST'])
+def unpublishTest():
+    if (session.get('editedtest') == None):
+        session['editedtest'] = getTest(request.args.get('testId'))[0]
+        session['questioncount'] = getQuestionNumber(request.args.get('testId'))
+    return redirect('/')
+
+@app.route('/deleteTest', methods=['GET', 'POST'])
+def deleteTest():
+    delete_test(request.args.get('testId'))
     return redirect('/')
 
 if __name__=='__main__':

@@ -40,10 +40,7 @@ min-height:0px !important;
 }
 
 footer {
-    position: absolute;
-    right: 0;
-    left: 0;
-    bottom: 0;
+    margin-top: 40px;
 }
 
 div.gridify {
@@ -84,6 +81,11 @@ button {
 }
 
 table tr th {
-    padding: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
     text-align: center;
+}
+
+table, tr, th {
+    border: 1px solid black;
 }

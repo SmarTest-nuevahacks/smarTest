@@ -76,39 +76,107 @@
   
       <h3 style="margin-left: 40px;">Unfinished tests</h3>
       {% if test %}
-        <label style="margin-left: 40px;">{{ test }}
+        <label style="margin-left: 40px;">{{ test[1] }}
           <a href="addtest" style="margin-left: 20px;"><button>Continue editing</button></a>
-          <a href="delete_test"><button>Publish</button></a>
+          <a href="endAddTest"><button>Publish</button></a>
         </label>
       {% else %}
         <p style="margin-left: 40px;">Nothing to show</p>
       {% endif %}
       
       <h3 style="margin-left: 40px; margin-top: 40px;">Published tests</h3>
-      {% if published|length > 0 %}
-        <table style="margin-left: 40px;">
-          <tr>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Start date</th>
-            <th>End date</th>
-            <th>Total time [h]</th>
-          </tr>
-          {% for item in published %}
+      {% if published %}
+        <div style="margin-right: 40px; margin-left: 40px;">
+          <table style="width: 100%;">
             <tr>
-              <th>{{ item[0] }}</th>
-              <th>{{ item[1] }}</th>
-              <th>{{ item[2] }}</th>
-              <th>{{ item[3] }}</th>
-              <th>{{ item[4] }}</th>
-              <th>{{ item[5] }}</th>
+              <th style="width: 15%;"><b>Name</b></th>
+              <th style="width: 30%;"><b>Description</b></th>
+              <th style="width: 10%;"><b>Start date</b></th>
+              <th style="width: 10%;"><b>End date</b></th>
+              <th style="width: 10%;"><b>Total time [min]</b></th>
+              <th style="width: 25%;"><b>Action</b></th>
             </tr>
-          {% endfor %}
-        </table>
+            {% for item in published %}
+              <tr>
+                <th>{{ item[0] }}</th>
+                <th>{{ item[1] }}</th>
+                <th>{{ item[2] }}</th>
+                <th>{{ item[3] }}</th>
+                <th>{{ item[4] }}</th>
+                <th>
+                  {% if item[2] <= date %}
+                    <p style="margin: 0px;">Underway</p>
+                  {% else %}
+                    {% if item[0] == test[1] %}
+                      <p style="margin: 0px;">Currently edited</p>
+                    {% else %}
+                      <a style="margin-right: 10px;" href="unpublishTest?testId={{item[5]}}"><button>Unpublish</button></a><a href="deleteTest?testId={{item[5]}}"><button>Delete</button></a>
+                    {% endif %}
+                  {% endif %}
+                </th>
+              </tr>
+            {% endfor %}
+          </table>
+        </div>
       {% else %}
         <p style="margin-left: 40px;">Nothing to show</p>
       {% endif %}
 
+      <h3 style="margin-left: 40px; margin-top: 40px;">Completed tests</h3>
+      {% if completed %}
+      <div style="margin-right: 40px; margin-left: 40px;">
+        <table style="width: 100%;">
+          <tr>
+            <th style="width: 15%;"><b>Name</b></th>
+            <th style="width: 30%;"><b>Description</b></th>
+            <th style="width: 10%;"><b>Start date</b></th>
+            <th style="width: 10%;"><b>End date</b></th>
+            <th style="width: 10%;"><b>Total time [min]</b></th>
+            <th style="width: 25%;"><b>Action</b></th>
+          </tr>
+          {% for item in completed %}
+          <tr>
+            <th>{{ item[0] }}</th>
+            <th>{{ item[1] }}</th>
+            <th>{{ item[2] }}</th>
+            <th>{{ item[3] }}</th>
+            <th>{{ item[4] }}</th>
+            <th><a href="check"><button>Check</button></a></th>
+          </tr>
+          {% endfor %}
+        </table>
+      </div>
+      {% else %}
+      <p style="margin-left: 40px;">Nothing to show</p>
+      {% endif %}
+
+      <h3 style="margin-left: 40px; margin-top: 40px;">Checked tests</h3>
+      {% if checked %}
+      <div style="margin-right: 40px; margin-left: 40px;">
+        <table style="width: 100%;">
+          <tr>
+            <th style="width: 15%;"><b>Name</b></th>
+            <th style="width: 30%;"><b>Description</b></th>
+            <th style="width: 10%;"><b>Start date</b></th>
+            <th style="width: 10%;"><b>End date</b></th>
+            <th style="width: 10%;"><b>Total time [h]</b></th>
+            <th style="width: 25%;"><b>Action</b></th>
+          </tr>
+          {% for item in check %}
+          <tr>
+            <th>{{ item[0] }}</th>
+            <th>{{ item[1] }}</th>
+            <th>{{ item[2] }}</th>
+            <th>{{ item[3] }}</th>
+            <th>{{ item[4] }}</th>
+            <th><button style="margin-right: 20px;">Results</button></th>
+          </tr>
+          {% endfor %}
+        </table>
+      </div>
+      {% else %}
+      <p style="margin-left: 40px;">Nothing to show</p>
+      {% endif %}
 
   <!-- Footer -->
   <footer class="py-5 bg-black">

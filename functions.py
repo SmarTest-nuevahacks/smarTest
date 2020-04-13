@@ -50,7 +50,6 @@ def makeQuestion(id,name,type,points,newFilename,option1,option2,option3,option4
     db.commit()
     db.close()
 
-
 def create_end_test_sql(id,number):
     string="CREATE TABLE IF NOT EXISTS test_answers"+str(id)+"(student TEXT,"
     for i in range(1,number+1):
@@ -58,7 +57,6 @@ def create_end_test_sql(id,number):
         if(i<number):
             string+=","
     string+=")"
-    print(string)
     return string
 
 def end_add_test(id,number,maxpoints):
@@ -87,24 +85,43 @@ def getMessages(username):
     db.close()
     return tab
 
-def getTestName(testId):
+def getTest(testId, *name):
+    if (testId == None):
+        return None
     db = sqlite3.connect("smartest.db")
     cursor = db.cursor()
-    cursor.execute('''SELECT name FROM tests WHERE id=?''', (testId,))
-    title = cursor.fetchone()
+    cursor.execute('''SELECT * FROM tests WHERE id=?''', (testId,))
+    test = cursor.fetchone()
     db.commit()
     db.close()
-    return title[0]
+    if (name):
+        return test[1]
+    return test
+
+def getQuestionNumber(testId):
+    db = sqlite3.connect("smartest.db")
+    cursor = db.cursor()
+    cursor.execute("SELECT * FROM test_questions"+testId)
+    questions = cursor.fetchall()
+    return len(questions)
 
 def getPublishedTests(username):
     db = sqlite3.connect("smartest.db")
     cursor = db.cursor()
-    cursor.execute('''SELECT name,desc,start_date,end_date,time FROM tests WHERE teacher=?''', (username,))
+    cursor.execute('''SELECT name,desc,start_date,end_date,time,id FROM tests WHERE teacher=? AND end_date >= date('now')''', (username,))
     tests = cursor.fetchall()
     db.commit()
     db.close()
     return tests
 
+def getCompletedTests(username):
+    db = sqlite3.connect("smartest.db")
+    cursor = db.cursor()
+    cursor.execute('''SELECT name,desc,start_date,end_date,time,id FROM tests WHERE teacher=? AND end_date < date('now')''', (username,))
+    tests = cursor.fetchall()
+    db.commit()
+    db.close()
+    return tests
 
 def getTodayTests_student(username):
     today=datetime.date.today()
@@ -143,5 +160,33 @@ def endSolveTest(username,answers,id):
     #sql="INSERT INTO test_answers"+str(id)+"(student) VALUES(?)"
     #print(sql)
     #cursor.execute(sql,(username,))
+    db.commit()
+    db.close()
+    
+def getCheckedTests(username):
+    db = sqlite3.connect("smartest.db")
+    cursor = db.cursor()
+    db.commit()
+    db.close()
+
+def getClassTests(username, abdate):
+    db = sqlite3.connect("smartest.db")
+    cursor = db.cursor()
+    if (abdate == 'before'):
+        cursor.execute("SELECT name,desc,start_date,end_date,time,id FROM tests WHERE end_date < date('now')")
+    else:
+        cursor.execute("SELECT name,desc,start_date,end_date,time,id FROM tests WHERE end_date >= date('now')")
+    tests = cursor.fetchall()
+#   cursor.execute("SELECT ")
+#   cursor.execute("SELECT * from tests WHERE type=?", (classId,))
+#   tests = cursor.fetchall()
+    db.commit()
+    db.close()
+    return tests
+
+def delete_test(testId):
+    db = sqlite3.connect("smartest.db")
+    cursor = db.cursor()
+    cursor.execute('''DELETE FROM tests WHERE id=?''', (testId,))
     db.commit()
     db.close()
