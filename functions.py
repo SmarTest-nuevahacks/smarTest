@@ -125,10 +125,23 @@ def getTodayTests_student(username):
     db.close()
     return newtests
 
-def getTestContent(id):
+def getTestContent(id,username):
     db = sqlite3.connect("smartest.db")
     cursor = db.cursor()
     sql="SELECT * FROM test_questions"+str(id)
     cursor.execute(sql)
     content = cursor.fetchall()
+    sql="INSERT INTO test_answers"+str(id)+"(student) VALUES(?)"
+    cursor.execute(sql,(username,))
+    db.commit()
+    db.close()
     return content
+
+def endSolveTest(username,answers,id):
+    db = sqlite3.connect("smartest.db")
+    cursor = db.cursor()
+    #sql="INSERT INTO test_answers"+str(id)+"(student) VALUES(?)"
+    #print(sql)
+    #cursor.execute(sql,(username,))
+    db.commit()
+    db.close()
