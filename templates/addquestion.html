@@ -9,9 +9,10 @@
   <meta name="author" content="">
 
   <title>smarTest</title>
-<link rel="icon" href="{{ url_for('static',filename='pics/favicon.png') }}" type="image/x-icon"/>
+  <link rel="icon" href="{{ url_for('static',filename='pics/favicon.png') }}" type="image/x-icon"/>
   <!-- Bootstrap core CSS -->
   <link href="{{ url_for('static',filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 
   <!-- Custom fonts for this template -->
   <link href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900" rel="stylesheet">
@@ -73,25 +74,44 @@
   <section>
     <div class="container">
       <center>
-        <h1>Add question to test</h1>
+        <h1 style="margin-top: 20px;">Add question to test</h1>
         <form action="{{ url_for('addquestion') }}" method="post" enctype="multipart/form-data" id="addquestion">
           <!---Repeatable--->
-          <p>Question i</p>
-          Question:<input type="text" name="name" required><br/>
-          Picture:<input type="file" name="file1"><br/>
-          Points:<input type="number" name="points" required><br/>
-          Type:<select name="type" required>
-            <option value="closed">Closed</option>
-            <option value="open">Open</option>
-            <option value="drawn">Drawn</option>
-          </select><br/>
+          <p>Question</p>
+          <div class="gridify">
+            <label>Question:</label>
+            <input type="text" name="name" required />
+            <label>Picture (optional):</label>
+            <input type="file" name="file1" style="border-width: 0;">
+            <label>Points:</label>
+            <input type="number" name="points" required>
+            <label>Type:</label>
+            <select name="type" required
+            onchange="
+              if (selectedIndex == 0) {
+                document.getElementById('closedQuestionOptions').hidden = false;
+              } else {
+                document.getElementById('closedQuestionOptions').hidden = true;
+              }
+              ">
+              <option value="closed" selected>Closed</option>
+              <option value="open">Open</option>
+              <option value="drawn">Drawn</option>
+            </select>
+          </div>
           <!---Closed--->
-          <input type="text" placeholder="option 1" name="option1">
-          <input type="text" placeholder="option 2" name="option2">
-          <input type="text" placeholder="option 3" name="option3">
-          <input type="text" placeholder="option 4" name="option4"><br/>
-          Correct answer:<input type="number" name="correct" min="1" max="4"><br/>
-          <input type="submit">
+          <div class="gridify" style="margin-top: 20px;" id="closedQuestionOptions">
+            <label>Option 1:</label>
+            <input type="text" name="option1">
+            <label>Option 2:</label>
+            <input type="text" name="option2">
+            <label>Option 3:</label>
+            <input type="text" name="option3">
+            <label>Option 4:</label>
+            <input type="text" name="option4"><br />
+            Correct answer:<input type="number" name="correct" min="1" max="4"><br />
+          </div>
+          <input type="submit" style="margin: 10px;" value="Add another question">
         </form>
         <a href="delete_test"><button>Save and publish test</button></a>
       </center>
