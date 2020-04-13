@@ -54,7 +54,7 @@ def makeQuestion(id,name,type,points,newFilename,option1,option2,option3,option4
 def create_end_test_sql(id,number):
     string="CREATE TABLE IF NOT EXISTS test_answers"+str(id)+"(student TEXT,"
     for i in range(1,number+1):
-        string+="answer"+str(i)+" TEXT"
+        string+="answer"+str(i)+" TEXT, points"+str(i)+" TEXT"
         if(i<number):
             string+=","
     string+=")"
@@ -114,15 +114,21 @@ def getTodayTests_student(username):
     type=cursor.fetchone()[0]
     cursor.execute('''SELECT name,desc,time,teacher,id,maxpoints FROM tests WHERE type=? AND start_date=?''', (type,today))
     tests = cursor.fetchall()
-    print(tests)
     newtests=[]
     for test in tests:
         sql="SELECT * FROM test_answers"+str(test[4])+" WHERE student=?"
         cursor.execute(sql,(username,))
         done=cursor.fetchone()
-        if(done!=None):
-            newtests+=test
-    print(newtests)
+        if(done==None):
+            newtests+=[test]
     db.commit()
     db.close()
-    return tests
+    return newtests
+
+def getTestContent(id):
+    db = sqlite3.connect("smartest.db")
+    cursor = db.cursor()
+    sql="SELECT * FROM test_questions"+str(id)
+    cursor.execute(sql)
+    content = cursor.fetchall()
+    return content
