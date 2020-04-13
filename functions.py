@@ -200,37 +200,6 @@ def getClassTests(username, abdate):
     else:
         cursor.execute("SELECT name,desc,start_date,end_date,time,id FROM tests WHERE end_date >= date('now')")
     tests = cursor.fetchall()
-#   cursor.execute("SELECT ")
-#   cursor.execute("SELECT * from tests WHERE type=?", (classId,))
-#   tests = cursor.fetchall()
-    db.commit()
-    db.close()
-    return tests
-
-def delete_test(testId):
-    db = sqlite3.connect("smartest.db")
-    cursor = db.cursor()
-    cursor.execute('''DELETE FROM tests WHERE id=?''', (testId,))
-    db.commit()
-    db.close()
-    
-def getCheckedTests(username):
-    db = sqlite3.connect("smartest.db")
-    cursor = db.cursor()
-    db.commit()
-    db.close()
-
-def getClassTests(username, abdate):
-    db = sqlite3.connect("smartest.db")
-    cursor = db.cursor()
-    if (abdate == 'before'):
-        cursor.execute("SELECT name,desc,start_date,end_date,time,id FROM tests WHERE end_date < date('now')")
-    else:
-        cursor.execute("SELECT name,desc,start_date,end_date,time,id FROM tests WHERE end_date >= date('now')")
-    tests = cursor.fetchall()
-#   cursor.execute("SELECT ")
-#   cursor.execute("SELECT * from tests WHERE type=?", (classId,))
-#   tests = cursor.fetchall()
     db.commit()
     db.close()
     return tests
