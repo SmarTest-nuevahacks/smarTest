@@ -31,8 +31,8 @@ def index():
     if 'username' in session:
         if isTeacher(session.get('username')):
             return render_template(
-                'teacher.html',
-                username = session.get('username'),
+                'teacher.html', 
+                username = session.get('username'), 
                 test = getTest(session.get('editedtest', 'name')),
                 published = getPublishedTests(session.get('username')),
                 completed = getCompletedTests(session.get('username')),
