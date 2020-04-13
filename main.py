@@ -34,7 +34,7 @@ def index():
             else:
                 return render_template('teacher.html', username = session.get('username'), test = getTestName(session.get('editedtest')), published = getPublishedTests(session.get('username')))
         else:
-            return render_template('student.html', username = session.get('username'))
+            return render_template('student.html', username = session.get('username'), today=getTodayTests_student(session.get('username')))
     else:
         return redirect(url_for('login'))
 
@@ -65,6 +65,7 @@ def starttest():
     group=request.form['type']
     session['editedtest']=start_add_test(session.get('username'),name,desc,start_date,end_date,length,group)
     session['questioncount']=0
+    session['sumpoints']=0
     return render_template('addquestion.html', username = session.get('username'))
 
 @app.route('/addquestion', methods=['GET','POST'])
@@ -95,6 +96,8 @@ def addquestion():
         makeQuestion(id,name,type,points,newFilename,option1,option2,option3,option4,correct)
         oldPoints=session.get('questioncount')
         session['questioncount']=oldPoints+1
+        oldmaxpoints=session.get('sumpoints')
+        session['sumpoints']=oldmaxpoints+int(points)
     return redirect(url_for('addtest'))
 
 #Messages
@@ -147,9 +150,10 @@ def logout():
 @app.route('/delete_test', methods=['GET', 'POST'])
 def delete_test():
     print(session.get('questioncount'))
-    end_add_test(session.get('editedtest'),session.get('questioncount')+1)
+    end_add_test(session.get('editedtest'),session.get('questioncount')+1,session.get('sumpoints'))
     del session['editedtest']
     del session['questioncount']
+    del session['sumpoints']
     return redirect('/')
 
 if __name__=='__main__':
