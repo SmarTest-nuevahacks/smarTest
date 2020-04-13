@@ -53,19 +53,19 @@ def makeQuestion(id,name,type,points,newFilename,option1,option2,option3,option4
 def create_end_test_sql(id,number):
     string="CREATE TABLE IF NOT EXISTS test_answers"+str(id)+"(student TEXT,"
     for i in range(1,number+1):
-        string+="answer"+str(i)+" TEXT"
+        string+="answer"+str(i)+" TEXT, points"+str(i)+" TEXT"
         if(i<number):
             string+=","
     string+=")"
     return string
 
-def end_add_test(id,number):
+def end_add_test(id,number,maxpoints):
     db = sqlite3.connect("smartest.db")
     cursor = db.cursor()
     cursor.execute(create_end_test_sql(id,number))
+    cursor.execute('''UPDATE tests SET maxpoints=? WHERE id=?''',(maxpoints,id))
     db.commit()
     db.close()
-
 
 def sendMessage(username, recipient, header, content):
     date_now=datetime.date.today()
@@ -123,6 +123,46 @@ def getCompletedTests(username):
     db.close()
     return tests
 
+def getTodayTests_student(username):
+    today=datetime.date.today()
+    db = sqlite3.connect("smartest.db")
+    cursor = db.cursor()
+    cursor.execute('''SELECT type FROM users WHERE name=?''', (username,))
+    type=cursor.fetchone()[0]
+    cursor.execute('''SELECT name,desc,time,teacher,id,maxpoints FROM tests WHERE type=? AND start_date=?''', (type,today))
+    tests = cursor.fetchall()
+    newtests=[]
+    for test in tests:
+        sql="SELECT * FROM test_answers"+str(test[4])+" WHERE student=?"
+        cursor.execute(sql,(username,))
+        done=cursor.fetchone()
+        if(done==None):
+            newtests+=[test]
+    db.commit()
+    db.close()
+    return newtests
+
+def getTestContent(id,username):
+    db = sqlite3.connect("smartest.db")
+    cursor = db.cursor()
+    sql="SELECT * FROM test_questions"+str(id)
+    cursor.execute(sql)
+    content = cursor.fetchall()
+    sql="INSERT INTO test_answers"+str(id)+"(student) VALUES(?)"
+    cursor.execute(sql,(username,))
+    db.commit()
+    db.close()
+    return content
+
+def endSolveTest(username,answers,id):
+    db = sqlite3.connect("smartest.db")
+    cursor = db.cursor()
+    #sql="INSERT INTO test_answers"+str(id)+"(student) VALUES(?)"
+    #print(sql)
+    #cursor.execute(sql,(username,))
+    db.commit()
+    db.close()
+    
 def getCheckedTests(username):
     db = sqlite3.connect("smartest.db")
     cursor = db.cursor()

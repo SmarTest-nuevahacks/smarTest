@@ -9,10 +9,9 @@
   <meta name="author" content="">
 
   <title>smarTest</title>
-  <link rel="icon" href="{{ url_for('static',filename='pics/favicon.png') }}" type="image/x-icon"/>
+<link rel="icon" href="{{ url_for('static',filename='pics/favicon.png') }}" type="image/x-icon"/>
   <!-- Bootstrap core CSS -->
   <link href="{{ url_for('static',filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 
   <!-- Custom fonts for this template -->
   <link href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900" rel="stylesheet">
@@ -41,7 +40,7 @@
   <!-- Navigation -->
   <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
     <div class="container">
-      <a class="navbar-brand" href="/index">smarTest</a>
+      <a class="navbar-brand" href="#">smarTest</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -49,10 +48,10 @@
         <ul class="navbar-nav ml-auto">
     {% if username %}
       <li class="nav-item">
-          <a class="nav-link" href="/addtest">Add test</a>
+        <a class="nav-link" href="/tests">Tests</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/check">Check test</a>
+          <a class="nav-link" href="/message">Messages</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="/logout">Logout: {{ username }} </a>
@@ -71,33 +70,38 @@
   </nav>
 
 
-  <section>
-    <div class="container">
-      <center>
-        <h1 style="margin-top: 20px;">Add test</h1>
-        <form action="{{ url_for('starttest') }}" method="post" enctype="multipart/form-data" id="addtest">
-          <div class="gridify">
-            <label>Name:</label>
-            <input type="text" name="name" required/>
-            <label>Description:</label>
-            <textarea name="description" required></textarea>
-            <label>Start Date:</label>
-            <input type="date" name="start_date" required>
+              <h1>Test name</h1>
+              <form action="{{ url_for('savetestsolve') }}" method="post">
+                <input type="text" value="{{ testid }}" name="testid" style="display:none">
+              {% for i in content %}
 
-              <label>End Date:</label>
-              <input type="date" name="end_date" required>
+              <h4>{{ loop.index0 + 1 }}. {{ i[0] }}</h4><br/>
+              {% set image = "test_pics/"+i[2] %}
+              Points: {{ i[8] }}
+              {% if i[2]!="" %}
+              <img class="img-fluid rounded-circle" src="{{ url_for('static',filename=image) }}" style="max-width:100px" alt="">
+              {% endif %}
 
-            <label>Duration:</label>
-            <input type="number" name="duration" min="1" max="240" placeholder="Minutes" required>
-            <label>Group:</label>
-            <input type="text" name="type" required>
-          </div>
-          <input type="submit" style="margin: 10px;" value="Go to questions">
-        </form>
-      </center>
-    </div>
-  </section>
+              {% if i[1]=="open" %}
+                <textarea name="answers[]" placeholder="{{ i[0] }}"></textarea>
+              {% endif %}
 
+              {% if i[1]=="closed" %}
+                <select name="answers[]">
+                  <option value="{{ i[3] }}">{{ i[3] }}</option>
+                  <option value="{{ i[4] }}">{{ i[4] }}</option>
+                  <option value="{{ i[5] }}">{{ i[5] }}</option>
+                  <option value="{{ i[6] }}">{{ i[6] }}</option>
+                </select>
+              {% endif %}
+
+              {% if i[1]=="drawn" %}
+              drawn
+              {% endif %}
+              <hr/>
+              {% endfor %}
+              <input type="submit">
+            </form>
 
 
   <!-- Footer -->

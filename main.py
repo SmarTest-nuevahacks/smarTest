@@ -49,9 +49,21 @@ def index():
         return redirect(url_for('login'))
 
 
+#Solving Tests
+@app.route('/solvetest/<int:id>')
+def solvetest(id):
+    test=getTestContent(id,session.get('username'))
+    return render_template('test.html', username = session.get('username'), content=test, testid=id)
+
+@app.route('/savetestsolve', methods=['GET', 'POST'])
+def savetestsolve():
+    values = request.form.getlist('answers[]')
+    testid=request.form['testid']
+    endSolveTest(session.get('username'),values,testid)
+    return redirect(url_for('index'))
 
 #Adding tests by teachers
-@app.route('/addtest')
+@app.route('/addtest', methods=['GET', 'POST'])
 def addtest():
     if 'username' in session:
         if isTeacher(session.get('username')):
@@ -75,6 +87,7 @@ def starttest():
     group=request.form['type']
     session['editedtest']=start_add_test(session.get('username'),name,desc,start_date,end_date,length,group)
     session['questioncount']=0
+    session['sumpoints']=0
     return render_template('addquestion.html', username = session.get('username'))
 
 @app.route('/addquestion', methods=['GET','POST'])
@@ -105,6 +118,8 @@ def addquestion():
         makeQuestion(id,name,type,points,newFilename,option1,option2,option3,option4,correct)
         oldPoints=session.get('questioncount')
         session['questioncount']=oldPoints+1
+        oldmaxpoints=session.get('sumpoints')
+        session['sumpoints']=oldmaxpoints+int(points)
     return redirect(url_for('addtest'))
 
 #Messages
@@ -157,9 +172,10 @@ def logout():
 @app.route('/endAddTest', methods=['GET', 'POST'])
 def endAddTest():
     print(session.get('questioncount'))
-    end_add_test(session.get('editedtest'),session.get('questioncount')+1)
+    end_add_test(session.get('editedtest'),session.get('questioncount')+1,session.get('sumpoints'))
     del session['editedtest']
     del session['questioncount']
+    del session['sumpoints']
     return redirect('/')
 
 @app.route('/unpublishTest', methods=['GET', 'POST'])
