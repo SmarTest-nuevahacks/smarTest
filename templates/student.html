@@ -9,9 +9,10 @@
   <meta name="author" content="">
 
   <title>smarTest</title>
-<link rel="icon" href="{{ url_for('static',filename='pics/favicon.png') }}" type="image/x-icon"/>
+  <link rel="icon" href="{{ url_for('static',filename='pics/favicon.png') }}" type="image/x-icon"/>
   <!-- Bootstrap core CSS -->
   <link href="{{ url_for('static',filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 
   <!-- Custom fonts for this template -->
   <link href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900" rel="stylesheet">
@@ -51,9 +52,6 @@
           <a class="nav-link" href="/grades">Grades</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/tests">Tests</a>
-      </li>
-      <li class="nav-item">
           <a class="nav-link" href="/message">Messages</a>
       </li>
       <li class="nav-item">
@@ -89,6 +87,70 @@
         </div>
       </div>
     </div>
+
+    <h3 style="margin-left: 40px;">Tests</h3>
+    {% if tests %}
+    <div style="margin-right: 40px; margin-left: 40px;">
+      <table style="width: 100%;">
+        <tr>
+          <th style="width: 15%;"><b>Name</b></th>
+          <th style="width: 30%;"><b>Description</b></th>
+          <th style="width: 10%;"><b>Start date</b></th>
+          <th style="width: 10%;"><b>End date</b></th>
+          <th style="width: 10%;"><b>Total time [min]</b></th>
+          <th style="width: 25%;"><b>Action</b></th>
+        </tr>
+        {% for item in tests %}
+        <tr>
+          <th>{{ item[0] }}</th>
+          <th>{{ item[1] }}</th>
+          <th>{{ item[2] }}</th>
+          <th>{{ item[3] }}</th>
+          <th>{{ item[4] }}</th>
+          <th>
+          {% if item[2] <= date %}
+            <a style="margin-right: 10px;" href="unpublishTest?testId={{item[5]}}"><button>Take</button></a>
+          {% else %}
+            <p style="margin: 0px;">Awaiting</p>
+          {% endif %}
+          </th>
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+    {% else %}
+    <p style="margin-left: 40px;">Nothing to show</p>
+    {% endif %}
+
+    <h3 style="margin-left: 40px;">Past tests</h3>
+    {% if pastTests %}
+    <div style="margin-right: 40px; margin-left: 40px;">
+      <table style="width: 100%;">
+        <tr>
+          <th style="width: 15%;"><b>Name</b></th>
+          <th style="width: 30%;"><b>Description</b></th>
+          <th style="width: 10%;"><b>Start date</b></th>
+          <th style="width: 10%;"><b>End date</b></th>
+          <th style="width: 10%;"><b>Total time [min]</b></th>
+          <th style="width: 25%;"><b>Action</b></th>
+        </tr>
+        {% for item in pastTests %}
+        <tr>
+          <th>{{ item[0] }}</th>
+          <th>{{ item[1] }}</th>
+          <th>{{ item[2] }}</th>
+          <th>{{ item[3] }}</th>
+          <th>{{ item[4] }}</th>
+          <th>
+            <a style="margin-right: 10px;" href="unpublishTest?testId={{item[5]}}"><button>Answers/Results</button></a>
+          </th>
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+    {% else %}
+    <p style="margin-left: 40px;">Nothing to show</p>
+    {% endif %}
   </section>
 
 

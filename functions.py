@@ -50,7 +50,6 @@ def makeQuestion(id,name,type,points,newFilename,option1,option2,option3,option4
     db.commit()
     db.close()
 
-
 def create_end_test_sql(id,number):
     string="CREATE TABLE IF NOT EXISTS test_answers"+str(id)+"(student TEXT,"
     for i in range(1,number+1):
@@ -66,7 +65,6 @@ def end_add_test(id,number):
     cursor.execute(create_end_test_sql(id,number))
     db.commit()
     db.close()
-
 
 
 def sendMessage(username, recipient, header, content):
@@ -128,6 +126,23 @@ def getCompletedTests(username):
 def getCheckedTests(username):
     db = sqlite3.connect("smartest.db")
     cursor = db.cursor()
+    db.commit()
+    db.close()
+
+def getClassTests(username, abdate):
+    db = sqlite3.connect("smartest.db")
+    cursor = db.cursor()
+    if (abdate == 'before'):
+        cursor.execute("SELECT name,desc,start_date,end_date,time,id FROM tests WHERE end_date < date('now')")
+    else:
+        cursor.execute("SELECT name,desc,start_date,end_date,time,id FROM tests WHERE end_date >= date('now')")
+    tests = cursor.fetchall()
+#   cursor.execute("SELECT ")
+#   cursor.execute("SELECT * from tests WHERE type=?", (classId,))
+#   tests = cursor.fetchall()
+    db.commit()
+    db.close()
+    return tests
 
 def delete_test(testId):
     db = sqlite3.connect("smartest.db")

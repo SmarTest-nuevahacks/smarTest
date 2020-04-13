@@ -110,9 +110,10 @@
                     {% if item[0] == test[1] %}
                       <p style="margin: 0px;">Currently edited</p>
                     {% else %}
-                      <a style="margin-right: 10px;" href="unpublishTest?testId={{item[5]}}"><button>Unpublish</button></a><a href="deleteTest?testId={{item[5]}}"><button>Delete</button></a></th>
+                      <a style="margin-right: 10px;" href="unpublishTest?testId={{item[5]}}"><button>Unpublish</button></a><a href="deleteTest?testId={{item[5]}}"><button>Delete</button></a>
                     {% endif %}
                   {% endif %}
+                </th>
               </tr>
             {% endfor %}
           </table>
@@ -168,8 +169,7 @@
             <th>{{ item[2] }}</th>
             <th>{{ item[3] }}</th>
             <th>{{ item[4] }}</th>
-            <th><button style="margin-right: 20px;">Unpublish</button><a
-                href="deleteTest?testId={{item[5]}}"><button>Delete</button></a></th>
+            <th><button style="margin-right: 20px;">Results</button></th>
           </tr>
           {% endfor %}
         </table>

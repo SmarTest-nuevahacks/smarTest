@@ -39,7 +39,12 @@ def index():
                 checked = getCheckedTests(session.get('username')),
                 date = date.today().strftime("%Y-%m-%d"))
         else:
-            return render_template('student.html', username = session.get('username'))
+            return render_template(
+                'student.html',
+                username = session.get('username'),
+                tests = getClassTests(session.get('username'), 'after'),
+                pastTests = getClassTests(session.get('username'), 'before'),
+                date = date.today().strftime("%Y-%m-%d"))
     else:
         return redirect(url_for('login'))
 
