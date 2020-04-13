@@ -73,7 +73,7 @@ def addquestion():
             print("aaa")
         file = request.files['file1']
         # if user does not select file, browser also
-        # submit an empty part without filename
+        # submits an empty part without filename
         if file.filename == '':
             print("bbb")
         if file and allowed_file(file.filename):
@@ -131,7 +131,7 @@ def signup():
         if signup_f(username,password,name,mail,type,teacherpasswd):
             return redirect(url_for('main'))
         else:
-        	#zły login lub hasło
+        	#bad username or password
             return render_template('signup.html')
     return render_template('signup.html')
 
