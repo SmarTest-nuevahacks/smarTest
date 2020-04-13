@@ -61,14 +61,13 @@ def create_end_test_sql(id,number):
     print(string)
     return string
 
-def end_add_test(id,number):
+def end_add_test(id,number,maxpoints):
     db = sqlite3.connect("smartest.db")
     cursor = db.cursor()
     cursor.execute(create_end_test_sql(id,number))
+    cursor.execute('''UPDATE tests SET maxpoints=? WHERE id=?''',(maxpoints,id))
     db.commit()
     db.close()
-
-
 
 def sendMessage(username, recipient, header, content):
     date_now=datetime.date.today()
@@ -102,6 +101,28 @@ def getPublishedTests(username):
     cursor = db.cursor()
     cursor.execute('''SELECT name,desc,start_date,end_date,time FROM tests WHERE teacher=?''', (username,))
     tests = cursor.fetchall()
+    db.commit()
+    db.close()
+    return tests
+
+
+def getTodayTests_student(username):
+    today=datetime.date.today()
+    db = sqlite3.connect("smartest.db")
+    cursor = db.cursor()
+    cursor.execute('''SELECT type FROM users WHERE name=?''', (username,))
+    type=cursor.fetchone()[0]
+    cursor.execute('''SELECT name,desc,time,teacher,id,maxpoints FROM tests WHERE type=? AND start_date=?''', (type,today))
+    tests = cursor.fetchall()
+    print(tests)
+    newtests=[]
+    for test in tests:
+        sql="SELECT * FROM test_answers"+str(test[4])+" WHERE student=?"
+        cursor.execute(sql,(username,))
+        done=cursor.fetchone()
+        if(done!=None):
+            newtests+=test
+    print(newtests)
     db.commit()
     db.close()
     return tests
