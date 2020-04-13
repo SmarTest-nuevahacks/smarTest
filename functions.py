@@ -100,8 +100,15 @@ def getTestName(testId):
 def getPublishedTests(username):
     db = sqlite3.connect("smartest.db")
     cursor = db.cursor()
-    cursor.execute('''SELECT name,desc,start_date,end_date,time FROM tests WHERE teacher=?''', (username,))
+    cursor.execute('''SELECT name,desc,start_date,end_date,time,id FROM tests WHERE teacher=?''', (username,))
     tests = cursor.fetchall()
     db.commit()
     db.close()
     return tests
+
+def delete_test(testId):
+    db = sqlite3.connect("smartest.db")
+    cursor = db.cursor()
+    cursor.execute('''DELETE FROM tests WHERE id=?''', (testId,))
+    db.commit()
+    db.close()

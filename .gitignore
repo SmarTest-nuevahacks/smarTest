@@ -1,2 +1,3 @@
 *.pyc
 smartest.db
+__pycache__

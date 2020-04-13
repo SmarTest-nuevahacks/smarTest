@@ -144,12 +144,17 @@ def logout():
     del session['password']
     return redirect('/')
 
-@app.route('/delete_test', methods=['GET', 'POST'])
-def delete_test():
+@app.route('/endAddTest', methods=['GET', 'POST'])
+def endAddTest():
     print(session.get('questioncount'))
     end_add_test(session.get('editedtest'),session.get('questioncount')+1)
     del session['editedtest']
     del session['questioncount']
+    return redirect('/')
+
+@app.route('/deleteTest', methods=['GET', 'POST'])
+def deleteTest():
+    delete_test(request.args.get('testId'))
     return redirect('/')
 
 if __name__=='__main__':
