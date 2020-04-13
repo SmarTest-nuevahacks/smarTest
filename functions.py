@@ -36,7 +36,7 @@ def start_add_test(username,name,desc,start_date,end_date,length,group):
     cursor.execute('''INSERT INTO tests(name,desc,start_date,end_date,time,teacher,type) VALUES(?,?,?,?,?,?,?)''', (name,desc,start_date,end_date,length,username,group))
     cursor.execute("SELECT MAX(id) FROM tests")
     id=cursor.fetchone()[0]
-    sql="CREATE TABLE IF NOT EXISTS test_questions"+str(id)+"(name TEXT, type TEXT, picture TEXT, answer1 TEXT, answer2 TEXT,answer3 TEXT,answer4 TEXT,correct TEXT, points TEXT)"
+    sql="CREATE TABLE IF NOT EXISTS test_questions"+str(id)+"(ind INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE, name TEXT, type TEXT, picture TEXT, answer1 TEXT, answer2 TEXT,answer3 TEXT,answer4 TEXT,correct TEXT, points TEXT)"
     cursor.execute(sql)
     db.commit()
     db.close()
@@ -50,15 +50,13 @@ def makeQuestion(id,name,type,points,newFilename,option1,option2,option3,option4
     db.commit()
     db.close()
 
-
 def create_end_test_sql(id,number):
-    string="CREATE TABLE IF NOT EXISTS test_answers"+str(id)+"(student TEXT,"
+    string="CREATE TABLE IF NOT EXISTS test_answers"+str(id)+"(student TEXT UNIQUE,"
     for i in range(1,number+1):
         string+="answer"+str(i)+" TEXT, points"+str(i)+" TEXT"
         if(i<number):
             string+=","
     string+=")"
-    print(string)
     return string
 
 def end_add_test(id,number,maxpoints):
@@ -87,24 +85,43 @@ def getMessages(username):
     db.close()
     return tab
 
-def getTestName(testId):
+def getTest(testId, *name):
+    if (testId == None):
+        return None
     db = sqlite3.connect("smartest.db")
     cursor = db.cursor()
-    cursor.execute('''SELECT name FROM tests WHERE id=?''', (testId,))
-    title = cursor.fetchone()
+    cursor.execute('''SELECT * FROM tests WHERE id=?''', (testId,))
+    test = cursor.fetchone()
     db.commit()
     db.close()
-    return title[0]
+    if (name):
+        return test[1]
+    return test
+
+def getQuestionNumber(testId):
+    db = sqlite3.connect("smartest.db")
+    cursor = db.cursor()
+    cursor.execute("SELECT * FROM test_questions"+testId)
+    questions = cursor.fetchall()
+    return len(questions)
 
 def getPublishedTests(username):
     db = sqlite3.connect("smartest.db")
     cursor = db.cursor()
-    cursor.execute('''SELECT name,desc,start_date,end_date,time FROM tests WHERE teacher=?''', (username,))
+    cursor.execute('''SELECT name,desc,start_date,end_date,time,id FROM tests WHERE teacher=? AND end_date >= date('now')''', (username,))
     tests = cursor.fetchall()
     db.commit()
     db.close()
     return tests
 
+def getCompletedTests(username):
+    db = sqlite3.connect("smartest.db")
+    cursor = db.cursor()
+    cursor.execute('''SELECT name,desc,start_date,end_date,time,id FROM tests WHERE teacher=? AND end_date < date('now')''', (username,))
+    tests = cursor.fetchall()
+    db.commit()
+    db.close()
+    return tests
 
 def getTodayTests_student(username):
     today=datetime.date.today()
@@ -140,8 +157,59 @@ def getTestContent(id,username):
 def endSolveTest(username,answers,id):
     db = sqlite3.connect("smartest.db")
     cursor = db.cursor()
-    #sql="INSERT INTO test_answers"+str(id)+"(student) VALUES(?)"
-    #print(sql)
-    #cursor.execute(sql,(username,))
+    print(answers)
+    i=0
+    for answer in answers:
+        sql="SELECT type from test_questions"+str(id)+" WHERE ind=?"
+        cursor.execute(sql,(i+1,))
+        type=cursor.fetchone()[0]
+        if(type=="open"):
+            sql="UPDATE test_answers"+str(id)+" SET answer"+str(i+1)+"=? WHERE student=?"
+            cursor.execute(sql,(answer,username))
+        if(type=="closed"):
+            sql="SELECT correct from test_questions"+str(id)+" WHERE ind=?"
+            cursor.execute(sql,(i+1,))
+            correct_number=cursor.fetchone()[0]
+            sql="SELECT answer"+str(correct_number)+" from test_questions"+str(id)+" WHERE ind=?"
+            cursor.execute(sql,(i+1,))
+            correct=cursor.fetchone()[0]
+            if(answer==correct):
+                sql="SELECT points from test_questions"+str(id)+" WHERE ind=?"
+                cursor.execute(sql,(i+1,))
+                points=cursor.fetchone()[0]
+            else:
+                points=0
+            sql="UPDATE test_answers"+str(id)+" SET answer"+str(i+1)+"=?, points"+str(i+1)+"=? WHERE student=?"
+            print(sql)
+            cursor.execute(sql,(answer,str(points),username))
+        i+=1
+    db.commit()
+    db.close()
+
+def getCheckedTests(username):
+    db = sqlite3.connect("smartest.db")
+    cursor = db.cursor()
+    db.commit()
+    db.close()
+
+def getClassTests(username, abdate):
+    db = sqlite3.connect("smartest.db")
+    cursor = db.cursor()
+    if (abdate == 'before'):
+        cursor.execute("SELECT name,desc,start_date,end_date,time,id FROM tests WHERE end_date < date('now')")
+    else:
+        cursor.execute("SELECT name,desc,start_date,end_date,time,id FROM tests WHERE end_date >= date('now')")
+    tests = cursor.fetchall()
+#   cursor.execute("SELECT ")
+#   cursor.execute("SELECT * from tests WHERE type=?", (classId,))
+#   tests = cursor.fetchall()
+    db.commit()
+    db.close()
+    return tests
+
+def delete_test(testId):
+    db = sqlite3.connect("smartest.db")
+    cursor = db.cursor()
+    cursor.execute('''DELETE FROM tests WHERE id=?''', (testId,))
     db.commit()
     db.close()
