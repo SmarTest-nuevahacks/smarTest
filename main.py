@@ -3,6 +3,7 @@ from flask import Flask, flash, render_template, redirect, request, url_for, jso
 from werkzeug.utils import secure_filename
 from login import signup_f, login_f
 from functions import *
+from datetime import date
 
 UPLOAD_FOLDER = '/home/kknopp/Desktop/smarTest/static/test_pics'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
@@ -35,7 +36,8 @@ def index():
                 test = getTest(session.get('editedtest', 'name')), 
                 published = getPublishedTests(session.get('username')),
                 completed = getCompletedTests(session.get('username')),
-                checked = getCheckedTests(session.get('username')))
+                checked = getCheckedTests(session.get('username')),
+                date = date.today().strftime("%Y-%m-%d"))
         else:
             return render_template('student.html', username = session.get('username'))
     else:
