@@ -9,9 +9,10 @@
   <meta name="author" content="">
 
   <title>smarTest</title>
-<link rel="icon" href="{{ url_for('static',filename='pics/favicon.png') }}" type="image/x-icon"/>
+  <link rel="icon" href="{{ url_for('static',filename='pics/favicon.png') }}" type="image/x-icon"/>
   <!-- Bootstrap core CSS -->
   <link href="{{ url_for('static',filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 
   <!-- Custom fonts for this template -->
   <link href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900" rel="stylesheet">
@@ -69,12 +70,19 @@
     </div>
   </nav>
 
-
-  {% if test %}
-      <a class="nav-link" href="/delete_test">Test creation in progress! Publish test: {{ test }} </a>
-  {% else %}
-      <p>Teacher homepage</p>
-  {% endif %}
+  <center>
+    <h1 style="margin: 20px;">Dashboard</h1>
+  </center>
+  
+      <h3 style="margin-left: 40px;">Unfinished tests</h3>
+      {% if test %}
+        <label style="margin-left: 40px;">{{ test }}
+          <a href="addtest" style="margin-left: 20px;"><button>Continue editing</button></a>
+          <a href="delete_test"><button>Publish</button></a>
+        </label>
+      {% else %}
+        <p style="margin-left: 40px;">Nothing to show</p>
+      {% endif %}
 
 
 

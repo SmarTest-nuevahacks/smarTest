@@ -87,3 +87,12 @@ def getMessages(username):
     db.commit()
     db.close()
     return tab
+
+def getTestName(testId):
+    db = sqlite3.connect("smartest.db")
+    cursor = db.cursor()
+    cursor.execute('''SELECT name FROM tests WHERE id=?''', (testId,))
+    title = cursor.fetchone()
+    db.commit()
+    db.close()
+    return title[0]

@@ -29,7 +29,7 @@ def main():
 def index():
     if 'username' in session:
         if isTeacher(session.get('username')):
-            return render_template('teacher.html', username = session.get('username'), test = session.get('editedtest'))
+            return render_template('teacher.html', username = session.get('username'), test = getTestName(session.get('editedtest')))
         else:
             return render_template('student.html', username = session.get('username'))
     else:
