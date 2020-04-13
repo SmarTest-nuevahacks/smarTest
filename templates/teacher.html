@@ -76,7 +76,7 @@
   
       <h3 style="margin-left: 40px;">Unfinished tests</h3>
       {% if test %}
-        <label style="margin-left: 40px;">{{ test }}
+        <label style="margin-left: 40px;">{{ test[1] }}
           <a href="addtest" style="margin-left: 20px;"><button>Continue editing</button></a>
           <a href="endAddTest"><button>Publish</button></a>
         </label>
@@ -103,7 +103,12 @@
                 <th>{{ item[2] }}</th>
                 <th>{{ item[3] }}</th>
                 <th>{{ item[4] }}</th>
-                <th><button style="margin-right: 20px;">Unpublish</button><a href="deleteTest?testId={{item[5]}}"><button>Delete</button></a></th>
+                <th>
+                  {% if item[0] == test[1] %}
+                    <p style="margin: 0px;">Currently edited</p>
+                  {% else %}
+                    <a style="margin-right: 10px;" href="unpublishTest?testId={{item[5]}}"><button>Unpublish</button></a><a href="deleteTest?testId={{item[5]}}"><button>Delete</button></a></th>
+                  {% endif %}
               </tr>
             {% endfor %}
           </table>

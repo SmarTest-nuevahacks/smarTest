@@ -32,7 +32,7 @@ def index():
             return render_template(
                 'teacher.html', 
                 username = session.get('username'), 
-                test = getTestName(session.get('editedtest')), 
+                test = getTest(session.get('editedtest', 'name')), 
                 published = getPublishedTests(session.get('username')),
                 completed = getCompletedTests(session.get('username')),
                 checked = getCheckedTests(session.get('username')))
@@ -153,6 +153,13 @@ def endAddTest():
     end_add_test(session.get('editedtest'),session.get('questioncount')+1)
     del session['editedtest']
     del session['questioncount']
+    return redirect('/')
+
+@app.route('/unpublishTest', methods=['GET', 'POST'])
+def unpublishTest():
+    if (session.get('editedtest') == None):
+        session['editedtest'] = getTest(request.args.get('testId'))[0]
+        session['questioncount'] = getQuestionNumber(request.args.get('testId'))
     return redirect('/')
 
 @app.route('/deleteTest', methods=['GET', 'POST'])

@@ -58,7 +58,6 @@ def create_end_test_sql(id,number):
         if(i<number):
             string+=","
     string+=")"
-    print(string)
     return string
 
 def end_add_test(id,number):
@@ -88,16 +87,25 @@ def getMessages(username):
     db.close()
     return tab
 
-def getTestName(testId):
+def getTest(testId, *name):
     if (testId == None):
         return None
     db = sqlite3.connect("smartest.db")
     cursor = db.cursor()
-    cursor.execute('''SELECT name FROM tests WHERE id=?''', (testId,))
-    title = cursor.fetchone()
+    cursor.execute('''SELECT * FROM tests WHERE id=?''', (testId,))
+    test = cursor.fetchone()
     db.commit()
     db.close()
-    return title[0]
+    if (name):
+        return test[1]
+    return test
+
+def getQuestionNumber(testId):
+    db = sqlite3.connect("smartest.db")
+    cursor = db.cursor()
+    cursor.execute("SELECT * FROM test_questions"+testId)
+    questions = cursor.fetchall()
+    return len(questions)
 
 def getPublishedTests(username):
     db = sqlite3.connect("smartest.db")
