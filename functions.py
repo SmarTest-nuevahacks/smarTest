@@ -50,14 +50,23 @@ def makeQuestion(id,name,type,points,newFilename,option1,option2,option3,option4
     db.commit()
     db.close()
 
-def end_add_test(username,id):
-    pass
-    #db = sqlite3.connect("smartest.db")
-    #cursor = db.cursor()
-    #sql="CREATE TABLE IF NOT EXISTS test_results"+id+"(student TEXT,question_i TEXT, question_j TEXT)"
-    #cursor.execute(sql)
-    #db.commit()
-    #db.close()
+
+def create_end_test_sql(id,number):
+    string="CREATE TABLE IF NOT EXISTS test_answers"+str(id)+"(student TEXT,"
+    for i in range(1,number+1):
+        string+="answer"+str(i)+" TEXT"
+        if(i<number):
+            string+=","
+    string+=")"
+    print(string)
+    return string
+
+def end_add_test(id,number):
+    db = sqlite3.connect("smartest.db")
+    cursor = db.cursor()
+    cursor.execute(create_end_test_sql(id,number))
+    db.commit()
+    db.close()
 
 
 

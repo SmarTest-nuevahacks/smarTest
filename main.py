@@ -61,6 +61,7 @@ def starttest():
     length=request.form['duration']
     group=request.form['type']
     session['editedtest']=start_add_test(session.get('username'),name,desc,start_date,end_date,length,group)
+    session['questioncount']=0
     return render_template('addquestion.html', username = session.get('username'))
 
 @app.route('/addquestion', methods=['GET','POST'])
@@ -89,6 +90,8 @@ def addquestion():
         correct=request.form['correct']
         id=session.get('editedtest')
         makeQuestion(id,name,type,points,newFilename,option1,option2,option3,option4,correct)
+        oldPoints=session.get('questioncount')
+        session['questioncount']=oldPoints+1
     return redirect(url_for('addtest'))
 
 #Messages
@@ -140,8 +143,9 @@ def logout():
 
 @app.route('/delete_test', methods=['GET', 'POST'])
 def delete_test():
+    end_add_test(session.get('editedtest'),session.get('questioncount'))
     del session['editedtest']
-    end_add_test()
+    del session['questioncount']
     return redirect('/')
 
 if __name__=='__main__':
