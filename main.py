@@ -29,7 +29,10 @@ def main():
 def index():
     if 'username' in session:
         if isTeacher(session.get('username')):
-            return render_template('teacher.html', username = session.get('username'), test = session.get('editedtest'))
+            if (session.get('editedtest') == None):
+                return render_template('teacher.html', username = session.get('username'), test = None, published = getPublishedTests(session.get('username')))
+            else:
+                return render_template('teacher.html', username = session.get('username'), test = getTestName(session.get('editedtest')), published = getPublishedTests(session.get('username')))
         else:
             return render_template('student.html', username = session.get('username'))
     else:
@@ -43,7 +46,7 @@ def addtest():
     if 'username' in session:
         if isTeacher(session.get('username')):
             if 'editedtest' in session:
-                return render_template('addquestion.html', username = session.get('username'))
+                return render_template('addquestion.html', username = session.get('username'), questionCount = session.get('questioncount'))
             else:
                 return render_template('addtest.html', username = session.get('username'))
         else:
@@ -143,7 +146,8 @@ def logout():
 
 @app.route('/delete_test', methods=['GET', 'POST'])
 def delete_test():
-    end_add_test(session.get('editedtest'),session.get('questioncount'))
+    print(session.get('questioncount'))
+    end_add_test(session.get('editedtest'),session.get('questioncount')+1)
     del session['editedtest']
     del session['questioncount']
     return redirect('/')

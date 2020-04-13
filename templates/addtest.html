@@ -9,9 +9,10 @@
   <meta name="author" content="">
 
   <title>smarTest</title>
-<link rel="icon" href="{{ url_for('static',filename='pics/favicon.png') }}" type="image/x-icon"/>
+  <link rel="icon" href="{{ url_for('static',filename='pics/favicon.png') }}" type="image/x-icon"/>
   <!-- Bootstrap core CSS -->
   <link href="{{ url_for('static',filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 
   <!-- Custom fonts for this template -->
   <link href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900" rel="stylesheet">
@@ -73,16 +74,23 @@
   <section>
     <div class="container">
       <center>
-        <h1>Add test</h1>
+        <h1 style="margin-top: 20px;">Add test</h1>
         <form action="{{ url_for('starttest') }}" method="post" enctype="multipart/form-data" id="addtest">
-          Name:<input type="text" name="name" required><br/>
-          Description:<textarea name="description" required></textarea><br/>
-          Start Date:<input type="date" name="start_date" required><br/>
-          End Date:<input type="date" name="end_date" required><br/>
-          Duration:<input type="number" name="duration" min="1" max="240" required><br/>
-          Group:<input type="text" name="type" required><br/>
-          <br/>
-          <input type="submit">
+          <div class="gridify">
+            <label>Name:</label>
+            <input type="text" name="name" required/>
+            <label>Description:</label>
+            <textarea name="description" required></textarea>
+            <label>Start Date:</label>
+            <input type="date" name="start_date" required>
+            <label>End Date:</label>
+            <input type="date" name="end_date" required>
+            <label>Duration:</label>
+            <input type="number" name="duration" min="1" max="240" placeholder="Hours" required>
+            <label>Group:</label>
+            <input type="text" name="type" required>
+          </div>
+          <input type="submit" style="margin: 10px;" value="Go to questions">
         </form>
       </center>
     </div>
