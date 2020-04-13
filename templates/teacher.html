@@ -85,6 +85,29 @@
       {% endif %}
       
       <h3 style="margin-left: 40px; margin-top: 40px;">Published tests</h3>
+      {% if published|length > 0 %}
+        <table style="margin-left: 40px;">
+          <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Start date</th>
+            <th>End date</th>
+            <th>Total time [h]</th>
+          </tr>
+          {% for item in published %}
+            <tr>
+              <th>{{ item[0] }}</th>
+              <th>{{ item[1] }}</th>
+              <th>{{ item[2] }}</th>
+              <th>{{ item[3] }}</th>
+              <th>{{ item[4] }}</th>
+              <th>{{ item[5] }}</th>
+            </tr>
+          {% endfor %}
+        </table>
+      {% else %}
+        <p style="margin-left: 40px;">Nothing to show</p>
+      {% endif %}
 
 
   <!-- Footer -->

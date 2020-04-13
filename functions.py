@@ -96,3 +96,12 @@ def getTestName(testId):
     db.commit()
     db.close()
     return title[0]
+
+def getPublishedTests(username):
+    db = sqlite3.connect("smartest.db")
+    cursor = db.cursor()
+    cursor.execute('''SELECT name,desc,start_date,end_date,time FROM tests WHERE teacher=?''', (username,))
+    tests = cursor.fetchall()
+    db.commit()
+    db.close()
+    return tests

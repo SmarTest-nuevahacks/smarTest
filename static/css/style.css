@@ -82,3 +82,8 @@ button {
     border-width: 1px;
     border-color: gray;
 }
+
+table tr th {
+    padding: 10px;
+    text-align: center;
+}
