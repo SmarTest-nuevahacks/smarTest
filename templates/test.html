@@ -72,21 +72,22 @@
 
               <h1>Test name</h1>
               <form action="{{ url_for('savetestsolve') }}" method="post">
+                <input type="text" value="{{ testid }}" name="testid" style="display:none">
               {% for i in content %}
 
               <h4>{{ loop.index0 + 1 }}. {{ i[0] }}</h4><br/>
               {% set image = "test_pics/"+i[2] %}
-              {% set answer = "answer"+(loop.index0)|string %}
               Points: {{ i[8] }}
+              {% if i[2]!="" %}
               <img class="img-fluid rounded-circle" src="{{ url_for('static',filename=image) }}" style="max-width:100px" alt="">
-
+              {% endif %}
 
               {% if i[1]=="open" %}
-                <textarea name="{{ answer }}" placeholder="{{ i[0] }}"></textarea>
+                <textarea name="answers[]" placeholder="{{ i[0] }}"></textarea>
               {% endif %}
 
               {% if i[1]=="closed" %}
-                <select name="{{ answer }}">
+                <select name="answers[]">
                   <option value="{{ i[3] }}">{{ i[3] }}</option>
                   <option value="{{ i[4] }}">{{ i[4] }}</option>
                   <option value="{{ i[5] }}">{{ i[5] }}</option>

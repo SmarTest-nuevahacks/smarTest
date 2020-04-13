@@ -42,11 +42,14 @@ def index():
 #Solving Tests
 @app.route('/solvetest/<int:id>')
 def solvetest(id):
-    test=getTestContent(id)
-    return render_template('test.html', username = session.get('username'), content=test)
+    test=getTestContent(id,session.get('username'))
+    return render_template('test.html', username = session.get('username'), content=test, testid=id)
 
 @app.route('/savetestsolve', methods=['GET', 'POST'])
 def savetestsolve():
+    values = request.form.getlist('answers[]')
+    testid=request.form['testid']
+    endSolveTest(session.get('username'),values,testid)
     return redirect(url_for('index'))
 
 #Adding tests by teachers
