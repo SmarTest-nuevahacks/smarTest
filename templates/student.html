@@ -91,7 +91,7 @@
                 <h4>{{ i[1] }}</h4>
                 Time: {{ i[2] }},&nbsp;&nbsp;&nbsp;Teacher: {{ i[3] }}<br/>
                 {{ i[5] }}
-                <a href="/solvetest/{{i[4]}}"><button>Solve!</button></a>
+                <a href="/solvetest/{{ i[4] }}"><button>Solve!</button></a>
               <hr/>
               {% endfor %}
             </p>
@@ -121,7 +121,8 @@
           <th>{{ item[4] }}</th>
           <th>
           {% if item[2] <= date %}
-            <a style="margin-right: 10px;" href="unpublishTest?testId={{item[5]}}"><button>Take</button></a>
+            <a style="margin-right: 10px;" href="/solvetest/{{ item[5] }}"><button>Take</button></a>
+
           {% else %}
             <p style="margin: 0px;">Awaiting</p>
           {% endif %}

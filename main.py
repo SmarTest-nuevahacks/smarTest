@@ -33,7 +33,7 @@ def index():
             return render_template(
                 'teacher.html', 
                 username = session.get('username'), 
-                test = getTest(session.get('editedtest', 'name')), 
+                test = getTest(session.get('editedtest', 'name')),
                 published = getPublishedTests(session.get('username')),
                 completed = getCompletedTests(session.get('username')),
                 checked = getCheckedTests(session.get('username')),
