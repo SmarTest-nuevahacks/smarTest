@@ -70,36 +70,37 @@
   </nav>
 
 
-  <section>
-    <div class="container">
-      <div class="row align-items-center">
-        <div class="col-lg-6 order-lg-2">
-          <div class="p-5">
-            <img class="img-fluid rounded-circle" src="{{ url_for('static',filename='pics/icon1.jpg') }}" alt="">
-          </div>
-        </div>
-        <div class="col-lg-6 order-lg-1">
-          <div class="p-5">
-            <h2 class="display-4" style="color: #75407a">Welcome back, {{ username }}!</h2>
-            <p style="text-align: justify;">
-              Are you ready to ace some tests?
+              <h1>Test name</h1>
+              <form action="{{ url_for('savetestsolve') }}" method="post">
+              {% for i in content %}
 
-              <br/><br/>Today's tests:<br/>
-              {% for i in today %}
-                <h2>{{ i[0] }}</h2><br/>
-                <h4>{{ i[1] }}</h4>
-                Time: {{ i[2] }},&nbsp;&nbsp;&nbsp;Teacher: {{ i[3] }}<br/>
-                {{ i[5] }}
-                <a href="/solvetest/{{i[4]}}"><button>Solve!</button></a>
+              <h4>{{ loop.index0 + 1 }}. {{ i[0] }}</h4><br/>
+              {% set image = "test_pics/"+i[2] %}
+              {% set answer = "answer"+(loop.index0)|string %}
+              Points: {{ i[8] }}
+              <img class="img-fluid rounded-circle" src="{{ url_for('static',filename=image) }}" style="max-width:100px" alt="">
+
+
+              {% if i[1]=="open" %}
+                <textarea name="{{ answer }}" placeholder="{{ i[0] }}"></textarea>
+              {% endif %}
+
+              {% if i[1]=="closed" %}
+                <select name="{{ answer }}">
+                  <option value="{{ i[3] }}">{{ i[3] }}</option>
+                  <option value="{{ i[4] }}">{{ i[4] }}</option>
+                  <option value="{{ i[5] }}">{{ i[5] }}</option>
+                  <option value="{{ i[6] }}">{{ i[6] }}</option>
+                </select>
+              {% endif %}
+
+              {% if i[1]=="drawn" %}
+              drawn
+              {% endif %}
               <hr/>
               {% endfor %}
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
+              <input type="submit">
+            </form>
 
 
   <!-- Footer -->

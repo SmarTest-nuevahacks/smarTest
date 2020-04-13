@@ -39,9 +39,18 @@ def index():
         return redirect(url_for('login'))
 
 
+#Solving Tests
+@app.route('/solvetest/<int:id>')
+def solvetest(id):
+    test=getTestContent(id)
+    return render_template('test.html', username = session.get('username'), content=test)
+
+@app.route('/savetestsolve', methods=['GET', 'POST'])
+def savetestsolve():
+    return redirect(url_for('index'))
 
 #Adding tests by teachers
-@app.route('/addtest')
+@app.route('/addtest', methods=['GET', 'POST'])
 def addtest():
     if 'username' in session:
         if isTeacher(session.get('username')):
