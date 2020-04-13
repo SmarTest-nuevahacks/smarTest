@@ -89,6 +89,8 @@ def getMessages(username):
     return tab
 
 def getTestName(testId):
+    if (testId == None):
+        return None
     db = sqlite3.connect("smartest.db")
     cursor = db.cursor()
     cursor.execute('''SELECT name FROM tests WHERE id=?''', (testId,))
@@ -100,11 +102,24 @@ def getTestName(testId):
 def getPublishedTests(username):
     db = sqlite3.connect("smartest.db")
     cursor = db.cursor()
-    cursor.execute('''SELECT name,desc,start_date,end_date,time,id FROM tests WHERE teacher=?''', (username,))
+    cursor.execute('''SELECT name,desc,start_date,end_date,time,id FROM tests WHERE teacher=? AND end_date >= date('now')''', (username,))
     tests = cursor.fetchall()
     db.commit()
     db.close()
     return tests
+
+def getCompletedTests(username):
+    db = sqlite3.connect("smartest.db")
+    cursor = db.cursor()
+    cursor.execute('''SELECT name,desc,start_date,end_date,time,id FROM tests WHERE teacher=? AND end_date < date('now')''', (username,))
+    tests = cursor.fetchall()
+    db.commit()
+    db.close()
+    return tests
+
+def getCheckedTests(username):
+    db = sqlite3.connect("smartest.db")
+    cursor = db.cursor()
 
 def delete_test(testId):
     db = sqlite3.connect("smartest.db")

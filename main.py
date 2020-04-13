@@ -29,10 +29,13 @@ def main():
 def index():
     if 'username' in session:
         if isTeacher(session.get('username')):
-            if (session.get('editedtest') == None):
-                return render_template('teacher.html', username = session.get('username'), test = None, published = getPublishedTests(session.get('username')))
-            else:
-                return render_template('teacher.html', username = session.get('username'), test = getTestName(session.get('editedtest')), published = getPublishedTests(session.get('username')))
+            return render_template(
+                'teacher.html', 
+                username = session.get('username'), 
+                test = getTestName(session.get('editedtest')), 
+                published = getPublishedTests(session.get('username')),
+                completed = getCompletedTests(session.get('username')),
+                checked = getCheckedTests(session.get('username')))
         else:
             return render_template('student.html', username = session.get('username'))
     else:
