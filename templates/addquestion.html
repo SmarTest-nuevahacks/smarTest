@@ -77,7 +77,11 @@
         <h1 style="margin-top: 20px;">Add question to test</h1>
         <form action="{{ url_for('addquestion') }}" method="post" enctype="multipart/form-data" id="addquestion">
           <!---Repeatable--->
-          <p>Question</p>
+          {% if questioncount %}
+            <p>Question {{ questioncount }}</p>
+          {% else %}
+            <p>Question</p>
+          {% endif %}
           <div class="gridify">
             <label>Question:</label>
             <input type="text" name="name" required />
