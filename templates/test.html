@@ -130,6 +130,7 @@
                 document.getElementById("demo").innerHTML = hours + "h " + minutes + "m " + seconds + "s ";
                 if (t < 0) {
                   clearInterval(x);
+                  alert("The time has ended. Your test was submitted automatically");
                   document.getElementById("submit").click();
                 }
               }, 1000);
