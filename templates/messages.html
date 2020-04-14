@@ -69,6 +69,8 @@
       </div>
     </div>
   </nav>
+
+  {{ content }}
   
   <section style="width: 100%;">
     <table style="width: 100%; vertical-align: middle;">
@@ -82,7 +84,7 @@
               document.getElementById('messages').hidden = true;
               document.getElementById('sendingTags').hidden = true;
             } else {
-              var recepient = document.getElementById('selectView').options[selectedIndex].value;
+              var recepient = document.getElementById('selectView').value;
               var email = {{ users }}[selectedIndex-1];
               document.getElementById('messages').hidden = false;
               document.getElementById('sendingTags').hidden = false;
@@ -125,7 +127,15 @@
             var textnode = document.createTextNode(document.getElementById('messageField').value);
             node.appendChild(textnode);
             document.getElementById('messages').appendChild(node);
-            document.getElementById('messageField').value = '';            
+            
+            //username = {{ username }};
+            recipient = document.getElementById('selectView').value;
+            header = 'Message';
+            content = document.getElementById('messageField').value;
+            
+            window.location.href = `/sendMessageRequest?username={{ username }}&recipient=${recipient}&header=${header}&content=${content}`;
+
+            document.getElementById('messageField').value = '';
             ">Send</button>
           </div>
           <!--Don't show messages at the begging-->

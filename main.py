@@ -132,6 +132,11 @@ def message():
         content=getMessages(session.get('username')),
         users=getUsers())
 
+@app.route('/sendMessageRequest', methods=['GET', 'POST'])
+def sendMessageRequest():
+    sendMessage(request.args.get('username'), request.args.get(
+        'recipient'), request.args.get('header'), request.args.get('content'))
+    return redirect(url_for('message'))
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
