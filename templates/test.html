@@ -33,6 +33,28 @@
    <!-- Easy-Button -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.css">
   <script src="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.js"></script>
+
+  <script type="text/javascript">
+  function addEvent(obj, evt, fn) {
+      if (obj.addEventListener) {
+          obj.addEventListener(evt, fn, false);
+      }
+      else if (obj.attachEvent) {
+          obj.attachEvent("on" + evt, fn);
+      }
+  }
+  addEvent(window,"load",function(e) {
+      addEvent(document, "mouseout", function(e) {
+          e = e ? e : window.event;
+          var from = e.relatedTarget || e.toElement;
+          if (!from || from.nodeName == "HTML") {
+              // stop your drag event here
+              // for now we can just use an alert
+              alert("left window");
+          }
+      });
+  });
+  </script>
 </head>
 
 <body>
@@ -98,12 +120,15 @@
               {% endif %}
 
               {% if i[2]=="closed" %}
-                <select name="answers[]">
-                  <option value="{{ i[4] }}">{{ i[4] }}</option>
-                  <option value="{{ i[5] }}">{{ i[5] }}</option>
-                  <option value="{{ i[6] }}">{{ i[6] }}</option>
-                  <option value="{{ i[7] }}">{{ i[7] }}</option>
-                </select>
+              <br/>
+              <input type="radio" name="answers[]" value="{{ i[4] }}">
+              {{ i[4] }}
+              <input type="radio" name="answers[]" value="{{ i[5] }}">
+              {{ i[5] }}
+              <input type="radio" name="answers[]" value="{{ i[6] }}">
+              {{ i[6] }}
+              <input type="radio" name="answers[]" value="{{ i[7] }}">
+              {{ i[7] }}
               {% endif %}
 
               {% if i[2]=="drawn" %}
