@@ -33,6 +33,43 @@
    <!-- Easy-Button -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.css">
   <script src="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.js"></script>
+
+  <script type="text/javascript">
+  function addEvent(obj, evt, fn) {
+      if (obj.addEventListener) {
+          obj.addEventListener(evt, fn, false);
+      }
+      else if (obj.attachEvent) {
+          obj.attachEvent("on" + evt, fn);
+      }
+  }
+  addEvent(window,"load",function(e) {
+      addEvent(document, "mouseout", function(e) {
+          e = e ? e : window.event;
+          var from = e.relatedTarget || e.toElement;
+          if (!from || from.nodeName == "HTML") {
+              // stop your drag event here
+              // for now we can just use an alert
+              alert("You left the window! Game over;((");
+              document.getElementById("submit").click();
+          }
+      });
+  });
+  function show(){
+    var elem = document.getElementById("test");
+    document.getElementById('intro').style.display = "none";
+    document.getElementById('test').style.display = "block";
+    if (elem.requestFullscreen) {
+      elem.requestFullscreen();
+    } else if (elem.mozRequestFullScreen) { /* Firefox */
+      elem.mozRequestFullScreen();
+    } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
+      elem.webkitRequestFullscreen();
+    } else if (elem.msRequestFullscreen) { /* IE/Edge */
+      elem.msRequestFullscreen();
+    }
+  }
+  </script>
 </head>
 
 <body>
@@ -47,15 +84,7 @@
       <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav ml-auto">
     {% if username %}
-      <li class="nav-item">
-        <a class="nav-link" href="/tests">Tests</a>
-      </li>
-      <li class="nav-item">
-          <a class="nav-link" href="/message">Messages</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/logout">Logout: {{ username }} </a>
-      </li>
+    <p></p>
 	  {% else %}
           <li class="nav-item">
             <a class="nav-link" href="#">Registration</a>
@@ -69,8 +98,19 @@
     </div>
   </nav>
 
-
-            <h1>Test name</h1>
+{% if username %}
+          <div id="intro">
+            <center>
+            <h1><br/><br/><br/>Instructions</h1>
+            <h3><ol>
+              <li>Don't leave the screen with your cursor! Your test will end!</li>
+            </ol></h3>
+            <button onclick="show()">Start test!</button>
+          </center>
+          </div>
+          <div id="test" style="display:none; background-color: white">
+            <center>
+            <h1>{{ testName }}</h1>
             <h3 id="demo"></h3>
             <script>
               var deadtime = '{{ data.endtime }}'
@@ -106,12 +146,15 @@
               {% endif %}
 
               {% if i[2]=="closed" %}
-                <select name="answers[]">
-                  <option value="{{ i[4] }}">{{ i[4] }}</option>
-                  <option value="{{ i[5] }}">{{ i[5] }}</option>
-                  <option value="{{ i[6] }}">{{ i[6] }}</option>
-                  <option value="{{ i[7] }}">{{ i[7] }}</option>
-                </select>
+              <br/>
+              <input type="radio" name="answers[]" value="{{ i[4] }}">
+              {{ i[4] }}
+              <input type="radio" name="answers[]" value="{{ i[5] }}">
+              {{ i[5] }}
+              <input type="radio" name="answers[]" value="{{ i[6] }}">
+              {{ i[6] }}
+              <input type="radio" name="answers[]" value="{{ i[7] }}">
+              {{ i[7] }}
               {% endif %}
 
               {% if i[2]=="drawn" %}
@@ -121,7 +164,9 @@
               {% endfor %}
               <input type="submit" id="submit">
             </form>
-
+          </center>
+          </div>
+{% endif %}
 
   <!-- Footer -->
   <footer class="py-5 bg-black">

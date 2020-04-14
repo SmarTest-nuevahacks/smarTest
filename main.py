@@ -42,6 +42,8 @@ def index():
             return render_template(
                 'student.html',
                 username = session.get('username'),
+                full_name = getName(session.get('username')),
+                done = checkIfTestsDone(getClassTests(session.get('username'), 'after'),session.get('username')),
                 tests = getClassTests(session.get('username'), 'after'),
                 pastTests = getClassTests(session.get('username'), 'before'),
                 date = date.today().strftime("%Y-%m-%d"))
@@ -49,12 +51,14 @@ def index():
         return redirect(url_for('login'))
 
 
+
+
 #Solving Tests
 @app.route('/solvetest/<int:id>')
 def solvetest(id):
     test=getTestContent(id,session.get('username'))
     data={'endtime':testEndTime(id)}
-    return render_template('test.html', username = session.get('username'), content=test, testid=id, data=data)
+    return render_template('test.html', username = session.get('username'), content=test, testid=id, data=data, testName=getTestName(id))
 
 @app.route('/savetestsolve', methods=['GET', 'POST'])
 def savetestsolve():
@@ -62,6 +66,32 @@ def savetestsolve():
     testid=request.form['testid']
     endSolveTest(session.get('username'),values,testid)
     return redirect(url_for('index'))
+
+
+
+#Checking Tests
+@app.route('/check/<int:id>', methods=['GET','POST'])
+def check(id):
+    answers=getAnswers(id)
+    test=getTestQuestions(id)
+    return render_template('checktest.html', username = session.get('username'), answers=answers, testid=id, test=test, testName=getTestName(id))
+
+@app.route('/savecheck', methods=['GET','POST'])
+def savecheck():
+    id=request.form['testid']
+    student=request.form['student']
+    questions = request.form.getlist('questions[]')
+    points=request.form.getlist('points[]')
+    feedback=request.form['feedback']
+    savePoints(id,student,questions,points)
+    if(feedback!=''):
+        testName=getTestName(id)
+        sendMessage("admin",student,"Feedback from test "+str(testName),feedback)
+    answers=getAnswers(id)
+    test=getTestQuestions(id)
+    return render_template('checktest.html', username = session.get('username'), answers=answers, testid=id, test=test, testName=getTestName(id))
+
+
 
 #Adding tests by teachers
 @app.route('/addtest', methods=['GET', 'POST'])
