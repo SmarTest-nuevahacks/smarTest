@@ -31,9 +31,9 @@ def index():
     if 'username' in session:
         if isTeacher(session.get('username')):
             return render_template(
-                'teacher.html', 
-                username = session.get('username'), 
-                test = getTest(session.get('editedtest', 'name')), 
+                'teacher.html',
+                username = session.get('username'),
+                test = getTest(session.get('editedtest', 'name')),
                 published = getPublishedTests(session.get('username')),
                 completed = getCompletedTests(session.get('username')),
                 checked = getCheckedTests(session.get('username')),
@@ -53,7 +53,8 @@ def index():
 @app.route('/solvetest/<int:id>')
 def solvetest(id):
     test=getTestContent(id,session.get('username'))
-    return render_template('test.html', username = session.get('username'), content=test, testid=id)
+    data={'endtime':testEndTime(id)}
+    return render_template('test.html', username = session.get('username'), content=test, testid=id, data=data)
 
 @app.route('/savetestsolve', methods=['GET', 'POST'])
 def savetestsolve():
@@ -172,7 +173,7 @@ def logout():
 @app.route('/endAddTest', methods=['GET', 'POST'])
 def endAddTest():
     print(session.get('questioncount'))
-    end_add_test(session.get('editedtest'),session.get('questioncount')+1,session.get('sumpoints'))
+    end_add_test(session.get('editedtest'),session.get('questioncount')+1,session.get('sumpoints'),session.get('username'))
     del session['editedtest']
     del session['questioncount']
     del session['sumpoints']

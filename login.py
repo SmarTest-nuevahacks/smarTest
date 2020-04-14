@@ -23,7 +23,8 @@ def insertuser(username,passwd,name,mail,type):
 def signup_f(username,passwd,name,mail,type,teacherpasswd):
     try:
         if(teacherpasswd==""):
-            type="student"
+            if(type=="teacher"):
+                return False
         else:
             db = sqlite3.connect("smartest.db")
             cursor = db.cursor()

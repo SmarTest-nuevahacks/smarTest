@@ -70,37 +70,56 @@
   </nav>
 
 
-              <h1>Test name</h1>
+            <h1>Test name</h1>
+            <h3 id="demo"></h3>
+            <script>
+              var deadtime = '{{ data.endtime }}'
+              var deadline = new Date(deadtime).getTime();
+              var x = setInterval(function() {
+                var now = new Date().getTime();
+                var t = deadline - now;
+                var days = Math.floor(t / (1000 * 60 * 60 * 24));
+                var hours = Math.floor((t%(1000 * 60 * 60 * 24))/(1000 * 60 * 60));
+                var minutes = Math.floor((t % (1000 * 60 * 60)) / (1000 * 60));
+                var seconds = Math.floor((t % (1000 * 60)) / 1000);
+                document.getElementById("demo").innerHTML = hours + "h " + minutes + "m " + seconds + "s ";
+                if (t < 0) {
+                  clearInterval(x);
+                  document.getElementById("submit").click();
+                }
+              }, 1000);
+            </script>
+
               <form action="{{ url_for('savetestsolve') }}" method="post">
                 <input type="text" value="{{ testid }}" name="testid" style="display:none">
               {% for i in content %}
 
-              <h4>{{ loop.index0 + 1 }}. {{ i[0] }}</h4><br/>
-              {% set image = "test_pics/"+i[2] %}
-              Points: {{ i[8] }}
-              {% if i[2]!="" %}
+              <h4>{{ loop.index0 + 1 }}. {{ i[1] }}</h4><br/>
+              {% set image = "test_pics/"+i[3] %}
+              Points: {{ i[9] }}
+              {% if i[3]!='' %}
               <img class="img-fluid rounded-circle" src="{{ url_for('static',filename=image) }}" style="max-width:100px" alt="">
               {% endif %}
 
-              {% if i[1]=="open" %}
-                <textarea name="answers[]" placeholder="{{ i[0] }}"></textarea>
+              {% if i[2]=="open" %}
+                <textarea name="answers[]" placeholder="{{ i[1] }}"></textarea>
               {% endif %}
 
-              {% if i[1]=="closed" %}
+              {% if i[2]=="closed" %}
                 <select name="answers[]">
-                  <option value="{{ i[3] }}">{{ i[3] }}</option>
                   <option value="{{ i[4] }}">{{ i[4] }}</option>
                   <option value="{{ i[5] }}">{{ i[5] }}</option>
                   <option value="{{ i[6] }}">{{ i[6] }}</option>
+                  <option value="{{ i[7] }}">{{ i[7] }}</option>
                 </select>
               {% endif %}
 
-              {% if i[1]=="drawn" %}
+              {% if i[2]=="drawn" %}
               drawn
               {% endif %}
               <hr/>
               {% endfor %}
-              <input type="submit">
+              <input type="submit" id="submit">
             </form>
 
 
