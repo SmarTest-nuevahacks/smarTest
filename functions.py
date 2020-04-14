@@ -1,5 +1,6 @@
 import os, sqlite3, random
 import datetime
+from operator import itemgetter
 
 def isInit():
     db = sqlite3.connect("smartest.db")
@@ -52,11 +53,12 @@ def makeQuestion(id,name,type,points,newFilename,option1,option2,option3,option4
 
 def create_end_test_sql(id,number):
     string="CREATE TABLE IF NOT EXISTS test_answers"+str(id)+"(student TEXT UNIQUE,"
-    for i in range(1,number):
+    for i in range(1,number+1):
         string+="answer"+str(i)+" TEXT, points"+str(i)+" TEXT"
         if(i<number-1):
             string+=","
     string+=")"
+    print(string)
     return string
 
 def end_add_test(id,number,maxpoints,username):
@@ -88,11 +90,20 @@ def sendMessage(username, recipient, header, content):
 def getMessages(username):
     db = sqlite3.connect("smartest.db")
     cursor = db.cursor()
-    cursor.execute('''SELECT header,content,date,time FROM messages WHERE recipient=?''', (username,))
+    cursor.execute('''SELECT date,header,content,sender,recipient,time FROM messages WHERE recipient=? OR sender=?''', (username, username))
     tab=cursor.fetchall()
     db.commit()
     db.close()
     return tab
+
+def getUsers():
+    db = sqlite3.connect("smartest.db")
+    cursor = db.cursor()
+    cursor.execute("SELECT name,full_name,mail,type FROM users")
+    users = cursor.fetchall()
+    db.commit()
+    db.close()
+    return users
 
 def getTest(testId, *name):
     if (testId == None):

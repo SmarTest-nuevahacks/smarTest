@@ -43,6 +43,23 @@ footer {
     margin-top: 40px;
 }
 
+table tr th {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    text-align: center;
+}
+
+table, tr, th {
+    border: 1px solid black;
+}
+
+div.gridify {
+    display: grid;
+    grid-template-columns: 25% 50%;
+    grid-gap: 10px;
+    align-items: center;
+}
+
 div.gridify {
     display: grid;
     grid-template-columns: 25% 50%;
@@ -80,12 +97,15 @@ button {
     border-color: gray;
 }
 
-table tr th {
-    padding-top: 10px;
-    padding-bottom: 10px;
-    text-align: center;
+button.flat {
+    background-color: white;
+    border-radius: 0px;
+    border-width: 0;
+    width: 100%;
+    align-items : flex-start;
+    transition-duration: 0.4s;
 }
 
-table, tr, th {
-    border: 1px solid black;
+button.flat:hover {
+    background-color: #e1bee7;
 }
