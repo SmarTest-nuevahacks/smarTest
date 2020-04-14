@@ -76,7 +76,7 @@
   <center>
     <h1 style="margin: 20px;">Dashboard</h1>
   </center>
-  
+
       <h3 style="margin-left: 40px;">Unfinished tests</h3>
       {% if test %}
         <label style="margin-left: 40px;">{{ test[1] }}
@@ -86,7 +86,7 @@
       {% else %}
         <p style="margin-left: 40px;">Nothing to show</p>
       {% endif %}
-      
+
       <h3 style="margin-left: 40px; margin-top: 40px;">Published tests</h3>
       {% if published %}
         <div style="margin-right: 40px; margin-left: 40px;">
@@ -144,7 +144,7 @@
             <th>{{ item[2] }}</th>
             <th>{{ item[3] }}</th>
             <th>{{ item[4] }}</th>
-            <th><a href="check"><button>Check</button></a></th>
+            <th><a href="check/{{ item[5] }}"><button>Check</button></a></th>
           </tr>
           {% endfor %}
         </table>
