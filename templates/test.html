@@ -56,8 +56,18 @@
       });
   });
   function show(){
+    var elem = document.getElementById("test");
     document.getElementById('intro').style.display = "none";
     document.getElementById('test').style.display = "block";
+    if (elem.requestFullscreen) {
+      elem.requestFullscreen();
+    } else if (elem.mozRequestFullScreen) { /* Firefox */
+      elem.mozRequestFullScreen();
+    } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
+      elem.webkitRequestFullscreen();
+    } else if (elem.msRequestFullscreen) { /* IE/Edge */
+      elem.msRequestFullscreen();
+    }
   }
   </script>
 </head>
@@ -90,13 +100,16 @@
 
 {% if username %}
           <div id="intro">
-            <h1>Instructions</h1>
-            <h3><list>
-              <ol>Don't leave the screen with your cursor! Your test will end!</ol>
-            </list></h3>
-            <button onclick="show()"></button>
+            <center>
+            <h1><br/><br/><br/>Instructions</h1>
+            <h3><ol>
+              <li>Don't leave the screen with your cursor! Your test will end!</li>
+            </ol></h3>
+            <button onclick="show()">Start test!</button>
+          </center>
           </div>
-          <div id="test" style="display:none">
+          <div id="test" style="display:none; background-color: white">
+            <center>
             <h1>Test name</h1>
             <h3 id="demo"></h3>
             <script>
@@ -151,6 +164,7 @@
               {% endfor %}
               <input type="submit" id="submit">
             </form>
+          </center>
           </div>
 {% endif %}
 
