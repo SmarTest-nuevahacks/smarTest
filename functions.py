@@ -52,7 +52,7 @@ def makeQuestion(id,name,type,points,newFilename,option1,option2,option3,option4
 
 def create_end_test_sql(id,number):
     string="CREATE TABLE IF NOT EXISTS test_answers"+str(id)+"(student TEXT UNIQUE,"
-    for i in range(1,number+1):
+    for i in range(1,number):
         string+="answer"+str(i)+" TEXT, points"+str(i)+" TEXT"
         if(i<number):
             string+=","
@@ -223,3 +223,10 @@ def delete_test(testId):
     cursor.execute(sql)
     db.commit()
     db.close()
+
+def testEndTime(id):
+    db = sqlite3.connect("smartest.db")
+    cursor = db.cursor()
+    cursor.execute('''SELECT time FROM tests WHERE id=?''',(id,))
+    length=int(cursor.fetchone()[0])
+    return str(datetime.datetime.now()+datetime.timedelta(minutes=length))

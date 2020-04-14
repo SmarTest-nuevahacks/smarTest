@@ -53,7 +53,8 @@ def index():
 @app.route('/solvetest/<int:id>')
 def solvetest(id):
     test=getTestContent(id,session.get('username'))
-    return render_template('test.html', username = session.get('username'), content=test, testid=id)
+    data={'endtime':testEndTime(id)}
+    return render_template('test.html', username = session.get('username'), content=test, testid=id, data=data)
 
 @app.route('/savetestsolve', methods=['GET', 'POST'])
 def savetestsolve():
