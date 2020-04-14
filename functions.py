@@ -74,7 +74,7 @@ def end_add_test(id,number,maxpoints,username):
     db.commit()
     db.close()
     for student in students:
-        sendMessage("admin",student[0],"New test published by "+getName(username),"Please remember to take your test and prepare thoroughly! Your teacher, "+getName(username)" has just published a test!")
+        sendMessage("admin",student[0],"New test published by "+getName(username),"Please remember to take your test and prepare thoroughly! Your teacher, "+getName(username)+" has just published a test!")
 
 def sendMessage(username, recipient, header, content):
     date_now=datetime.date.today()
