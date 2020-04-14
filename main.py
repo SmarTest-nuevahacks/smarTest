@@ -172,7 +172,7 @@ def logout():
 @app.route('/endAddTest', methods=['GET', 'POST'])
 def endAddTest():
     print(session.get('questioncount'))
-    end_add_test(session.get('editedtest'),session.get('questioncount')+1,session.get('sumpoints'))
+    end_add_test(session.get('editedtest'),session.get('questioncount')+1,session.get('sumpoints'),session.get('username'))
     del session['editedtest']
     del session['questioncount']
     del session['sumpoints']

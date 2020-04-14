@@ -59,20 +59,29 @@ def create_end_test_sql(id,number):
     string+=")"
     return string
 
-def end_add_test(id,number,maxpoints):
+def end_add_test(id,number,maxpoints,username):
     db = sqlite3.connect("smartest.db")
     cursor = db.cursor()
     cursor.execute(create_end_test_sql(id,number))
     cursor.execute('''UPDATE tests SET maxpoints=? WHERE id=?''',(maxpoints,id))
+    #Sending informatory messages
+    sql="SELECT type FROM tests WHERE id=?"
+    cursor.execute(sql,(id,))
+    type=cursor.fetchone()[0]
+    sql="SELECT name FROM users WHERE type=?"
+    cursor.execute(sql,(type,))
+    students=cursor.fetchall()
     db.commit()
     db.close()
+    for student in students:
+        sendMessage("admin",student[0],"New test published by "+username,"Please remember to take your test and prepare thoroughly!")
 
 def sendMessage(username, recipient, header, content):
     date_now=datetime.date.today()
     time_now=datetime.time(datetime.datetime.now().hour,datetime.datetime.now().minute)
     db = sqlite3.connect("smartest.db")
     cursor = db.cursor()
-    cursor.execute('''INSERT INTO messages(sender,recipient,date,time,header,content,read) VALUES(?,?,?,?,?,?,?)''', (username,recipient,date_now,time_now,header,content,"no"))
+    cursor.execute('''INSERT INTO messages(sender,recipient,date,time,header,content,read) VALUES(?,?,?,?,?,?,?)''', (username,recipient,str(date_now),str(time_now),header,content,"no"))
     db.commit()
     db.close()
 
