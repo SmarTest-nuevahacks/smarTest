@@ -65,6 +65,24 @@ def savetestsolve():
     endSolveTest(session.get('username'),values,testid)
     return redirect(url_for('index'))
 
+#Checking Tests
+@app.route('/check/<int:id>', methods=['GET','POST'])
+def check(id):
+    answers=getAnswers(id)
+    test=getTestQuestions(id)
+    return render_template('checktest.html', username = session.get('username'), answers=answers, testid=id, test=test)
+
+@app.route('/savecheck', methods=['GET','POST'])
+def savecheck():
+    id=request.form['testid']
+    student=request.form['student']
+    questions = request.form.getlist('questions[]')
+    points=request.form.getlist('points[]')
+    savePoints(id,student,questions,points)
+    answers=getAnswers(id)
+    test=getTestQuestions(id)
+    return render_template('checktest.html', username = session.get('username'), answers=answers, testid=id, test=test)
+
 #Adding tests by teachers
 @app.route('/addtest', methods=['GET', 'POST'])
 def addtest():

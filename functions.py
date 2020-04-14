@@ -54,7 +54,7 @@ def create_end_test_sql(id,number):
     string="CREATE TABLE IF NOT EXISTS test_answers"+str(id)+"(student TEXT UNIQUE,"
     for i in range(1,number):
         string+="answer"+str(i)+" TEXT, points"+str(i)+" TEXT"
-        if(i<number):
+        if(i<number-1):
             string+=","
     string+=")"
     return string
@@ -258,3 +258,33 @@ def getName(username):
     db.commit()
     db.close()
     return name
+
+def getAnswers(id):
+    db = sqlite3.connect("smartest.db")
+    cursor = db.cursor()
+    sql="SELECT * FROM test_answers"+str(id)
+    cursor.execute(sql)
+    answers=cursor.fetchall()
+    return answers
+
+def getTestQuestions(id):
+    db = sqlite3.connect("smartest.db")
+    cursor = db.cursor()
+    sql="SELECT * FROM test_questions"+str(id)
+    cursor.execute(sql)
+    content = cursor.fetchall()
+    db.commit()
+    db.close()
+    return content
+
+def savePoints(id,student,questions,points):
+    db = sqlite3.connect("smartest.db")
+    cursor = db.cursor()
+    print(questions, points)
+    for i in range(0,len(points)):
+        if(points[i]!=''):
+            questions[i]=str(int(questions[i])+1)
+            sql="UPDATE test_answers"+str(id)+" SET points"+str(questions[i])+"=? WHERE student=?"
+            cursor.execute(sql,(points[i],student))
+    db.commit()
+    db.close()
