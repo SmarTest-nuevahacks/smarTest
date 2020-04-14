@@ -215,6 +215,23 @@ def getClassTests(username, abdate):
     db.close()
     return tests
 
+def checkIfTestsDone(tests,username):
+    finishedTests=[]
+    db = sqlite3.connect("smartest.db")
+    cursor = db.cursor()
+    for test in tests:
+        id=test[5]
+        sql="SELECT * FROM test_answers"+str(id)+" WHERE student=?"
+        cursor.execute(sql,(username,))
+        done=cursor.fetchone()
+        if(done==None):
+            finishedTests.append(False)
+        else:
+            finishedTests.append(True)
+    db.commit()
+    db.close()
+    return finishedTests
+
 def delete_test(testId):
     db = sqlite3.connect("smartest.db")
     cursor = db.cursor()

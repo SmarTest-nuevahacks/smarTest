@@ -43,6 +43,7 @@ def index():
                 'student.html',
                 username = session.get('username'),
                 full_name = getName(session.get('username')),
+                done = checkIfTestsDone(getClassTests(session.get('username'), 'after'),session.get('username')),
                 tests = getClassTests(session.get('username'), 'after'),
                 pastTests = getClassTests(session.get('username'), 'before'),
                 date = date.today().strftime("%Y-%m-%d"))
