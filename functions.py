@@ -1,5 +1,6 @@
 import os, sqlite3, random
 import datetime
+from operator import itemgetter
 
 def isInit():
     db = sqlite3.connect("smartest.db")
@@ -88,7 +89,7 @@ def sendMessage(username, recipient, header, content):
 def getMessages(username):
     db = sqlite3.connect("smartest.db")
     cursor = db.cursor()
-    cursor.execute('''SELECT header,content,sender,recipient,date,time FROM messages WHERE recipient=? OR sender=?''', (username, username))
+    cursor.execute('''SELECT date,header,content,sender,recipient,time FROM messages WHERE recipient=? OR sender=?''', (username, username))
     tab=cursor.fetchall()
     db.commit()
     db.close()
