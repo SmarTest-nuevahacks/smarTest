@@ -5,7 +5,7 @@ from login import signup_f, login_f
 from functions import *
 from datetime import date
 
-UPLOAD_FOLDER = '/home/igor/Documents/smarTest/static/test_pics'
+UPLOAD_FOLDER = '/home/kknopp/Desktop/smarTest/static/test_pics'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
 app = Flask(__name__)
@@ -42,6 +42,7 @@ def index():
             return render_template(
                 'student.html',
                 username = session.get('username'),
+                full_name = getName(session.get('username')),
                 tests = getClassTests(session.get('username'), 'after'),
                 pastTests = getClassTests(session.get('username'), 'before'),
                 date = date.today().strftime("%Y-%m-%d"))

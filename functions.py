@@ -204,10 +204,12 @@ def getCheckedTests(username):
 def getClassTests(username, abdate):
     db = sqlite3.connect("smartest.db")
     cursor = db.cursor()
+    cursor.execute('''SELECT type FROM users WHERE name=?''', (username,))
+    type=cursor.fetchone()[0]
     if (abdate == 'before'):
-        cursor.execute("SELECT name,desc,start_date,end_date,time,id FROM tests WHERE end_date < date('now')")
+        cursor.execute("SELECT name,desc,start_date,end_date,time,id FROM tests WHERE end_date < date('now') AND type=?",(type,))
     else:
-        cursor.execute("SELECT name,desc,start_date,end_date,time,id FROM tests WHERE end_date >= date('now')")
+        cursor.execute("SELECT name,desc,start_date,end_date,time,id FROM tests WHERE end_date >= date('now') AND type=?",(type,))
     tests = cursor.fetchall()
     db.commit()
     db.close()
@@ -234,7 +236,7 @@ def testEndTime(id):
 def getName(username):
     db = sqlite3.connect("smartest.db")
     cursor = db.cursor()
-    cursor.execute('''SELECT full_name FROM tests WHERE name=?''',(username,))
+    cursor.execute('''SELECT full_name FROM users WHERE name=?''',(username,))
     name=cursor.fetchone()[0]
     db.commit()
     db.close()

@@ -81,19 +81,9 @@
         </div>
         <div class="col-lg-6 order-lg-1">
           <div class="p-5">
-            <h2 class="display-4" style="color: #75407a">Welcome back, {{ username }}!</h2>
+            <h2 class="display-4" style="color: #75407a">Welcome back, {{ full_name }}!</h2>
             <p style="text-align: justify;">
               Are you ready to ace some tests?
-
-              <br/><br/>Today's tests:<br/>
-              {% for i in today %}
-                <h2>{{ i[0] }}</h2><br/>
-                <h4>{{ i[1] }}</h4>
-                Time: {{ i[2] }},&nbsp;&nbsp;&nbsp;Teacher: {{ i[3] }}<br/>
-                {{ i[5] }}
-                <a href="/solvetest/{{ i[4] }}"><button>Solve!</button></a>
-              <hr/>
-              {% endfor %}
             </p>
           </div>
         </div>
