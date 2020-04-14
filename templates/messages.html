@@ -83,7 +83,7 @@
           ">Write new message</button>
           <p style="margin: 0px; border: 0px; width: 100%; height: 1px; background-color: darkgray;"></p>
           <li>
-          {% for message in content %}
+          {% for message in content|reverse %}
             <button class="flat" onclick="
                         document.getElementById('currentMail').hidden = false;
                         document.getElementById('replyButton').hidden = false;
