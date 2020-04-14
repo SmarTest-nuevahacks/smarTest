@@ -12,6 +12,7 @@
   <link rel="icon" href="{{ url_for('static',filename='pics/favicon.png') }}" type="image/x-icon"/>
   <!-- Bootstrap core CSS -->
   <link href="{{ url_for('static',filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 
   <!-- Custom fonts for this template -->
   <link href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900" rel="stylesheet">
@@ -43,6 +44,21 @@
           obj.attachEvent("on" + evt, fn);
       }
   }
+  function show() {
+      var elem = document.getElementById("test");
+      document.getElementById('intro').style.display = "none";
+      document.getElementById('test').style.display = "block";
+      if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+      } else if (elem.mozRequestFullScreen) { /* Firefox */
+        elem.mozRequestFullScreen();
+      } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
+        elem.webkitRequestFullscreen();
+      } else if (elem.msRequestFullscreen) { /* IE/Edge */
+        elem.msRequestFullscreen();
+      }
+    }
+  show();
   addEvent(window,"load",function(e) {
       addEvent(document, "mouseout", function(e) {
           e = e ? e : window.event;
@@ -55,20 +71,7 @@
           }
       });
   });
-  function show(){
-    var elem = document.getElementById("test");
-    document.getElementById('intro').style.display = "none";
-    document.getElementById('test').style.display = "block";
-    if (elem.requestFullscreen) {
-      elem.requestFullscreen();
-    } else if (elem.mozRequestFullScreen) { /* Firefox */
-      elem.mozRequestFullScreen();
-    } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
-      elem.webkitRequestFullscreen();
-    } else if (elem.msRequestFullscreen) { /* IE/Edge */
-      elem.msRequestFullscreen();
-    }
-  }
+
   </script>
 </head>
 
@@ -104,8 +107,10 @@
             <h1><br/><br/><br/>Instructions</h1>
             <h3><ol>
               <li>Don't leave the screen with your cursor! Your test will end!</li>
+              <li>Don't leave fullscreen</li>
+              <li>Don't refresh your webpage</li>
             </ol></h3>
-            <button onclick="show()">Start test!</button>
+            <button style="margin-bottom: 50in;" onclick="show()">Start test!</button>
           </center>
           </div>
           <div id="test" style="display:none; background-color: white">
@@ -132,29 +137,38 @@
 
               <form action="{{ url_for('savetestsolve') }}" method="post">
                 <input type="text" value="{{ testid }}" name="testid" style="display:none">
+              <p style="width: 100%; height: 2px; background-color: black;"></p>
               {% for i in content %}
 
-              <h4>{{ loop.index0 + 1 }}. {{ i[1] }}</h4><br/>
+              <h4 style="margin-bottom: 0px;">{{ loop.index0 + 1 }}. {{ i[1] }}</h4><br/>
               {% set image = "test_pics/"+i[3] %}
-              Points: {{ i[9] }}
+              <p>Points: {{ i[9] }}</p>
               {% if i[3]!='' %}
               <img class="img-fluid rounded-circle" src="{{ url_for('static',filename=image) }}" style="max-width:100px" alt="">
               {% endif %}
 
               {% if i[2]=="open" %}
-                <textarea name="answers[]" placeholder="{{ i[1] }}"></textarea>
+                <textarea name="answers[]" placeholder="Your answer..." style="width: 40%;"></textarea>
               {% endif %}
 
               {% if i[2]=="closed" %}
               <br/>
-              <input type="radio" name="answers[]" value="{{ i[4] }}">
-              {{ i[4] }}
-              <input type="radio" name="answers[]" value="{{ i[5] }}">
-              {{ i[5] }}
-              <input type="radio" name="answers[]" value="{{ i[6] }}">
-              {{ i[6] }}
-              <input type="radio" name="answers[]" value="{{ i[7] }}">
-              {{ i[7] }}
+              <div>
+                <input type="radio" name="answers[]" value="{{ i[4] }}">
+                {{ i[4] }}
+              </div>
+              <div>
+                <input type="radio" name="answers[]" value="{{ i[5] }}">
+                {{ i[5] }}
+              </div>
+              <div>
+                <input type="radio" name="answers[]" value="{{ i[6] }}">
+                {{ i[6] }}
+              </div>
+              <div>
+                <input type="radio" name="answers[]" value="{{ i[7] }}">
+                {{ i[7] }}
+              </div>
               {% endif %}
 
               {% if i[2]=="drawn" %}
@@ -169,7 +183,7 @@
 {% endif %}
 
   <!-- Footer -->
-  <footer class="py-5 bg-black">
+  <footer class="py-5 bg-black" style="position: absolute; bottom: 0; right: 0; left: 0;">
     <div class="container">
       <p class="m-0 text-center text-white small">smarTest 2020</p>
     </div>
