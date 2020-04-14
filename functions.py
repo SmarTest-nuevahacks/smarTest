@@ -94,6 +94,15 @@ def getMessages(username):
     db.close()
     return tab
 
+def getUsers():
+    db = sqlite3.connect("smartest.db")
+    cursor = db.cursor()
+    cursor.execute("SELECT name,full_name,mail,type FROM users")
+    users = cursor.fetchall()
+    db.commit()
+    db.close()
+    return users
+
 def getTest(testId, *name):
     if (testId == None):
         return None

@@ -126,7 +126,11 @@ def addquestion():
 #Messages
 @app.route('/message')
 def message():
-    return render_template("messages.html", username=session.get('username'), content=getMessages(session.get('username')))
+    return render_template(
+        "messages.html", 
+        username=session.get('username'), 
+        content=getMessages(session.get('username')),
+        users=getUsers())
 
 
 @app.route('/login', methods=['GET', 'POST'])
