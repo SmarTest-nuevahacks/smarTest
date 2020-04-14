@@ -80,16 +80,18 @@
             document.getElementById('composeMail').hidden = false;
           ">Write new message</button>
           <p style="margin: 0px; border: 0px; width: 100%; height: 1px; background-color: darkgray;"></p>
+          <li>
           {% for message in content|sort %}
             <button class="flat" onclick="
             document.getElementById('currentMail').hidden = false;
             document.getElementById('composeMail').hidden = true;
 
             var title = 'Topic: ' + {{ message[1] }};
+            document.getElementById('title').textContent = title;
             var sender = 'From: ' + {{ message[3] }};
             var content = {{ message[2] }};
     
-            document.getElementById('title').textContent = title;
+            
             document.getElementById('sender').textContent = sender;
             document.getElementById('content').textContent = content;
             ">
@@ -104,6 +106,7 @@
                 <p style="color: gray; margin-top: 0px; font-size: smaller;">To: {{ message[4] }}</p>
               {% endif %}
             </button>
+            </li>
             <p style="margin: 0px; border: 0px; width: 100%; height: 1px; background-color: darkgray;"></p>
           {% endfor %}
         </th>
