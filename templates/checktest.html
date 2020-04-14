@@ -97,7 +97,7 @@
 {% if username %}
           <div>
             <center>
-            <h1>Test name</h1>
+            <h1>{{testName}}</h1>
               {% for answer in answers %}
               <button class="collapsible">{{answer[0]}}</button>
               <div class="content">
@@ -120,6 +120,8 @@
                     {% endif %}
                 <hr/>
                 {% endfor %}
+                Feedback for student:<br/><br/>
+                <textarea placeholder="Feedback" name="feedback"></textarea><br/><br/>
                 <input type="Submit" value="Save" style="display: inline">
               </form>
               <br/>

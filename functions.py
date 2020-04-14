@@ -288,3 +288,12 @@ def savePoints(id,student,questions,points):
             cursor.execute(sql,(points[i],student))
     db.commit()
     db.close()
+
+def getTestName(id):
+    db = sqlite3.connect("smartest.db")
+    cursor = db.cursor()
+    cursor.execute('''SELECT name FROM tests WHERE id=?''',(id,))
+    name=cursor.fetchone()[0]
+    db.commit()
+    db.close()
+    return name
