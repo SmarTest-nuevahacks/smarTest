@@ -74,7 +74,7 @@ def end_add_test(id,number,maxpoints,username):
     db.commit()
     db.close()
     for student in students:
-        sendMessage("admin",student[0],"New test published by "+username,"Please remember to take your test and prepare thoroughly!")
+        sendMessage("admin",student[0],"New test published by "+getName(username),"Please remember to take your test and prepare thoroughly! Your teacher, "+getName(username)" has just published a test!")
 
 def sendMessage(username, recipient, header, content):
     date_now=datetime.date.today()
@@ -230,3 +230,12 @@ def testEndTime(id):
     cursor.execute('''SELECT time FROM tests WHERE id=?''',(id,))
     length=int(cursor.fetchone()[0])
     return str(datetime.datetime.now()+datetime.timedelta(minutes=length))
+
+def getName(username):
+    db = sqlite3.connect("smartest.db")
+    cursor = db.cursor()
+    cursor.execute('''SELECT full_name FROM tests WHERE name=?''',(username,))
+    name=cursor.fetchone()[0]
+    db.commit()
+    db.close()
+    return name
