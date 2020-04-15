@@ -46,6 +46,7 @@ def index():
                 done = checkIfTestsDone(getClassTests(session.get('username'), 'after'),session.get('username')),
                 tests = getClassTests(session.get('username'), 'after'),
                 pastTests = getClassTests(session.get('username'), 'before'),
+                per=getPercentage,
                 date = date.today().strftime("%Y-%m-%d"))
     else:
         return redirect(url_for('login'))

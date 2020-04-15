@@ -128,7 +128,7 @@
     <p style="margin-left: 40px;">Nothing to show</p>
     {% endif %}
 
-    <h3 style="margin-left: 40px;">Past tests</h3>
+    <h3 style="margin-left: 40px;"><br/>Past tests</h3>
     {% if pastTests %}
     <div style="margin-right: 40px; margin-left: 40px;">
       <table style="width: 100%;">
@@ -150,6 +150,7 @@
           <th>
             <a style="margin-right: 10px;" href="/results/{{ item[5] }}"><button>Answers/Results</button></a>
           </th>
+          <th>{{per(item[5],username)}}%</th>
         </tr>
         {% endfor %}
       </table>

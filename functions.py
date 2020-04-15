@@ -58,7 +58,6 @@ def create_end_test_sql(id,number):
         if(i<number):
             string+=","
     string+=")"
-    print(string)
     return string
 
 def end_add_test(id,number,maxpoints,username):
@@ -177,7 +176,6 @@ def getTestContent(id,username):
 def endSolveTest(username,answers,id):
     db = sqlite3.connect("smartest.db")
     cursor = db.cursor()
-    print(answers)
     i=0
     for answer in answers:
         sql="SELECT type from test_questions"+str(id)+" WHERE ind=?"
@@ -200,7 +198,6 @@ def endSolveTest(username,answers,id):
             else:
                 points=0
             sql="UPDATE test_answers"+str(id)+" SET answer"+str(i+1)+"=?, points"+str(i+1)+"=? WHERE student=?"
-            print(sql)
             cursor.execute(sql,(answer,str(points),username))
         i+=1
     db.commit()
@@ -356,3 +353,32 @@ def testTaken(id,username):
         return 0
     else:
         return 1
+
+def getPercentage(id,username):
+    points=0
+    i=1
+    db = sqlite3.connect("smartest.db")
+    cursor = db.cursor()
+    while(1):
+        try:
+            sql="SELECT points"+str(i)+" FROM test_answers"+str(id)+" WHERE student=?"
+            cursor.execute(sql,(username,))
+            try:
+                point=int(cursor.fetchone()[0])
+                points+=point
+            except:
+                pass
+        except:
+            break
+        i+=1
+    sql="SELECT maxpoints FROM tests WHERE id=?"
+    cursor.execute(sql,(id,))
+    try:
+        maxpoints=int(cursor.fetchone()[0])
+        print(maxpoints)
+    except:
+        maxpoints=0
+    try:
+        return ((points*1.0)/maxpoints)*100
+    except:
+        return 0
