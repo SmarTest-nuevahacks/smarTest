@@ -168,7 +168,7 @@
               {% set image = "test_pics/"+i[3] %}
               Points: {{ i[9] }}
               {% if i[3]!='' %}
-              <img class="img-fluid rounded-circle" src="{{ url_for('static',filename=image) }}" style="max-width:100px" alt="">
+              <img class="img-fluid" src="{{ url_for('static',filename=image) }}" style="max-width:100px" alt="">
               {% endif %}
 
               {% if i[2]=="open" %}

@@ -72,7 +72,7 @@
 {% if username %}
           <div>
             <center>
-            <h1>{{testName}}</h1>
+            <h1><br/>{{testName}}</h1>
               {% for answer in answers %}
               <div class="content">
                 <h3></h3>
@@ -85,9 +85,9 @@
                 <img class="img-fluid" src="{{ url_for('static',filename=image) }}" style="max-width:100px" alt=""><br/>
                 {% endif %}
                 {% if question[2]=="coding" %}
-                  Your Answer: <h6><textarea cols="40" rows="10">{{answer[(loop.index0+1)*2]}}</textarea></h6><br/>
+                  Your Answer: <h6><br/><textarea cols="40" rows="10">{{answer[(loop.index0+1)*2]}}</textarea></h6><br/>
                   {% else %}
-                  Your Answer: <h5>{{answer[(loop.index0+1)*2]}}</h5><br/>
+                  Your Answer: <h5><br/>{{answer[(loop.index0+1)*2]}}</h5><br/>
                 {% endif %}
                   {% if correct[loop.index0]!='' %}
                   Correct Answer: <h5>{{correct[loop.index0]}}</h5><br/>
@@ -95,11 +95,13 @@
                   Points: <h5>{{ answer[(loop.index0+1)*2+1] }}/{{question[9]}}</h5>
                 <hr/>
                 {% endfor %}
+                {% if feedback!='' %}
                 Feedback for student:<br/><br/>
                 {{feedback}}
               <br/>
             </div>
             <hr/>
+              {% endif %}
               {% endfor %}
           </center>
           </div>
