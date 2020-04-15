@@ -63,7 +63,7 @@ def solvetest(id):
 
 @app.route('/savetestsolve', methods=['GET', 'POST'])
 def savetestsolve():
-    values = request.form.getlist('answers[]')
+    values=request.form.getlist('answers[]')
     testid=request.form['testid']
     endSolveTest(session.get('username'),values,testid)
     return redirect(url_for('index'))
@@ -75,7 +75,7 @@ def savetestsolve():
 def check(id):
     answers=getAnswers(id)
     test=getTestQuestions(id)
-    return render_template('checktest.html', username = session.get('username'), answers=answers, testid=id, test=test, testName=getTestName(id))
+    return render_template('checktest.html', username = session.get('username'), answers=answers, testid=id, test=test, testName=getTestName(id), getName=getName)
 
 @app.route('/savecheck', methods=['GET','POST'])
 def savecheck():

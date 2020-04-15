@@ -181,7 +181,7 @@ def endSolveTest(username,answers,id):
         sql="SELECT type from test_questions"+str(id)+" WHERE ind=?"
         cursor.execute(sql,(i+1,))
         type=cursor.fetchone()[0]
-        if(type=="open"):
+        if(type=="open" or type=="coding"):
             sql="UPDATE test_answers"+str(id)+" SET answer"+str(i+1)+"=? WHERE student=?"
             cursor.execute(sql,(answer,username))
         if(type=="closed"):
@@ -315,7 +315,6 @@ def getTestQuestions(id):
 def savePoints(id,student,questions,points,feedback):
     db = sqlite3.connect("smartest.db")
     cursor = db.cursor()
-    questions[i]=str(int(questions[i])+1)
     sql="UPDATE test_answers"+str(id)+" SET feedback=? WHERE student=?"
     cursor.execute(sql,(feedback,student))
     for i in range(0,len(points)):
@@ -375,7 +374,6 @@ def getPercentage(id,username):
     cursor.execute(sql,(id,))
     try:
         maxpoints=int(cursor.fetchone()[0])
-        print(maxpoints)
     except:
         maxpoints=0
     try:
