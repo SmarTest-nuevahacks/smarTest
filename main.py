@@ -160,6 +160,8 @@ def addquestion():
         makeQuestion(id,name,type,points,newFilename,option1,option2,option3,option4,correct)
         oldPoints=session.get('questioncount')
         session['questioncount']=oldPoints+1
+        if (session.get('sumpoints') == None):
+            session['sumpoints'] = 0
         oldmaxpoints=session.get('sumpoints')
         session['sumpoints']=oldmaxpoints+int(points)
     return redirect(url_for('addtest'))
