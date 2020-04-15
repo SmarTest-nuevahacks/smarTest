@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>smarTest</title>
+<link rel="icon" href="{{ url_for('static',filename='pics/favicon.png') }}" type="image/x-icon"/>
+  <!-- Bootstrap core CSS -->
+  <link href="{{ url_for('static',filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+
+  <!-- Custom fonts for this template -->
+  <link href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <link href="{{ url_for('static',filename='css/one-page-wonder.min.css') }}" rel="stylesheet">
+
+  <!-- Leaflet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
+   integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+   crossorigin=""/>
+  <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
+   integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
+   crossorigin=""></script>
+
+   <!-- Fa-Fa -->
+  <script src="https://kit.fontawesome.com/301b488078.js" crossorigin="anonymous"></script>
+   <!-- Easy-Button -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.css">
+  <script src="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.js"></script>
+</head>
+
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
+    <div class="container">
+      <a class="navbar-brand" href="/index">smarTest</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+    {% if username %}
+      <li class="nav-item">
+          <a class="nav-link" href="/addtest">Add test</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/check">Check test</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/logout">Logout: {{ username }} </a>
+      </li>
+	  {% else %}
+          <li class="nav-item">
+            <a class="nav-link" href="#">Registration</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Login</a>
+          </li>
+	  {% endif %}
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+{% if username %}
+          <div>
+            <center>
+            <h1>{{testName}}</h1>
+              {% for answer in answers %}
+              <div class="content">
+                <h3></h3>
+                {% for question in test %}
+                <h4>{{loop.index0+1}}. {{ question[1] }}</h4>
+                {% if question[3]!='' %}
+                {% if question[3]!=None %}
+                {% set image = "test_pics/"+question[3] %}
+                {% endif %}
+                <img class="img-fluid" src="{{ url_for('static',filename=image) }}" style="max-width:100px" alt=""><br/>
+                {% endif %}
+                  Your Answer: <h5>{{answer[(loop.index0+1)*2-1]}}</h5><br/>
+                  {% if correct[loop.index0]!='' %}
+                  Correct Answer: <h5>{{correct[loop.index0]}}</h5><br/>
+                  {% endif %}
+                  Points: <h5>{{ answer[(loop.index0+1)*2] }}/{{question[9]}}</h5>
+                <hr/>
+                {% endfor %}
+                Feedback for student:<br/><br/>
+                {{feedback}}
+              <br/>
+            </div>
+            <hr/>
+              {% endfor %}
+          </center>
+          </div>
+{% endif %}
+  <!-- Footer -->
+  <footer class="py-5 bg-black">
+    <div class="container">
+      <p class="m-0 text-center text-white small">smarTest 2020</p>
+    </div>
+    <!-- /.container -->
+  </footer>
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script type="text/javascript" src="{{ url_for('static',filename='js/map.js') }}"></script>
+
+</body>
+
+</html>

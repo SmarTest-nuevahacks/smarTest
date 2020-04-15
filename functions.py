@@ -52,10 +52,10 @@ def makeQuestion(id,name,type,points,newFilename,option1,option2,option3,option4
     db.close()
 
 def create_end_test_sql(id,number):
-    string="CREATE TABLE IF NOT EXISTS test_answers"+str(id)+"(student TEXT UNIQUE,"
+    string="CREATE TABLE IF NOT EXISTS test_answers"+str(id)+"(student TEXT UNIQUE, feedback TEXT, "
     for i in range(1,number+1):
         string+="answer"+str(i)+" TEXT, points"+str(i)+" TEXT"
-        if(i<number-1):
+        if(i<number):
             string+=","
     string+=")"
     print(string)
@@ -278,6 +278,33 @@ def getAnswers(id):
     answers=cursor.fetchall()
     return answers
 
+def getStudentAnswers(id,student):
+    db = sqlite3.connect("smartest.db")
+    cursor = db.cursor()
+    sql="SELECT * FROM test_answers"+str(id)+" WHERE student=?"
+    cursor.execute(sql,(student,))
+    answers=cursor.fetchall()
+    return answers
+
+def getCorrect(id):
+    db = sqlite3.connect("smartest.db")
+    cursor = db.cursor()
+    sql="SELECT correct FROM test_questions"+str(id)
+    cursor.execute(sql)
+    answers=cursor.fetchall()
+    correct=[]
+    ind=1
+    for answer in answers:
+        if(answer[0]):
+            sql="SELECT answer"+answer[0]+" FROM test_questions"+str(id)+" WHERE ind=?"
+            cursor.execute(sql,(ind,))
+            i=cursor.fetchone()[0]
+            correct+=i
+            ind+=1
+        else:
+            correct.append('')
+    return correct
+
 def getTestQuestions(id):
     db = sqlite3.connect("smartest.db")
     cursor = db.cursor()
@@ -288,10 +315,12 @@ def getTestQuestions(id):
     db.close()
     return content
 
-def savePoints(id,student,questions,points):
+def savePoints(id,student,questions,points,feedback):
     db = sqlite3.connect("smartest.db")
     cursor = db.cursor()
-    print(questions, points)
+    questions[i]=str(int(questions[i])+1)
+    sql="UPDATE test_answers"+str(id)+" SET feedback=? WHERE student=?"
+    cursor.execute(sql,(feedback,student))
     for i in range(0,len(points)):
         if(points[i]!=''):
             questions[i]=str(int(questions[i])+1)
@@ -308,3 +337,22 @@ def getTestName(id):
     db.commit()
     db.close()
     return name
+
+def getFeedback(id,username):
+    db = sqlite3.connect("smartest.db")
+    cursor = db.cursor()
+    sql="SELECT feedback FROM test_answers"+str(id)+" WHERE student=?"
+    cursor.execute(sql,(username,))
+    feedback=cursor.fetchone()[0]
+    return feedback
+
+def testTaken(id,username):
+    db = sqlite3.connect("smartest.db")
+    cursor = db.cursor()
+    sql="SELECT * FROM test_answers"+str(id)+" WHERE student=?"
+    cursor.execute(sql,(username,))
+    test=cursor.fetchone()
+    if(test==None):
+        return 0
+    else:
+        return 1
