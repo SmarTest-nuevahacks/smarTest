@@ -9,10 +9,9 @@
   <meta name="author" content="">
 
   <title>smarTest</title>
-  <link rel="icon" href="{{ url_for('static',filename='pics/favicon.png') }}" type="image/x-icon"/>
+<link rel="icon" href="{{ url_for('static',filename='pics/favicon.png') }}" type="image/x-icon"/>
   <!-- Bootstrap core CSS -->
   <link href="{{ url_for('static',filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 
   <!-- Custom fonts for this template -->
   <link href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900" rel="stylesheet">
@@ -70,63 +69,45 @@
     </div>
   </nav>
 
-
-  <section>
-    <div class="container">
-      <center>
-        <h1 style="margin-top: 20px;">Add question to test</h1>
-        <form action="{{ url_for('addquestion') }}" method="post" enctype="multipart/form-data" id="addquestion">
-          <!---Repeatable--->
-          {% if questioncount %}
-            <p>Question {{ questioncount }}</p>
-          {% else %}
-            <p>Question</p>
-          {% endif %}
-          <div class="gridify">
-            <label>Question:</label>
-            <input type="text" name="name" required />
-            <label>Picture (optional):</label>
-            <input type="file" name="file1" style="border-width: 0;">
-            <label>Points:</label>
-            <input type="number" name="points" required>
-            <label>Type:</label>
-            <select name="type" required
-            onchange="
-              if (selectedIndex == 0) {
-                document.getElementById('closedQuestionOptions').hidden = false;
-              } else {
-                document.getElementById('closedQuestionOptions').hidden = true;
-              }
-              ">
-              <option value="closed" selected>Closed</option>
-              <option value="open">Open</option>
-              <option value="drawn">Drawn</option>
-              <option value="coding">Coding [Python]</option>
-            </select>
+{% if username %}
+          <div>
+            <center>
+            <h1><br/>{{testName}}</h1>
+              {% for answer in answers %}
+              <div class="content">
+                <h3></h3>
+                {% for question in test %}
+                <h4>{{loop.index0+1}}. {{ question[1] }}</h4>
+                {% if question[3]!='' %}
+                {% if question[3]!=None %}
+                {% set image = "test_pics/"+question[3] %}
+                {% endif %}
+                <img class="img-fluid" src="{{ url_for('static',filename=image) }}" style="max-width:100px" alt=""><br/>
+                {% endif %}
+                {% if question[2]=="coding" %}
+                  Your Answer: <h6><br/><textarea cols="40" rows="10">{{answer[(loop.index0+1)*2]}}</textarea></h6><br/>
+                  {% else %}
+                  Your Answer: <h5><br/>{{answer[(loop.index0+1)*2]}}</h5><br/>
+                {% endif %}
+                  {% if correct[loop.index0]!='' %}
+                  Correct Answer: <h5>{{correct[loop.index0]}}</h5><br/>
+                  {% endif %}
+                  Points: <h5>{{ answer[(loop.index0+1)*2+1] }}/{{question[9]}}</h5>
+                <hr/>
+                {% endfor %}
+                {% if feedback!='' %}
+                Feedback for student:<br/><br/>
+                {{feedback}}
+              <br/>
+            </div>
+            <hr/>
+              {% endif %}
+              {% endfor %}
+          </center>
           </div>
-          <!---Closed--->
-          <div class="gridify" style="margin-top: 20px;" id="closedQuestionOptions">
-            <label>Option 1:</label>
-            <input type="text" name="option1">
-            <label>Option 2:</label>
-            <input type="text" name="option2">
-            <label>Option 3:</label>
-            <input type="text" name="option3">
-            <label>Option 4:</label>
-            <input type="text" name="option4"><br />
-            Correct answer:<input type="number" name="correct" min="1" max="4"><br />
-          </div>
-          <input type="submit" style="margin: 10px;" value="Add another question">
-        </form>
-        <a href="endAddTest"><button>Save and publish test</button></a>
-      </center>
-    </div>
-  </section>
-
-
-
+{% endif %}
   <!-- Footer -->
-  <footer class="py-5 bg-black" style="position: absolute; bottom: 0; right: 0; left: 0;">
+  <footer class="py-5 bg-black">
     <div class="container">
       <p class="m-0 text-center text-white small">smarTest 2020</p>
     </div>

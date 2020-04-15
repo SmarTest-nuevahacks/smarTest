@@ -46,6 +46,7 @@ def index():
                 done = checkIfTestsDone(getClassTests(session.get('username'), 'after'),session.get('username')),
                 tests = getClassTests(session.get('username'), 'after'),
                 pastTests = getClassTests(session.get('username'), 'before'),
+                per=getPercentage,
                 date = date.today().strftime("%Y-%m-%d"))
     else:
         return redirect(url_for('login'))
@@ -62,7 +63,7 @@ def solvetest(id):
 
 @app.route('/savetestsolve', methods=['GET', 'POST'])
 def savetestsolve():
-    values = request.form.getlist('answers[]')
+    values=request.form.getlist('answers[]')
     testid=request.form['testid']
     endSolveTest(session.get('username'),values,testid)
     return redirect(url_for('index'))
@@ -74,7 +75,7 @@ def savetestsolve():
 def check(id):
     answers=getAnswers(id)
     test=getTestQuestions(id)
-    return render_template('checktest.html', username = session.get('username'), answers=answers, testid=id, test=test, testName=getTestName(id))
+    return render_template('checktest.html', username = session.get('username'), answers=answers, testid=id, test=test, testName=getTestName(id), getName=getName)
 
 @app.route('/savecheck', methods=['GET','POST'])
 def savecheck():
@@ -83,7 +84,7 @@ def savecheck():
     questions = request.form.getlist('questions[]')
     points=request.form.getlist('points[]')
     feedback=request.form['feedback']
-    savePoints(id,student,questions,points)
+    savePoints(id,student,questions,points,feedback)
     if(feedback!=''):
         testName=getTestName(id)
         sendMessage("admin",student,"Feedback from test "+str(testName),feedback)
@@ -91,7 +92,17 @@ def savecheck():
     test=getTestQuestions(id)
     return render_template('checktest.html', username = session.get('username'), answers=answers, testid=id, test=test, testName=getTestName(id))
 
-
+#Getting Test Results
+@app.route('/results/<int:id>', methods=['GET','POST'])
+def results(id):
+    if(testTaken(id,session.get('username'))):
+        answers=getStudentAnswers(id,session.get('username'))
+        test=getTestQuestions(id)
+        correct=getCorrect(id)
+        feedback=getFeedback(id,session.get('username'))
+        return render_template('results.html', username = session.get('username'), answers=answers, testid=id, test=test, testName=getTestName(id), correct=correct, feedback=feedback)
+    else:
+        return redirect(url_for('index'))
 
 #Adding tests by teachers
 @app.route('/addtest', methods=['GET', 'POST'])
@@ -159,8 +170,8 @@ def addquestion():
 @app.route('/message')
 def message():
     return render_template(
-        "messages.html", 
-        username=session.get('username'), 
+        "messages.html",
+        username=session.get('username'),
         content=getMessages(session.get('username')),
         users=getUsers())
 
