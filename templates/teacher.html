@@ -105,11 +105,11 @@
                 <th>{{ item[3] }}</th>
                 <th>{{ item[4] }}</th>
                 <th>
-                  {% if item[2] <= date %}
-                    <p style="margin: 0px;">Underway</p>
+                  {% if item[0] == test[1] %}
+                    <p style="margin: 0px;">Currently edited</p>
                   {% else %}
-                    {% if item[0] == test[1] %}
-                      <p style="margin: 0px;">Currently edited</p>
+                    {% if item[2] <= date %}
+                      <p style="margin: 0px;">Underway</p>
                     {% else %}
                       <a style="margin-right: 10px;" href="unpublishTest?testId={{item[5]}}"><button>Unpublish</button></a><a href="deleteTest?testId={{item[5]}}"><button>Delete</button></a>
                     {% endif %}
