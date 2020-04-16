@@ -9,9 +9,10 @@
   <meta name="author" content="">
 
   <title>smarTest</title>
-<link rel="icon" href="{{ url_for('static',filename='pics/favicon.png') }}" type="image/x-icon"/>
+  <link rel="icon" href="{{ url_for('static',filename='pics/favicon.png') }}" type="image/x-icon"/>
   <!-- Bootstrap core CSS -->
   <link href="{{ url_for('static',filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 
   <!-- Custom fonts for this template -->
   <link href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900" rel="stylesheet">
@@ -40,7 +41,7 @@
   <!-- Navigation -->
   <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
     <div class="container">
-      <a class="navbar-brand" href="#">smarTest</a>
+      <a class="navbar-brand" href="/">smarTest</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -49,9 +50,6 @@
     {% if username %}
       <li class="nav-item">
           <a class="nav-link" href="/grades">Grades</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/tests">Tests</a>
       </li>
       <li class="nav-item">
           <a class="nav-link" href="/message">Messages</a>
@@ -71,34 +69,138 @@
       </div>
     </div>
   </nav>
+  
+  <section style="width: 100%;margin: 0;">
+    <table style="width: 100%; vertical-align: middle; text-align: left; border-bottom: 0px;">
+      <tr style="height: 10%; text-align: left; border-bottom: 0px;">
+        <!--Searchbox-->
+        <th style="width: 20%; border-bottom: 0px; vertical-align: top;">
+          <button style="margin: 20px;" onclick="
+            document.getElementById('currentMail').hidden = true;
+            document.getElementById('replyButton').hidden = true;
+            document.getElementById('forwardButton').hidden = true;
+            document.getElementById('composeMail').hidden = false;
+          ">Write new message</button>
+          <p style="margin: 0px; border: 0px; width: 100%; height: 1px; background-color: darkgray;"></p>
+          <li>
+          {% for message in content|reverse %}
+            <button class="flat" onclick="
+                        document.getElementById('currentMail').hidden = false;
+                        document.getElementById('replyButton').hidden = false;
+                        document.getElementById('forwardButton').hidden = false;
+                        document.getElementById('composeMail').hidden = true;
+            
+                        var title = 'Topic: ' + '{{ message[1] }}';
+                        var sender = 'From: ' + '{{ message[3] }}';
+                        var content = '{{ message[2] }}';
+            
+                        document.getElementById('title').textContent = title;
+                        document.getElementById('sender').textContent = sender;
+                        document.getElementById('content').textContent = content;
+                        ">
+            <div style="flex-direction: row;">
+              <p style="text-align: start; margin-bottom: 0; margin-right: 40px; display: inline-block; font-size: x-small;">{{ message[0] }}</p>
+              <p style="text-align: end; margin-bottom: 0; display: inline-block; font-size: x-small;">{{ message[5] }}</p>
+            </div>
+              <p style="margin-bottom: 3px;"><b> {{ message[1] }} </b></p>
+              {% if message[3] != username %}
+                <p style="color: gray; margin-top: 0px; font-size: smaller;">From: {{ message[3] }}</p>
+              {% else %}
+                <p style="color: gray; margin-top: 0px; font-size: smaller;">To: {{ message[4] }}</p>
+              {% endif %}
+            </button>
+            </li>
+            <p style="margin: 0px; border: 0px; width: 100%; height: 1px; background-color: darkgray;"></p>
+          {% endfor %}
+        </th>
+        <th style="width: 80%; border-bottom: 0px; vertical-align: top;">
+          <!--Current mail-->
+          <div id='currentMail' style="float: left; margin-left: 20px; text-align: left;">
+            <div style="flex-direction: row;">
+              <button id='replyButton'  style="display: inline;" onclick="
+                document.getElementById('currentMail').hidden = true;
+                document.getElementById('replyButton').hidden = true;
+                document.getElementById('forwardButton').hidden = true;
+                document.getElementById('composeMail').hidden = false;
 
+                var topic = 'Re: ' + document.getElementById('title').textContent;
+                var content = '---------------Reply end---------------\n' + document.getElementById('content').textContent;
 
-  <section>
-    <div class="container">
-      <div class="row align-items-center">
-        <div class="col-lg-6 order-lg-2">
-          <div class="p-5">
-            <img class="img-fluid rounded-circle" src="{{ url_for('static',filename='pics/icon1.jpg') }}" alt="">
+                document.getElementById('topic').value = topic;
+                document.getElementById('message').value = content;
+              ">Reply</button>
+              <button id='forwardButton' style="display: inline;" onclick="
+                document.getElementById('currentMail').hidden = true;
+                document.getElementById('replyButton').hidden = true;
+                document.getElementById('forwardButton').hidden = true;
+                document.getElementById('composeMail').hidden = false;
+
+                var topic = 'Fwd: ' + document.getElementById('title').textContent
+                var content = '---------------Forward begins---------------\n' + document.getElementById('content').textContent;
+
+                document.getElementById('topic').value = topic;
+                document.getElementById('message').value = content;
+              ">Forward</button>
+            </div>
+            <p id='title' style="font-style: bold;">Select a message to show</p>
+            <p id='sender' style="color: gray; margin-top: 0px; font-size: smaller;"></p>
+            </br>
+            <p id='content' style="font-weight: normal;"></p>
           </div>
-        </div>
-        <div class="col-lg-6 order-lg-1">
-          <div class="p-5">
-            <h2 class="display-4" style="color: #75407a">Student</h2>
-            <p style="text-align: justify;">
-              {% for i in content %}
-              <h3>{{ i[0] }}     -     {{ i[1] }}</h3>
-              <h4>{{ i[2] }}, {{ i[3] }}</h4>
-              <p>{{ i[4] }}</p>
-              <hr/>
-              {% endfor %}
-            </p>
+          <!--Compose mail-->
+          <div id="composeMail">
+            <div class="gridify">
+              <label>Select recipient</label>
+              <select id="chooseRecipient">
+                <option value=""></option>
+                {% if users %}
+                  {% for recipient in users|sort %}
+                    {% if recipient[1] != username %}
+                    <option value="{{ recipient[0] }}">{{ recipient[0] }} ({{ recipient[1] }})</option>
+                    {% endif %}
+                  {% endfor %}
+                {% else %}
+                  <p style="color: gray;">Nothing to show</p>
+                {% endif %}
+              </select>
+              <label>Topic</label>
+              <input id="topic" type="text">
+              <label>Message</label>
+              <textarea id="message" style="height: 400px;"></textarea>
+            </div>
+            <button style="margin-right: 15%;" onclick="
+              document.getElementById('topic').value = '';
+              document.getElementById('message').value = '';
+              document.getElementById('currentMail').hidden = false;
+              document.getElementById('composeMail').hidden = true;
+              document.getElementById('replyButton').hidden = true;
+              document.getElementById('forwardButton').hidden = true;
+              document.getElementById('chooseRecipient').selectedIndex = 0;
+            ">Back</button>
+            <button style="margin: 1%;" onclick="
+              if (document.getElementById('chooseRecipient').selectedIndex != 0) {
+                recipient = document.getElementById('chooseRecipient').value;
+                header = document.getElementById('topic').value;
+                content = document.getElementById('message').value;
+                
+                window.location.href = `/sendMessageRequest?username={{ username }}&recipient=${recipient}&header=${header}&content=${content}`;
+
+              }
+            ">Send</button>
           </div>
-        </div>
-      </div>
-    </div>
+        </th>
+      </tr>
+    </table>
   </section>
 
-
+  <!--Set some defaults-->
+  <script>
+    document.getElementById('currentMail').hidden = false;
+    document.getElementById('composeMail').hidden = true;
+    document.getElementById('replyButton').hidden = true;
+    document.getElementById('forwardButton').hidden = true;
+    document.getElementById('chooseRecipient').selectedIndex = 0;
+  </script>
 
   <!-- Footer -->
   <footer class="py-5 bg-black">

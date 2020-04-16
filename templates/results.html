@@ -9,10 +9,9 @@
   <meta name="author" content="">
 
   <title>smarTest</title>
-  <link rel="icon" href="{{ url_for('static',filename='pics/favicon.png') }}" type="image/x-icon"/>
+<link rel="icon" href="{{ url_for('static',filename='pics/favicon.png') }}" type="image/x-icon"/>
   <!-- Bootstrap core CSS -->
   <link href="{{ url_for('static',filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 
   <!-- Custom fonts for this template -->
   <link href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900" rel="stylesheet">
@@ -70,48 +69,49 @@
     </div>
   </nav>
 
-
-  <section>
-    <div class="container">
-      <center>
-        <h1 style="margin-top: 20px;">Add test</h1>
-        <form action="{{ url_for('starttest') }}" method="post" enctype="multipart/form-data" id="addtest">
-          <div class="gridify">
-            <label>Name:</label>
-            <input type="text" name="name" required/>
-            <label>Description:</label>
-            <textarea name="description" required></textarea>
-            <label>Start Date:</label>
-            <input type="date" name="start_date" required>
-
-              <label>End Date:</label>
-              <input type="date" name="end_date" required>
-
-            <label>Duration:</label>
-            <input type="number" name="duration" min="1" max="240" placeholder="Minutes" required>
-            <label>Group:</label>
-            <select name="type" required>
-              <option value="1A">1A</option>
-              <option value="1B">1B</option>
-              <option value="1C">1C</option>
-              <option value="2A">2A</option>
-              <option value="2B">2B</option>
-              <option value="2C">2C</option>
-              <option value="3A">3A</option>
-              <option value="3B">3B</option>
-              <option value="3C">3C</option>
-            </select>
+{% if username %}
+          <div>
+            <center>
+            <h1><br/>{{testName}}</h1>
+              {% for answer in answers %}
+              <div class="content">
+                <h3></h3>
+                {% for question in test %}
+                <h4>{{loop.index0+1}}. {{ question[1] }}</h4>
+                {% if question[3]!='' %}
+                {% if question[3]!=None %}
+                {% set image = "test_pics/"+question[3] %}
+                {% endif %}
+                <img class="img-fluid" src="{{ url_for('static',filename=image) }}" style="max-width:100px" alt=""><br/>
+                {% endif %}
+                {% if question[2]=="coding" %}
+                  Your Answer: <h6><br/><textarea cols="40" rows="10">{{answer[(loop.index0+1)*2]}}</textarea></h6><br/>
+                  {% else %}
+                  {% if question[2]=="drawn" %}
+                    <img src="{{answer[(loop.index0+1)*2]}}"><br/>
+                  {% else %}
+                    Your Answer: <h5><br/>{{answer[(loop.index0+1)*2]}}</h5><br/>
+                  {% endif %}
+                {% endif %}
+                  {% if correct[loop.index0]!='' %}
+                  Correct Answer: <h5>{{correct[loop.index0]}}</h5><br/>
+                  {% endif %}
+                  Points: <h5>{{ answer[(loop.index0+1)*2+1] }}/{{question[9]}}</h5>
+                <hr/>
+                {% endfor %}
+                {% if feedback!='' %}
+                Feedback for student:<br/><br/>
+                {{feedback}}
+              <br/>
+            </div>
+            <hr/>
+              {% endif %}
+              {% endfor %}
+          </center>
           </div>
-          <input type="submit" style="margin: 10px;" value="Go to questions">
-        </form>
-      </center>
-    </div>
-  </section>
-
-
-
+{% endif %}
   <!-- Footer -->
-  <footer class="py-5 bg-black footer">
+  <footer class="py-5 bg-black">
     <div class="container">
       <p class="m-0 text-center text-white small">smarTest 2020</p>
     </div>

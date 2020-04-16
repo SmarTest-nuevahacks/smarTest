@@ -42,25 +42,67 @@ def index():
             return render_template(
                 'student.html',
                 username = session.get('username'),
+                full_name = getName(session.get('username')),
+                done = checkIfTestsDone(getClassTests(session.get('username'), 'after'),session.get('username')),
                 tests = getClassTests(session.get('username'), 'after'),
                 pastTests = getClassTests(session.get('username'), 'before'),
+                per=getPercentage,
                 date = date.today().strftime("%Y-%m-%d"))
     else:
         return redirect(url_for('login'))
+
+
 
 
 #Solving Tests
 @app.route('/solvetest/<int:id>')
 def solvetest(id):
     test=getTestContent(id,session.get('username'))
-    return render_template('test.html', username = session.get('username'), content=test, testid=id)
+    data={'endtime':testEndTime(id)}
+    return render_template('test.html', username = session.get('username'), content=test, testid=id, data=data, testName=getTestName(id))
 
 @app.route('/savetestsolve', methods=['GET', 'POST'])
 def savetestsolve():
-    values = request.form.getlist('answers[]')
+    values=request.form.getlist('answers[]')
     testid=request.form['testid']
     endSolveTest(session.get('username'),values,testid)
     return redirect(url_for('index'))
+
+
+
+#Checking Tests
+@app.route('/check/<int:id>', methods=['GET','POST'])
+def check(id):
+    answers=getAnswers(id)
+    test=getTestQuestions(id)
+    return render_template('checktest.html', username = session.get('username'), answers=answers, testid=id, test=test, testName=getTestName(id), getName=getName)
+
+@app.route('/savecheck', methods=['GET','POST'])
+def savecheck():
+    id=request.form['testid']
+    student=request.form['student']
+    questions = request.form.getlist('questions[]')
+    points=request.form.getlist('points[]')
+    feedback=request.form['feedback']
+    savePoints(id,student,questions,points,feedback)
+    if(feedback!=''):
+        testName=getTestName(id)
+        sendMessage("admin",student,"Feedback from test "+str(testName),feedback)
+    answers=getAnswers(id)
+    test=getTestQuestions(id)
+    return render_template('checktest.html', username = session.get('username'), answers=answers, testid=id, test=test, testName=getTestName(id), getName=getName)
+
+#Getting Test Results
+@app.route('/results/<int:id>', methods=['GET','POST'])
+def results(id):
+    if(testTaken(id,session.get('username'))):
+        answers=getStudentAnswers(id,session.get('username'))
+        test=getTestQuestions(id)
+        correct=getCorrect(id)
+        feedback=getFeedback(id,session.get('username'))
+        return render_template('results.html', username = session.get('username'), answers=answers, testid=id, test=test, testName=getTestName(id), correct=correct, feedback=feedback)
+    else:
+        return redirect(url_for('index'))
 
 #Adding tests by teachers
 @app.route('/addtest', methods=['GET', 'POST'])
@@ -118,6 +160,8 @@ def addquestion():
         makeQuestion(id,name,type,points,newFilename,option1,option2,option3,option4,correct)
         oldPoints=session.get('questioncount')
         session['questioncount']=oldPoints+1
+        if (session.get('sumpoints') == None):
+            session['sumpoints'] = 0
         oldmaxpoints=session.get('sumpoints')
         session['sumpoints']=oldmaxpoints+int(points)
     return redirect(url_for('addtest'))
@@ -125,8 +169,17 @@ def addquestion():
 #Messages
 @app.route('/message')
 def message():
-    return render_template("messages.html", username=session.get('username'), content=getMessages(session.get('username')))
+    return render_template(
+        "messages.html",
+        username=session.get('username'),
+        content=getMessages(session.get('username')),
+        users=getUsers())
 
+@app.route('/sendMessageRequest', methods=['GET', 'POST'])
+def sendMessageRequest():
+    sendMessage(request.args.get('username'), request.args.get(
+        'recipient'), request.args.get('header'), request.args.get('content'))
+    return redirect(url_for('message'))
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -172,7 +225,7 @@ def logout():
 @app.route('/endAddTest', methods=['GET', 'POST'])
 def endAddTest():
     print(session.get('questioncount'))
-    end_add_test(session.get('editedtest'),session.get('questioncount')+1,session.get('sumpoints'))
+    end_add_test(session.get('editedtest'),session.get('questioncount')+1,session.get('sumpoints'),session.get('username'))
     del session['editedtest']
     del session['questioncount']
     del session['sumpoints']

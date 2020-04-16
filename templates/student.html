@@ -81,19 +81,9 @@
         </div>
         <div class="col-lg-6 order-lg-1">
           <div class="p-5">
-            <h2 class="display-4" style="color: #75407a">Welcome back, {{ username }}!</h2>
+            <h2 class="display-4" style="color: #75407a">Welcome back, {{ full_name }}!</h2>
             <p style="text-align: justify;">
               Are you ready to ace some tests?
-
-              <br/><br/>Today's tests:<br/>
-              {% for i in today %}
-                <h2>{{ i[0] }}</h2><br/>
-                <h4>{{ i[1] }}</h4>
-                Time: {{ i[2] }},&nbsp;&nbsp;&nbsp;Teacher: {{ i[3] }}<br/>
-                {{ i[5] }}
-                <a href="/solvetest/{{ i[4] }}"><button>Solve!</button></a>
-              <hr/>
-              {% endfor %}
             </p>
           </div>
         </div>
@@ -121,7 +111,11 @@
           <th>{{ item[4] }}</th>
           <th>
           {% if item[2] <= date %}
-            <a style="margin-right: 10px;" href="/solvetest/{{ item[5] }}"><button>Take</button></a>
+            {% if done[loop.index0] %}
+              Finished
+            {% else %}
+              <a style="margin-right: 10px;" href="/solvetest/{{ item[5] }}"><button>Take</button></a>
+            {% endif %}
           {% else %}
             <p style="margin: 0px;">Awaiting</p>
           {% endif %}
@@ -134,7 +128,7 @@
     <p style="margin-left: 40px;">Nothing to show</p>
     {% endif %}
 
-    <h3 style="margin-left: 40px;">Past tests</h3>
+    <h3 style="margin-left: 40px;"><br/>Past tests</h3>
     {% if pastTests %}
     <div style="margin-right: 40px; margin-left: 40px;">
       <table style="width: 100%;">
@@ -154,8 +148,9 @@
           <th>{{ item[3] }}</th>
           <th>{{ item[4] }}</th>
           <th>
-            <a style="margin-right: 10px;" href="unpublishTest?testId={{item[5]}}"><button>Answers/Results</button></a>
+            <a style="margin-right: 10px;" href="/results/{{ item[5] }}"><button>Answers/Results</button></a>
           </th>
+          <th>{{per(item[5],username)}}%</th>
         </tr>
         {% endfor %}
       </table>
