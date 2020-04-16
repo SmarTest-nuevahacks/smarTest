@@ -90,7 +90,7 @@ def savecheck():
         sendMessage("admin",student,"Feedback from test "+str(testName),feedback)
     answers=getAnswers(id)
     test=getTestQuestions(id)
-    return render_template('checktest.html', username = session.get('username'), answers=answers, testid=id, test=test, testName=getTestName(id))
+    return render_template('checktest.html', username = session.get('username'), answers=answers, testid=id, test=test, testName=getTestName(id), getName=getName)
 
 #Getting Test Results
 @app.route('/results/<int:id>', methods=['GET','POST'])

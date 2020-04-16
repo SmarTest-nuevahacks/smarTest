@@ -31,6 +31,12 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.css">
   <script src="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.js"></script>
 
+  <style>
+    .cont {
+      display: flex;
+      flex-direction:column;
+    }
+  </style>
   <script type="text/javascript">
   function addEvent(obj, evt, fn) {
       if (obj.addEventListener) {
@@ -96,7 +102,7 @@
   </script>
 </head>
 
-<body>
+<body onload="init()">
 
   <!-- Navigation -->
   <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
@@ -134,7 +140,7 @@
             <button style="margin-bottom: 50in;" onclick="show()">Start test!</button>
           </center>
           </div>
-          <div id="test" style="display:none; background-color: white">
+          <div id="test" style="display:none; background-color: white; overflow-y: scroll;">
             <center>
             <h1>{{ testName }}</h1>
             <h3 id="demo"></h3>
@@ -194,7 +200,136 @@
               {% endif %}
 
               {% if i[2]=="drawn" %}
-              drawn
+              <script type="text/javascript">
+              var canvas, ctx, flag = false,
+                  prevX = 0,
+                  currX = 0,
+                  prevY = 0,
+                  currY = 0,
+                  dot_flag = false;
+
+              var x = "black",
+                  y = 2;
+
+              function init() {
+                  canvas = document.getElementById('can');
+                  ctx = canvas.getContext("2d");
+                  w = canvas.width;
+                  h = canvas.height;
+
+                  canvas.addEventListener("mousemove", function (e) {
+                      findxy('move', e)
+                  }, false);
+                  canvas.addEventListener("mousedown", function (e) {
+                      findxy('down', e)
+                  }, false);
+                  canvas.addEventListener("mouseup", function (e) {
+                      findxy('up', e)
+                  }, false);
+                  canvas.addEventListener("mouseout", function (e) {
+                      findxy('out', e)
+                  }, false);
+              }
+
+              function color(obj) {
+                  switch (obj.id) {
+                      case "green":
+                          x = "green";
+                          break;
+                      case "blue":
+                          x = "blue";
+                          break;
+                      case "red":
+                          x = "red";
+                          break;
+                      case "yellow":
+                          x = "yellow";
+                          break;
+                      case "orange":
+                          x = "orange";
+                          break;
+                      case "black":
+                          x = "black";
+                          break;
+                      case "white":
+                          x = "white";
+                          break;
+                  }
+                  if (x == "white") y = 14;
+                  else y = 2;
+
+              }
+
+              function draw() {
+                  ctx.beginPath();
+                  ctx.moveTo(prevX, prevY);
+                  ctx.lineTo(currX, currY);
+                  ctx.strokeStyle = x;
+                  ctx.lineWidth = y;
+                  ctx.stroke();
+                  ctx.closePath();
+              }
+
+              function erase() {
+                      ctx.clearRect(0, 0, w, h);
+                      document.getElementById("canvasimg").style.display = "none";
+              }
+
+              function save() {
+                  var dataURL = canvas.toDataURL();
+                  document.getElementById('drawing').value = dataURL;
+              }
+
+              function findxy(res, e) {
+                  if (res == 'down') {
+                      prevX = currX;
+                      prevY = currY;
+                      currX = e.clientX - canvas.offsetLeft;
+                      currY = e.clientY - canvas.offsetTop;
+
+                      flag = true;
+                      dot_flag = true;
+                      if (dot_flag) {
+                          ctx.beginPath();
+                          ctx.fillStyle = x;
+                          ctx.fillRect(currX, currY, 2, 2);
+                          ctx.closePath();
+                          dot_flag = false;
+                      }
+                  }
+                  if (res == 'up' || res == "out") {
+                      flag = false;
+                  }
+                  if (res == 'move') {
+                      if (flag) {
+                          prevX = currX;
+                          prevY = currY;
+                          currX = e.clientX - canvas.offsetLeft;
+                          currY = e.clientY - canvas.offsetTop;
+                          draw();
+                      }
+                  }
+              }
+              </script>
+                  <canvas id="can" width="400" height="400" style="z-index: 100; border:2px solid;"></canvas>
+                  <div>Choose Color</div>
+                  <div style="width:10px;height:10px;background:green;" id="green" onclick="color(this)"></div>
+                  <div style="width:10px;height:10px;background:blue;" id="blue" onclick="color(this)"></div>
+                  <div style="width:10px;height:10px;background:red;" id="red" onclick="color(this)"></div>
+                  <div style="width:10px;height:10px;background:yellow;" id="yellow" onclick="color(this)"></div>
+                  <div style="width:10px;height:10px;background:orange;" id="orange" onclick="color(this)"></div>
+                  <div style="width:10px;height:10px;background:black;" id="black" onclick="color(this)"></div>
+                  <div style="">Eraser</div>
+                  <div style="width:15px;height:15px;background:white;border:2px solid;" id="white" onclick="color(this)"></div>
+                  <input type="button" value="save" id="btn" size="30" onclick="save()">
+                  <input type="button" value="clear" id="clr" size="23" onclick="erase()">
+                  <textarea id="drawing" cols="40" rows="10" name="answers[]" placeholder="{{ i[1] }}" style="display: none"></textarea>
+              {% endif %}
+              {% if i[2]=="coding" %}
+              <br/><br/><textarea id="yourcode" cols="40" rows="10" name="answers[]" placeholder="{{ i[1] }}"></textarea><br/>
+              <p onclick="runit()">Run</p>
+              <pre id="output"></pre>
+              <div id="mycanvas"></div>
               {% endif %}
               {% if i[2]=="coding" %}
               <br/><br/><textarea id="yourcode" cols="40" rows="10" name="answers[]" placeholder="{{ i[1] }}"></textarea><br/>

@@ -181,7 +181,7 @@ def endSolveTest(username,answers,id):
         sql="SELECT type from test_questions"+str(id)+" WHERE ind=?"
         cursor.execute(sql,(i+1,))
         type=cursor.fetchone()[0]
-        if(type=="open" or type=="coding"):
+        if(type=="open" or type=="coding" or type=="drawn"):
             sql="UPDATE test_answers"+str(id)+" SET answer"+str(i+1)+"=? WHERE student=?"
             cursor.execute(sql,(answer,username))
         if(type=="closed"):

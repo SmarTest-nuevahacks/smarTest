@@ -156,7 +156,11 @@
                   <pre id="output"></pre>
                   <div id="mycanvas"></div>
                   {% else %}
+                  {% if question[2]=="drawn" %}
+                    <img src="{{answer[(loop.index0+1)*2]}}"><br/>
+                  {% else %}
                   Answer: <h5>{{answer[(loop.index0+1)*2]}}</h5><br/>
+                {% endif %}
                 {% endif %}
                     {% if answer[(loop.index0+1)*2+1]==None %}
                       <input type="text" name="questions[]" value="{{loop.index0}}" style="display: none">
