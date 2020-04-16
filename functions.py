@@ -53,11 +53,10 @@ def makeQuestion(id,name,type,points,newFilename,option1,option2,option3,option4
 
 def create_end_test_sql(id,number):
     string="CREATE TABLE IF NOT EXISTS test_answers"+str(id)+"(student TEXT UNIQUE, feedback TEXT, "
-    for i in range(1,number+1):
+    for i in range(1,number):
         string+="answer"+str(i)+" TEXT, points"+str(i)+" TEXT"
-        if(i<number):
-            string+=","
-    string+=")"
+        string+=","
+    string+="cheating_video TEXT, cheating_audio TEXT)"
     return string
 
 def end_add_test(id,number,maxpoints,username):
