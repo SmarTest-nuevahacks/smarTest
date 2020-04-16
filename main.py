@@ -92,6 +92,20 @@ def savecheck():
     test=getTestQuestions(id)
     return render_template('checktest.html', username = session.get('username'), answers=answers, testid=id, test=test, testName=getTestName(id), getName=getName)
 
+@app.route('/checked/<int:id>')
+def checked(id):
+    checkFinished(id)
+    return render_template(
+        'teacher.html',
+        username = session.get('username'),
+        test = getTest(session.get('editedtest', 'name')),
+        published = getPublishedTests(session.get('username')),
+        completed = getCompletedTests(session.get('username')),
+        checked = getCheckedTests(session.get('username')),
+        date = date.today().strftime("%Y-%m-%d"))
+
+
+
 #Getting Test Results
 @app.route('/results/<int:id>', methods=['GET','POST'])
 def results(id):

@@ -139,6 +139,7 @@
           </tr>
           {% for item in completed %}
           <tr>
+            {{completed}}
             <th>{{ item[0] }}</th>
             <th>{{ item[1] }}</th>
             <th>{{ item[2] }}</th>
@@ -165,14 +166,14 @@
             <th style="width: 10%;"><b>Total time [h]</b></th>
             <th style="width: 25%;"><b>Action</b></th>
           </tr>
-          {% for item in check %}
+          {% for item in checked %}
           <tr>
             <th>{{ item[0] }}</th>
             <th>{{ item[1] }}</th>
             <th>{{ item[2] }}</th>
             <th>{{ item[3] }}</th>
             <th>{{ item[4] }}</th>
-            <th><button style="margin-right: 20px;">Results</button></th>
+            <th><a href="check/{{ item[5] }}"><button style="margin-right: 20px;">Results</button></a></th>
           </tr>
           {% endfor %}
         </table>
