@@ -48,12 +48,24 @@
       <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav ml-auto">
     {% if username %}
+    {% if isTeacher(username) %}
+    <li class="nav-item">
+        <a class="nav-link" href="/addtest">Add test</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/guide">Guide</a>
+    </li>
       <li class="nav-item">
-          <a class="nav-link" href="/message">Messages</a>
+          <a class="nav-link" href="#">Messages</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/logout">Logout: {{ username }} </a>
-      </li>
+    {% else %}
+    <li class="nav-item">
+        <a class="nav-link" href="#">Messages</a>
+    </li>
+    {% endif %}
+    <li class="nav-item">
+      <a class="nav-link" href="/logout">Logout: {{ username }} </a>
+    </li>
 	  {% else %}
           <li class="nav-item">
             <a class="nav-link" href="#">Registration</a>
@@ -66,7 +78,7 @@
       </div>
     </div>
   </nav>
-  <img id='footer' style="position: absolute; right: 0; top: 100; z-index: -50;" src="{{ url_for('static', filename='pics/planet.png') }}">
+  <img style="position: absolute; right: 0; top: 100; z-index: -50;" src="{{ url_for('static', filename='pics/planet.png') }}">
 
   <section style="width: 100%;margin: 0;">
     <table style="width: 100%; vertical-align: middle; text-align: left; border-bottom: 0px;">

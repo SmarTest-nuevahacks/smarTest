@@ -52,7 +52,24 @@ def index():
         return redirect(url_for('login'))
 
 
+@app.route('/guide')
+def guide():
+    if 'username' in session:
+        if isTeacher(session.get('username')):
+            return render_template("guide.html",username=session.get('username'))
+        else:
+            return render_template(
+                'student.html',
+                username = session.get('username'),
+                full_name = getName(session.get('username')),
+                done = checkIfTestsDone(getClassTests(session.get('username'), 'after'),session.get('username')),
+                tests = getClassTests(session.get('username'), 'after'),
+                pastTests = getClassTests(session.get('username'), 'before'),
+                per=getPercentage,
+                date = date.today().strftime("%Y-%m-%d"))
 
+    else:
+        return redirect(url_for('login'))
 
 #Solving Tests
 @app.route('/solvetest/<int:id>')
@@ -187,7 +204,8 @@ def message():
         "messages.html",
         username=session.get('username'),
         content=getMessages(session.get('username')),
-        users=getUsers())
+        users=getUsers(),
+        isTeacher=isTeacher)
 
 @app.route('/sendMessageRequest', methods=['GET', 'POST'])
 def sendMessageRequest():

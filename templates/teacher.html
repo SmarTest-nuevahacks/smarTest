@@ -52,6 +52,9 @@
           <a class="nav-link" href="/addtest">Add test</a>
       </li>
       <li class="nav-item">
+          <a class="nav-link" href="/guide">Guide</a>
+      </li>
+      <li class="nav-item">
         <a class="nav-link" href="/message">Messages</a>
       </li>
       <li class="nav-item">
@@ -111,7 +114,7 @@
                     {% if item[2] <= date %}
                       <p style="margin: 0px;">Underway</p>
                     {% else %}
-                      <a style="margin-right: 10px;" href="unpublishTest?testId={{item[5]}}"><button>Unpublish</button></a><a href="deleteTest?testId={{item[5]}}"><button>Delete</button></a>
+                      <a style="margin-right: 10px;" href="/unpublishTest?testId={{item[5]}}"><button>Unpublish</button></a><a href="/deleteTest?testId={{item[5]}}"><button>Delete</button></a>
                     {% endif %}
                   {% endif %}
                 </th>
@@ -142,7 +145,7 @@
             <th>{{ item[2] }}</th>
             <th>{{ item[3] }}</th>
             <th>{{ item[4] }}</th>
-            <th><a href="check/{{ item[5] }}"><button>Check</button></a></th>
+            <th><a href="/check/{{ item[5] }}"><button>Check</button></a></th>
           </tr>
           {% endfor %}
         </table>
@@ -170,7 +173,7 @@
             <th>{{ item[2] }}</th>
             <th>{{ item[3] }}</th>
             <th>{{ item[4] }}</th>
-            <th><a href="check/{{ item[5] }}"><button style="margin-right: 20px;">Results</button></a></th>
+            <th><a href="/check/{{ item[5] }}"><button style="margin-right: 20px;">Results</button></a></th>
           </tr>
           {% endfor %}
         </table>
