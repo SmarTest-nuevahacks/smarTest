@@ -36,7 +36,7 @@
   <script src="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.js"></script>
 </head>
 
-<body>
+<body style="color: white;">
 
   <!-- Navigation -->
   <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
@@ -87,7 +87,7 @@
       <h3 style="margin-left: 40px; margin-top: 40px;">Published tests</h3>
       {% if published %}
         <div style="margin-right: 40px; margin-left: 40px;">
-          <table style="width: 100%;">
+          <table style="width: 100%; background-color: white; color: black; opacity: 0.8;">
             <tr>
               <th style="width: 15%;"><b>Name</b></th>
               <th style="width: 30%;"><b>Description</b></th>
@@ -125,7 +125,7 @@
       <h3 style="margin-left: 40px; margin-top: 40px;">Completed tests</h3>
       {% if completed %}
       <div style="margin-right: 40px; margin-left: 40px;">
-        <table style="width: 100%;">
+        <table style="width: 100%; background-color: white; color: black; opacity: 0.8;">
           <tr>
             <th style="width: 15%;"><b>Name</b></th>
             <th style="width: 30%;"><b>Description</b></th>
@@ -154,7 +154,7 @@
       <h3 style="margin-left: 40px; margin-top: 40px;">Checked tests</h3>
       {% if checked %}
       <div style="margin-right: 40px; margin-left: 40px;">
-        <table style="width: 100%;">
+        <table style="width: 100%; background-color: white; color: black; opacity: 0.8;">
           <tr>
             <th style="width: 15%;"><b>Name</b></th>
             <th style="width: 30%;"><b>Description</b></th>
@@ -180,7 +180,8 @@
       {% endif %}
 
   <!-- Footer -->
-  <footer class="py-5 bg-black">
+  <img src="{{ url_for('static',filename='pics/wall.png') }}" style="position: absolute; z-index: -100; bottom: 0; width: 100%">
+  <footer style="width: 100%; height:5%; background-image: url({{ url_for('static',filename='pics/footer.png') }}); z-index:50;  background-repeat: no-repeat;">
     <div class="container">
       <p class="m-0 text-center text-white small">smarTest 2020</p>
     </div>
