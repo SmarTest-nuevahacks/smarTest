@@ -279,7 +279,7 @@
 
               function save() {
                   var dataURL = canvas.toDataURL();
-                  document.getElementById('drawing').value = dataURL;
+                  document.getElementById('{{ loop.index0 + 1 }}drawing').value = dataURL;
               }
 
               function findxy(res, e) {
@@ -325,7 +325,7 @@
                   <div style="width:15px;height:15px;background:white;border:2px solid;" id="white" onclick="color(this)"></div>
                   <input type="button" value="save" id="btn" size="30" onclick="save()">
                   <input type="button" value="clear" id="clr" size="23" onclick="erase()">
-                  <textarea id="drawing" cols="40" rows="10" name="answers[]" placeholder="{{ i[1] }}" style="display: none"></textarea>
+                  <textarea id="{{ loop.index0 + 1 }}drawing" cols="40" rows="10" name="answers[]" placeholder="{{ i[1] }}" style="display: none"></textarea>
               {% endif %}
               {% if i[2]=="coding" %}
               <br/><br/><textarea id="yourcode" cols="40" rows="10" name="answers[]" placeholder="{{ i[1] }}"></textarea><br/>
