@@ -85,21 +85,25 @@
       return Sk.builtinFiles["files"][x];
   }
   function runit() {
-     var prog = document.getElementById("yourcode").value;
-     var mypre = document.getElementById("output");
-     mypre.innerHTML = '';
-     Sk.pre = "output";
-     Sk.configure({output:outf, read:builtinRead});
-     (Sk.TurtleGraphics || (Sk.TurtleGraphics = {})).target = 'mycanvas';
-     var myPromise = Sk.misceval.asyncToPromise(function() {
-         return Sk.importMainWithBody("<stdin>", false, prog, true);
-     });
-     myPromise.then(function(mod) {
-         console.log('success');
-     },
-         function(err) {
-         console.log(err.toString());
-     });
+    try {
+      var prog = document.getElementById("yourcode").value;
+      var mypre = document.getElementById("output");
+      mypre.innerHTML = '';
+      Sk.pre = "output";
+      Sk.configure({output:outf, read:builtinRead});
+      (Sk.TurtleGraphics || (Sk.TurtleGraphics = {})).target = 'mycanvas';
+      var myPromise = Sk.misceval.asyncToPromise(function() {
+          return Sk.importMainWithBody("<stdin>", false, prog, true);
+      });
+      myPromise.then(function(mod) {
+          console.log('success');
+      },
+          function(err) {
+          console.log(err.toString());
+      });
+    } catch (e) {
+      mypre.innerHTML = 'e';
+    }
   }
   </script>
 </head>
@@ -166,7 +170,7 @@
               </script>
             </center>
 
-            <img src="{{ url_for('static',filename='pics/planet.png') }}" style="float: right;">
+            <img src="{{ url_for('static',filename='pics/planet.png') }}" style="float: right; margin: 40px; max-width: 30%;">
 
               <form action="{{ url_for('savetestsolve') }}" method="post" style="margin: 30px;">
                 <input type="text" value="{{ testid }}" name="testid" style="display:none">
@@ -177,7 +181,7 @@
               {% set image = "test_pics/"+i[3] %}
               <p>Points: {{ i[9] }}</p>
               {% if i[3]!='' %}
-              <img class="img-fluid" src="{{ url_for('static',filename=image) }}" style="max-width:100px" alt="">
+              <img class="img-fluid" src="{{ url_for('static',filename=image) }}" style="max-width:60%; margin-top: 10px; margin-bottom: 10px;" alt="">
               {% endif %}
 
               {% if i[2]=="open" %}
