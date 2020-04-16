@@ -87,7 +87,11 @@
                 {% if question[2]=="coding" %}
                   Your Answer: <h6><br/><textarea cols="40" rows="10">{{answer[(loop.index0+1)*2]}}</textarea></h6><br/>
                   {% else %}
-                  Your Answer: <h5><br/>{{answer[(loop.index0+1)*2]}}</h5><br/>
+                  {% if question[2]=="drawn" %}
+                    <img src="{{answer[(loop.index0+1)*2]}}"><br/>
+                  {% else %}
+                    Your Answer: <h5><br/>{{answer[(loop.index0+1)*2]}}</h5><br/>
+                  {% endif %}
                 {% endif %}
                   {% if correct[loop.index0]!='' %}
                   Correct Answer: <h5>{{correct[loop.index0]}}</h5><br/>

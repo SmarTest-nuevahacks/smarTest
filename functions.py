@@ -65,6 +65,7 @@ def end_add_test(id,number,maxpoints,username):
     cursor = db.cursor()
     cursor.execute(create_end_test_sql(id,number))
     cursor.execute('''UPDATE tests SET maxpoints=? WHERE id=?''',(maxpoints,id))
+    cursor.execute('''UPDATE tests SET checked="no" WHERE id=?''',(id,))
     #Sending informatory messages
     sql="SELECT type FROM tests WHERE id=?"
     cursor.execute(sql,(id,))
@@ -136,7 +137,7 @@ def getPublishedTests(username):
 def getCompletedTests(username):
     db = sqlite3.connect("smartest.db")
     cursor = db.cursor()
-    cursor.execute('''SELECT name,desc,start_date,end_date,time,id FROM tests WHERE teacher=? AND end_date < date('now')''', (username,))
+    cursor.execute('''SELECT name,desc,start_date,end_date,time,id FROM tests WHERE teacher=? AND end_date < date('now') AND checked="no"''', (username,))
     tests = cursor.fetchall()
     db.commit()
     db.close()
@@ -181,7 +182,7 @@ def endSolveTest(username,answers,id):
         sql="SELECT type from test_questions"+str(id)+" WHERE ind=?"
         cursor.execute(sql,(i+1,))
         type=cursor.fetchone()[0]
-        if(type=="open" or type=="coding"):
+        if(type=="open" or type=="coding" or type=="drawn"):
             sql="UPDATE test_answers"+str(id)+" SET answer"+str(i+1)+"=? WHERE student=?"
             cursor.execute(sql,(answer,username))
         if(type=="closed"):
@@ -206,8 +207,12 @@ def endSolveTest(username,answers,id):
 def getCheckedTests(username):
     db = sqlite3.connect("smartest.db")
     cursor = db.cursor()
+    cursor.execute("SELECT name,desc,start_date,end_date,time,id FROM tests WHERE end_date < date('now') AND teacher=? AND checked='yes'",(username,))
+    tests = cursor.fetchall()
+    print(tests)
     db.commit()
     db.close()
+    return tests
 
 def getClassTests(username, abdate):
     db = sqlite3.connect("smartest.db")
@@ -217,7 +222,7 @@ def getClassTests(username, abdate):
     if (abdate == 'before'):
         cursor.execute("SELECT name,desc,start_date,end_date,time,id FROM tests WHERE end_date < date('now') AND type=?",(type,))
     else:
-        cursor.execute("SELECT name,desc,start_date,end_date,time,id FROM tests WHERE end_date >= date('now') AND type=?",(type,))
+        cursor.execute("SELECT name,desc,start_date,end_date,time,id FROM tests WHERE end_date >= date('now') AND type=? AND checked='no'",(type,))
     tests = cursor.fetchall()
     db.commit()
     db.close()
@@ -380,3 +385,11 @@ def getPercentage(id,username):
         return ((points*1.0)/maxpoints)*100
     except:
         return 0
+
+def checkFinished(id):
+    db = sqlite3.connect("smartest.db")
+    cursor = db.cursor()
+    cursor.execute('''UPDATE tests SET checked="yes" WHERE id=?''',(id,))
+    db.commit()
+    db.close()
+    return

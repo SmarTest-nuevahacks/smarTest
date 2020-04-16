@@ -20,7 +20,7 @@ print("Please remember this password because without it teachers are not able to
 
 db = sqlite3.connect("smartest.db")
 cursor = db.cursor()
-cursor.execute('''CREATE TABLE IF NOT EXISTS tests(id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE, name TEXT,desc TEXT,start_date TEXT,end_date TEXT,time TEXT,teacher TEXT, type TEXT, maxpoints TEXT)''')
+cursor.execute('''CREATE TABLE IF NOT EXISTS tests(id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE, name TEXT,desc TEXT,start_date TEXT,end_date TEXT,time TEXT,teacher TEXT, type TEXT, maxpoints TEXT, checked TEXT)''')
 cursor.execute('''CREATE TABLE IF NOT EXISTS teacher_cred(hash TEXT)''')
 cursor.execute('''CREATE TABLE IF NOT EXISTS users(name TEXT UNIQUE,password TEXT,full_name TEXT,mail TEXT,type TEXT)''')
 cursor.execute('''CREATE TABLE IF NOT EXISTS messages(sender TEXT,recipient TEXT,date TEXT,time TEXT,read TEXT, header TEXT, content TEXT)''')
