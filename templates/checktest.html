@@ -171,6 +171,15 @@
                     {% else %}
                       Points: <h5>{{ answer[(loop.index0+1)*2+1] }}/{{question[9]}}</h5>
                     {% endif %}
+
+                    Cheating from visual analisys: <h5>{{ answer[-2] }} points*</h5>
+                    Cheating from audio analysis: <h5>{{ answer[-1] }} points*</h5>
+                    *[ lower=better ]
+                    {% if answer[-2]>40 or answer[-1]>20 %}
+                      <h3 style="color: red">Cheating<h3>
+                    {% else %}
+                      <h3 style="color: green">Not Cheating<h3>
+                    {% endif %}
                 <hr/>
                 {% endfor %}
                 Feedback for student:<br/><br/>
