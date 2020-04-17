@@ -375,31 +375,9 @@
               }
 
               function color(obj) {
-                  switch (obj.id) {
-                      case "green":
-                          x = "green";
-                          break;
-                      case "blue":
-                          x = "blue";
-                          break;
-                      case "red":
-                          x = "red";
-                          break;
-                      case "yellow":
-                          x = "yellow";
-                          break;
-                      case "orange":
-                          x = "orange";
-                          break;
-                      case "black":
-                          x = "black";
-                          break;
-                      case "white":
-                          x = "white";
-                          break;
-                  }
-                  if (x == "white") y = 14;
-                  else y = 2;
+                 // x = obj;
+                  //if (x == "#ffffff") y = 14;
+                  //else y = 2;
 
               }
 
@@ -407,8 +385,8 @@
                   ctx.beginPath();
                   ctx.moveTo(prevX, prevY);
                   ctx.lineTo(currX, currY);
-                  ctx.strokeStyle = x;
-                  ctx.lineWidth = y;
+                  //ctx.strokeStyle = x;
+                  ctx.lineWidth = 2;
                   ctx.stroke();
                   ctx.closePath();
               }
@@ -455,17 +433,20 @@
               }
               </script>
                   <canvas id="{{ loop.index0 + 1 }}" width="400" height="400" style="z-index: 100; border:2px solid;"></canvas>
+                  <!--
                   <div>Choose Color</div>
                   <div style="margin-bottom: 10px;">
-                    <div style="float: left; width:10px;height:10px;background:green; display: inline;" id="green" onclick="color(this)"></div>
-                    <div style="float: left; width:10px;height:10px;background:blue;display: inline;" id="blue" onclick="color(this)"></div>
-                    <div style="float: left; width:10px;height:10px;background:red;display: inline;" id="red" onclick="color(this)"></div>
-                    <div style="float: left; width:10px;height:10px;background:yellow;display: inline;" id="yellow" onclick="color(this)"></div>
-                    <div style="float: left; width:10px;height:10px;background:orange;display: inline;" id="orange" onclick="color(this)"></div>
-                    <div style="width:10px;height:10px;background:black;" id="black" onclick="color(this)"></div>
+                    <div style="float: left; width:10px;height:10px;background:green; display: inline;" id="green" onclick="color('#00ff00')"></div>
+                    <div style="float: left; width:10px;height:10px;background:blue;display: inline;" id="blue" onclick="color('#0000ff')"></div>
+                    <div style="float: left; width:10px;height:10px;background:red;display: inline;" id="red" onclick="color('#ff0000')"></div>
+                    <div style="float: left; width:10px;height:10px;background:yellow;display: inline;" id="yellow" onclick="color('#ffff00')"></div>
+                    <div style="float: left; width:10px;height:10px;background:orange;display: inline;" id="orange" onclick="color('#FFA500')"></div>
+                    <div style="width:10px;height:10px;background:black;" id="black" onclick="color('#000000')"></div>
                   </div>
                   <div>Eraser</div>
-                  <div style="width:15px;height:15px;background:white;border:2px solid; margin-bottom: 10px;" id="white" onclick="color(this)"></div>
+                  <div style="width:15px;height:15px;background:white;border:2px solid; margin-bottom: 10px;" id="white" onclick="color('#ffffff')"></div>
+                  -->
+                  <div></div>
                   <input type="button" value="save" id="btn" size="30" onclick="save()">
                   <input type="button" value="clear" id="clr" size="23" onclick="erase()">
                   <textarea id="{{ loop.index0 + 1 }}drawing" cols="40" rows="10" name="answers[]" placeholder="{{ i[1] }}" style="display: none"></textarea>
