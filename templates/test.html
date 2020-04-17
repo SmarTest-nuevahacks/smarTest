@@ -350,7 +350,6 @@ function gotResult(error, results) {
           obj.attachEvent("on" + evt, fn);
       }
   }
-
   addEvent(window,"load",function(e) {
       addEvent(document, "mouseout", function(e) {
         if(isAccepted){
@@ -363,7 +362,6 @@ function gotResult(error, results) {
         }
       });
   });
-
   function show() {
       var elem = document.getElementById("test");
       document.getElementById('intro').style.display = "none";
@@ -392,21 +390,25 @@ function gotResult(error, results) {
       return Sk.builtinFiles["files"][x];
   }
   function runit() {
-     var prog = document.getElementById("yourcode").value;
-     var mypre = document.getElementById("output");
-     mypre.innerHTML = '';
-     Sk.pre = "output";
-     Sk.configure({output:outf, read:builtinRead});
-     (Sk.TurtleGraphics || (Sk.TurtleGraphics = {})).target = 'mycanvas';
-     var myPromise = Sk.misceval.asyncToPromise(function() {
-         return Sk.importMainWithBody("<stdin>", false, prog, true);
-     });
-     myPromise.then(function(mod) {
-         console.log('success');
-     },
-         function(err) {
-         console.log(err.toString());
-     });
+    try {
+      var prog = document.getElementById("yourcode").value;
+      var mypre = document.getElementById("output");
+      mypre.innerHTML = '';
+      Sk.pre = "output";
+      Sk.configure({output:outf, read:builtinRead});
+      (Sk.TurtleGraphics || (Sk.TurtleGraphics = {})).target = 'mycanvas';
+      var myPromise = Sk.misceval.asyncToPromise(function() {
+          return Sk.importMainWithBody("<stdin>", false, prog, true);
+      });
+      myPromise.then(function(mod) {
+          console.log('success');
+      },
+          function(err) {
+          console.log(err.toString());
+      });
+    } catch (e) {
+      mypre.innerHTML = 'e';
+    }
   }
   </script>
 </head>
@@ -453,28 +455,31 @@ function gotResult(error, results) {
           </div>
           <div id="test" style="display:none; background-color: white; overflow-y: scroll;">
             <center>
-            <h1>{{ testName }}</h1>
-            <h3 id="demo"></h3>
-            <script>
-              var deadtime = '{{ data.endtime }}'
-              var deadline = new Date(deadtime).getTime();
-              var x = setInterval(function() {
-                var now = new Date().getTime();
-                var t = deadline - now;
-                var days = Math.floor(t / (1000 * 60 * 60 * 24));
-                var hours = Math.floor((t%(1000 * 60 * 60 * 24))/(1000 * 60 * 60));
-                var minutes = Math.floor((t % (1000 * 60 * 60)) / (1000 * 60));
-                var seconds = Math.floor((t % (1000 * 60)) / 1000);
-                document.getElementById("demo").innerHTML = hours + "h " + minutes + "m " + seconds + "s ";
-                if (t < 0) {
-                  clearInterval(x);
-                  alert("The time has ended. Your test was submitted automatically");
-                  document.getElementById("submit").click();
-                }
-              }, 1000);
-            </script>
+              <h1 style="margin-top: 15px; margin-bottom: 8px;">{{ testName }}</h1>
+              <h4 id="demo" style="margin-top: 0px;"></h4>
+              <script>
+                var deadtime = '{{ data.endtime }}'
+                var deadline = new Date(deadtime).getTime();
+                var x = setInterval(function() {
+                  var now = new Date().getTime();
+                  var t = deadline - now;
+                  var days = Math.floor(t / (1000 * 60 * 60 * 24));
+                  var hours = Math.floor((t%(1000 * 60 * 60 * 24))/(1000 * 60 * 60));
+                  var minutes = Math.floor((t % (1000 * 60 * 60)) / (1000 * 60));
+                  var seconds = Math.floor((t % (1000 * 60)) / 1000);
+                  document.getElementById("demo").innerHTML = hours + "h " + minutes + "m " + seconds + "s ";
+                  if (t < 0) {
+                    clearInterval(x);
+                    alert("The time has ended. Your test was submitted automatically");
+                    document.getElementById("submit").click();
+                  }
+                }, 1000);
+              </script>
+            </center>
 
-              <form action="{{ url_for('savetestsolve') }}" method="post">
+            <img src="{{ url_for('static',filename='pics/planet.png') }}" style="float: right; margin: 40px; max-width: 30%;">
+
+              <form action="{{ url_for('savetestsolve') }}" method="post" style="margin: 30px;">
                 <input type="text" value="{{ testid }}" name="testid" style="display:none">
                 <input type="hidden" id="cheating" name="cheating"><!--kamerka-->
                 <input type="hidden" id="voice" name="voice"><!--kamerka-->
@@ -485,11 +490,11 @@ function gotResult(error, results) {
               {% set image = "test_pics/"+i[3] %}
               <p>Points: {{ i[9] }}</p>
               {% if i[3]!='' %}
-              <img class="img-fluid" src="{{ url_for('static',filename=image) }}" style="max-width:100px" alt="">
+              <img class="img-fluid" src="{{ url_for('static',filename=image) }}" style="max-width:60%; margin-top: 10px; margin-bottom: 10px;" alt="">
               {% endif %}
 
               {% if i[2]=="open" %}
-                <textarea name="answers[]" placeholder="Your answer..." style="width: 40%;"></textarea>
+                <textarea name="answers[]" placeholder="Your answer..." cols="40" rows="10"></textarea>
               {% endif %}
 
               {% if i[2]=="closed" %}
@@ -626,21 +631,23 @@ function gotResult(error, results) {
               </script>
                   <canvas id="{{ loop.index0 + 1 }}" width="400" height="400" style="z-index: 100; border:2px solid;"></canvas>
                   <div>Choose Color</div>
-                  <div style="width:10px;height:10px;background:green;" id="green" onclick="color(this)"></div>
-                  <div style="width:10px;height:10px;background:blue;" id="blue" onclick="color(this)"></div>
-                  <div style="width:10px;height:10px;background:red;" id="red" onclick="color(this)"></div>
-                  <div style="width:10px;height:10px;background:yellow;" id="yellow" onclick="color(this)"></div>
-                  <div style="width:10px;height:10px;background:orange;" id="orange" onclick="color(this)"></div>
-                  <div style="width:10px;height:10px;background:black;" id="black" onclick="color(this)"></div>
-                  <div style="">Eraser</div>
-                  <div style="width:15px;height:15px;background:white;border:2px solid;" id="white" onclick="color(this)"></div>
+                  <div style="margin-bottom: 10px;">
+                    <div style="float: left; width:10px;height:10px;background:green;" id="green" onclick="color(this)"></div>
+                    <div style="float: left; width:10px;height:10px;background:blue;" id="blue" onclick="color(this)"></div>
+                    <div style="float: left; width:10px;height:10px;background:red;" id="red" onclick="color(this)"></div>
+                    <div style="float: left; width:10px;height:10px;background:yellow;" id="yellow" onclick="color(this)"></div>
+                    <div style="float: left; width:10px;height:10px;background:orange;" id="orange" onclick="color(this)"></div>
+                    <div style="width:10px;height:10px;background:black;" id="black" onclick="color(this)"></div>
+                  </div>
+                  <div>Eraser</div>
+                  <div style="width:15px;height:15px;background:white;border:2px solid; margin-bottom: 10px;" id="white" onclick="color(this)"></div>
                   <input type="button" value="save" id="btn" size="30" onclick="save()">
                   <input type="button" value="clear" id="clr" size="23" onclick="erase()">
                   <textarea id="{{ loop.index0 + 1 }}drawing" cols="40" rows="10" name="answers[]" placeholder="{{ i[1] }}" style="display: none"></textarea>
               {% endif %}
               {% if i[2]=="coding" %}
               <br/><br/><textarea id="yourcode" cols="40" rows="10" name="answers[]" placeholder="{{ i[1] }}"></textarea><br/>
-              <p onclick="runit()">Run</p>
+              <button onclick="runit()">Run</button>
               <pre id="output"></pre>
               <div id="mycanvas"></div>
               {% endif %}
@@ -648,7 +655,6 @@ function gotResult(error, results) {
               {% endfor %}
               <input type="submit" id="submit">
             </form>
-          </center>
           </div>
 {% endif %}
 
