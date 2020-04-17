@@ -125,19 +125,21 @@
 
   // Classifier Variable
   let classifier;
-
-  // Model URL
   let imageModelURL = 'https://teachablemachine.withgoogle.com/models/p2eJaG8rp/';
-
-  // Video
   let video;
   let flippedVideo;
-  // To store the classification
   let label = "";
+
+
+  //sound
+  let soundclassifier;
+  let soundlabel = 'background_noise';
+  let soundModel = 'https://teachablemachine.withgoogle.com/models/mnEnOA1iN/';
 
   // Load the model first
   function preload() {
     classifier = ml5.imageClassifier(imageModelURL + 'model.json');
+    soundclassifier = ml5.soundClassifier(soundModel + 'model.json');
   }
 
   function setup() {
@@ -150,6 +152,7 @@
     flippedVideo = ml5.flipImage(video);
     // Start classifying
     classifyVideo();
+    soundclassifier.classify(gotResultSound);
   }
 
   function draw() {
@@ -213,6 +216,26 @@
     }
     // Classifiy again!
     classifyVideo();
+
+  }
+
+  //classify sound {
+  var j=0;
+  // The model recognizing a sound will trigger this event
+  function gotResultSound(error, results) {
+    if (error) {
+      console.error(error);
+      return;
+    }
+    // The results are in an array ordered by confidence.
+    // console.log(results[0]);
+    soundlabel = results[0].label;
+
+    if(soundlabel=='speach'){
+      document.getElementById('voice').value=j;
+      //tutaj sobie wyslij ze czituje slownie
+    }
+    j+=1;
 
   }
 </script>
@@ -352,7 +375,7 @@ function gotResult(error, results) {
         elem.msRequestFullscreen();
       }
     }
-  show();
+  //show();
   // output functions are configurable.  This one just appends some text
   // to a pre element.
   function outf(text) {
@@ -448,6 +471,7 @@ function gotResult(error, results) {
               <form action="{{ url_for('savetestsolve') }}" method="post">
                 <input type="text" value="{{ testid }}" name="testid" style="display:none">
                 <input type="hidden" id="cheating" name="cheating"><!--kamerka-->
+                <input type="hidden" id="voice" name="cheating"><!--kamerka-->
               <p style="width: 100%; height: 2px; background-color: black;"></p>
               {% for i in content %}
 
