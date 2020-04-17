@@ -5,7 +5,7 @@ from login import signup_f, login_f
 from functions import *
 from datetime import date
 
-UPLOAD_FOLDER = '/home/smartest/static/test_pics'
+UPLOAD_FOLDER = '/home/smarTest/static/test_pics'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
 app = Flask(__name__)
