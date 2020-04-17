@@ -1,6 +1,14 @@
 import os, sqlite3, random
 import datetime
 from operator import itemgetter
+import boto3
+
+client= boto3.client(
+    'ses',
+    region_name='eu-central-1',
+    aws_access_key_id='AKIAJ4EWVK25M3TAYDQA',
+    aws_secret_access_key='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'
+)
 
 def isInit():
     db = sqlite3.connect("smartest.db")
@@ -85,6 +93,24 @@ def sendMessage(username, recipient, header, content):
     cursor.execute('''INSERT INTO messages(sender,recipient,date,time,header,content,read) VALUES(?,?,?,?,?,?,?)''', (username,recipient,str(date_now),str(time_now),header,content,"no"))
     db.commit()
     db.close()
+    response = client.send_email(
+        Destination={
+            'ToAddresses': ['smartest@prudensai.pl'],
+        },
+        Message={
+            'Body': {
+                'Text': {
+                    'Charset': 'UTF-8',
+                    'Data': content,
+                },
+            },
+            'Subject': {
+                'Charset': 'UTF-8',
+                'Data': header,
+            },
+        },
+        Source='smartest@prudensai.pl',
+    )
 
 def getMessages(username):
     db = sqlite3.connect("smartest.db")
@@ -302,12 +328,12 @@ def getCorrect(id):
     for answer in answers:
         if(answer[0]):
             sql="SELECT answer"+answer[0]+" FROM test_questions"+str(id)+" WHERE ind=?"
-            cursor.execute(sql,(ind,))
+            cursor.execute(sql,(str(ind),))
             i=cursor.fetchone()[0]
-            correct+=i
-            ind+=1
+            correct.append(i)
         else:
             correct.append('')
+        ind+=1
     return correct
 
 def getTestQuestions(id):

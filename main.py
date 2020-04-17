@@ -5,7 +5,7 @@ from login import signup_f, login_f
 from functions import *
 from datetime import date
 
-UPLOAD_FOLDER = '/home/karol/Git/smartest/static/test_pics'
+UPLOAD_FOLDER = '/home/smartest/static/test_pics'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
 app = Flask(__name__)
@@ -114,14 +114,7 @@ def savecheck():
 @app.route('/checked/<int:id>')
 def checked(id):
     checkFinished(id)
-    return render_template(
-        'teacher.html',
-        username = session.get('username'),
-        test = getTest(session.get('editedtest', 'name')),
-        published = getPublishedTests(session.get('username')),
-        completed = getCompletedTests(session.get('username')),
-        checked = getCheckedTests(session.get('username')),
-        date = date.today().strftime("%Y-%m-%d"))
+    return redirect(url_for('login'))
 
 
 

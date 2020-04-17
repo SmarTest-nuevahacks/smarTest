@@ -136,6 +136,8 @@
     </div>
   </nav>
 
+  <img style="position: absolute; left: 40px; top: 150px; z-index: -50; width: 50%" src="{{ url_for('static', filename='pics/planeta2.svg') }}">
+
 {% if username %}
           <div>
             <center>
@@ -156,9 +158,9 @@
                 {% endif %}
                 {% if question[2]=="coding" %}
                   Answer: <h6><textarea cols="40" rows="10" id="yourcode">{{answer[(loop.index0+1)*2]}}</textarea></h6><br/>
-                  <p onclick="runit()">Run</p>
                   <pre id="output"></pre>
                   <div id="mycanvas"></div>
+                  <input type="button" onclick="runit()" value="Run Code"><br/><br/>
                   {% else %}
                   {% if question[2]=="drawn" %}
                     <img src="{{answer[(loop.index0+1)*2]}}"><br/>
@@ -185,6 +187,18 @@
                     {% endif %}
                 <hr/>
                 {% endfor %}
+                {% if answer[-1]|int>5  %}
+                  Cheating from audio analisys: <h5 style="color:red">Cheating</h5>
+                {% else %}
+                  Cheating from audio analisys: <h5 style="color:green">Not cheating</h5>
+                {% endif %}
+                {% if answer[-2]=="notlegit"  %}
+                  Cheating from visual analisys: <h5 style="color:red">Cheating</h5>
+                {% else %}
+                  Cheating from visual analisys: <h5 style="color:green">Not cheating</h5>
+                {% endif %}
+                <br/>
+                <hr/>
                 Feedback for student:<br/><br/>
                 <textarea placeholder="Feedback" name="feedback"></textarea><br/><br/>
                 <input type="Submit" value="Save" style="display: inline">
@@ -195,6 +209,7 @@
               {% endfor %}
               <a href="/checked/{{testid}}" style="underline: none"><input type="button" value="Finish Checking"></a>
           </center>
+          <br/><br/><br/><br/><br/><br/>
           </div>
 {% endif %}
 
