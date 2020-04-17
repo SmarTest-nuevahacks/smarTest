@@ -341,6 +341,7 @@ function gotResult(error, results) {
     }
   </style>
   <script type="text/javascript">
+  var isAccepted = false;
   function addEvent(obj, evt, fn) {
       if (obj.addEventListener) {
           obj.addEventListener(evt, fn, false);
@@ -352,16 +353,19 @@ function gotResult(error, results) {
 
   addEvent(window,"load",function(e) {
       addEvent(document, "mouseout", function(e) {
+        if(isAccepted){
           e = e ? e : window.event;
           var from = e.relatedTarget || e.toElement;
           if (!from || from.nodeName == "HTML") {
               alert("You left the window! Game over;((");
               document.getElementById("submit").click();
           }
+        }
       });
   });
 
   function show() {
+    isAccepted=true;
       var elem = document.getElementById("test");
       document.getElementById('intro').style.display = "none";
       document.getElementById('test').style.display = "block";
@@ -441,6 +445,8 @@ function gotResult(error, results) {
               <li>Don't leave the screen with your cursor! Your test will end!</li>
               <li>Don't leave fullscreen</li>
               <li>Don't refresh your webpage</li>
+              <li>Don't talk with anyone, you can listen to music</li>
+              <li>Accept the camera and microphone access before clicking below!</li>
             </ol></h3>
             <button style="margin-bottom: 50in;" onclick="show()">Start test!</button>
           </center>
