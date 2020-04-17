@@ -48,10 +48,7 @@
         <ul class="navbar-nav ml-auto">
     {% if username %}
       <li class="nav-item">
-          <a class="nav-link" href="/addtest">Add test</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/check">Check test</a>
+        <a class="nav-link" href="/message">Messages</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="/logout">Logout: {{ username }} </a>
@@ -69,6 +66,11 @@
     </div>
   </nav>
 
+  <img style="position: absolute; left: 40px; top: 150px; z-index: -50; width: 30%" src="{{ url_for('static', filename='pics/planeta4.svg') }}">
+
+  <img style="position: absolute; right: 150px; top: 600px; z-index: -50; width: 25%" src="{{ url_for('static', filename='pics/planeta6.svg') }}">
+
+
 {% if username %}
           <div>
             <center>
@@ -82,7 +84,7 @@
                 {% if question[3]!=None %}
                 {% set image = "test_pics/"+question[3] %}
                 {% endif %}
-                <img class="img-fluid" src="{{ url_for('static',filename=image) }}" style="max-width:100px" alt=""><br/>
+                <img class="img-fluid" src="{{ url_for('static',filename=image) }}" style="max-width:500px" alt=""><br/>
                 {% endif %}
                 {% if question[2]=="coding" %}
                   Your Answer: <h6><br/><textarea cols="40" rows="10">{{answer[(loop.index0+1)*2]}}</textarea></h6><br/>
@@ -90,13 +92,13 @@
                   {% if question[2]=="drawn" %}
                     <img src="{{answer[(loop.index0+1)*2]}}"><br/>
                   {% else %}
-                    Your Answer: <h5><br/>{{answer[(loop.index0+1)*2]}}</h5><br/>
+                    Your Answer: <h5><br/>{{ answer[(loop.index0+1)*2] }}</h5><br/>
                   {% endif %}
                 {% endif %}
                   {% if correct[loop.index0]!='' %}
                   Correct Answer: <h5>{{correct[loop.index0]}}</h5><br/>
                   {% endif %}
-                  Points: <h5>{{ answer[(loop.index0+1)*2+1] }}/{{question[9]}}</h5>
+                  Points: <h5>{{ answer[(loop.index0+1)*2+1] }}/{{ question[9] }}</h5>
                 <hr/>
                 {% endfor %}
                 {% if feedback!='' %}

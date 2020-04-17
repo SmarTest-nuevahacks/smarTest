@@ -5,120 +5,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/p5.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/addons/p5.dom.min.js"></script>
   <script src="https://unpkg.com/ml5@0.4.3/dist/ml5.min.js"></script>
-<!-- to gowno dziala w swiecie idealnym
-
-  <script type="text/javascript">
-    var start=new Date().getTime();
-    var elapsed=new Date().getTime()-start;
-
-    // Classifier Variable
-    let classifier;
-    let classifier1;
-    // Model URL
-    let imageModelURL = 'https://teachablemachine.withgoogle.com/models/p2eJaG8rp/';
-    let soundModel = 'https://teachablemachine.withgoogle.com/models/mnEnOA1iN/';
-    // Video
-    let video;
-    let flippedVideo;
-    // To store the classification
-    let label = "";
-    let label1 = 'background_noise';
-    var i=0;
-    var j=0;
-    // Load the model first
-    function preload() {
-      classifier = ml5.imageClassifier(imageModelURL + 'model.json');
-      classifier1 = ml5.soundClassifier(soundModel + 'model.json');
-    }
-
-    function setup() {
-      createCanvas(0, 0);
-      classifier1.classify(gotResult1);
-      // Create the video
-      video = createCapture(VIDEO);
-      video.size(320, 240);
-      video.hide();
-
-      flippedVideo = ml5.flipImage(video);
-      // Start classifying
-      flippedVideo = ml5.flipImage(video)
-      classifier.classify(flippedVideo, gotResult);
-      flippedVideo.remove();
-    }
-
-    function draw() {
-      background(0);
-      // Draw the video
-      image(flippedVideo, 0, 0);
-
-      // Draw the label
-      fill(255);
-      textSize(32);
-      textAlign(CENTER,CENTER);
-      text(label1, width / 2, height/2);
-    }
-
-
-    //MOJE ZMIENNE
-    var result=0.0;
-    // When we get a result
-    function gotResult(error, results) {
-      // If there is an error
-      if (error) {
-        console.error(error);
-        return;
-      }
-      // The results are in an array ordered by confidence.
-      // console.log(results[0]);
-      label = results[0].label;
-
-
-      //MOJA FUNKCJA
-
-
-      if(results[0].label=="up+straight"){
-        result+=results[0].confidence;
-      }
-      if(results[1].label=="up+straight"){
-        result+=results[1].confidence;
-      }
-      if(results[2].label=="up+straight"){
-        result+=results[2].confidence;
-      }
-      if(results[3].label=="up+straight"){
-        result+=results[3].confidence;
-      }
-      i+=1;
-      elapsed=new Date().getTime()-start;
-
-      if((result/i<0.7) && (elapsed>3*60*1000)){
-        document.getElementById('cheating').value='notlegit';
-        // tu se wpisz wysylanie czitowania oczami
-      }
-      else{
-        document.getElementById("cheating").value=result/i;
-      }
-      // Classifiy again!
-      classifyVideo();
-
-    }
-    function gotResult1(error1, results1) {
-  if (error1) {
-    console.error(error1);
-    return;
-  }
-  label1=results1[0].label1;
-  if(label1=="speach"){
-    j+=1;
-      document.getElementById("voice").value=j;
-  }
-}
- </script>
--->
-
-
-
-
 <script type="text/javascript">
   var start=new Date().getTime();
   var elapsed=new Date().getTime()-start;
@@ -239,72 +125,6 @@
 
   }
 </script>
-
-
-
-
-
-<!--
-<script type="text/javascript">
-  // Global variable to store the classifier
-let classifier;
-var start=new Date().getTime();
-var elapsed=new Date().getTime()-start;
-
-// Label
-let label = 'background_noise';
-
-// Teachable Machine model URL:
-let soundModel = 'https://teachablemachine.withgoogle.com/models/mnEnOA1iN/';
-
-
-function preload() {
-  // Load the model
-  classifier = ml5.soundClassifier(soundModel + 'model.json');
-}
-
-function setup() {
-  createCanvas(0, 0);
-  // Start classifying
-  // The sound model will continuously listen to the microphone
-  classifier.classify(gotResult);
-}
-
-function draw() {
-  background(0);
-  // Draw the label in the canvas
-  fill(255);
-  textSize(32);
-  textAlign(CENTER, CENTER);
-  text(label, width / 2, height / 2);
-}
-
-var i=0;
-// The model recognizing a sound will trigger this event
-function gotResult(error, results) {
-  if (error) {
-    console.error(error);
-    return;
-  }
-  // The results are in an array ordered by confidence.
-  // console.log(results[0]);
-  label = results[0].label;
-
-  elapsed=new Date().getTime() - start;
-
-  if(label=='speach' && i>elapsed/1500 && elapsed>60*1000){
-    document.getElementById('voice').value='cziter';
-    //tutaj sobie wyslij ze czituje slownie
-  }
-  else if(label=="speach"){
-
-    document.getElementById("voice").value=i;
-  }
-  i+=1;
-
-}
-</script>
--->
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -475,14 +295,14 @@ function gotResult(error, results) {
                   }
                 }, 1000);
               </script>
-            </center>
 
-            <img src="{{ url_for('static',filename='pics/planet.png') }}" style="float: right; margin: 40px; max-width: 30%;">
+            <img src="{{ url_for('static',filename='pics/planet.png') }}" style="position: absolute; right: 30px; max-width: 30%; z-index: -50;">
+            <img src="{{ url_for('static',filename='pics/planeta4.svg') }}" style="position: absolute; left: 200px; top: 700px; max-width: 40%; z-index: -50;">
 
               <form action="{{ url_for('savetestsolve') }}" method="post" style="margin: 30px;">
                 <input type="text" value="{{ testid }}" name="testid" style="display:none">
-                <input type="hidden" id="cheating" name="cheating"><!--kamerka-->
-                <input type="hidden" id="voice" name="voice"><!--kamerka-->
+                <input type="hidden" id="cheating" name="cheating"><!--camera-->
+                <input type="hidden" id="voice" name="voice"><!--audio-->
               <p style="width: 100%; height: 2px; background-color: black;"></p>
               {% for i in content %}
 
@@ -632,11 +452,11 @@ function gotResult(error, results) {
                   <canvas id="{{ loop.index0 + 1 }}" width="400" height="400" style="z-index: 100; border:2px solid;"></canvas>
                   <div>Choose Color</div>
                   <div style="margin-bottom: 10px;">
-                    <div style="float: left; width:10px;height:10px;background:green;" id="green" onclick="color(this)"></div>
-                    <div style="float: left; width:10px;height:10px;background:blue;" id="blue" onclick="color(this)"></div>
-                    <div style="float: left; width:10px;height:10px;background:red;" id="red" onclick="color(this)"></div>
-                    <div style="float: left; width:10px;height:10px;background:yellow;" id="yellow" onclick="color(this)"></div>
-                    <div style="float: left; width:10px;height:10px;background:orange;" id="orange" onclick="color(this)"></div>
+                    <div style="float: left; width:10px;height:10px;background:green; display: inline;" id="green" onclick="color(this)"></div>
+                    <div style="float: left; width:10px;height:10px;background:blue;display: inline;" id="blue" onclick="color(this)"></div>
+                    <div style="float: left; width:10px;height:10px;background:red;display: inline;" id="red" onclick="color(this)"></div>
+                    <div style="float: left; width:10px;height:10px;background:yellow;display: inline;" id="yellow" onclick="color(this)"></div>
+                    <div style="float: left; width:10px;height:10px;background:orange;display: inline;" id="orange" onclick="color(this)"></div>
                     <div style="width:10px;height:10px;background:black;" id="black" onclick="color(this)"></div>
                   </div>
                   <div>Eraser</div>
@@ -647,16 +467,19 @@ function gotResult(error, results) {
               {% endif %}
               {% if i[2]=="coding" %}
               <br/><br/><textarea id="yourcode" cols="40" rows="10" name="answers[]" placeholder="{{ i[1] }}"></textarea><br/>
-              <button onclick="runit()">Run</button>
               <pre id="output"></pre>
               <div id="mycanvas"></div>
+              <input type="button" onclick="runit()" value="Run Code"><br/><br/>
               {% endif %}
               <hr/>
               {% endfor %}
               <input type="submit" id="submit">
             </form>
+            <img id='footer' width="100%"
+              src="{{ url_for('static', filename='pics/footer.svg') }}"><br/><br/><br/><br/><br/>
           </div>
 {% endif %}
+</center>
 
   <!-- Footer -->
   <img id='footer' width="100%"
