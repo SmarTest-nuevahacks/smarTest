@@ -175,6 +175,16 @@
                       Points: <h5>{{ answer[(loop.index0+1)*2+1] }}/{{question[9]}}</h5>
                     {% endif %}
                     <h5><br/></h5>
+                    {% if answer[-2]=="notlegit"  %}
+                      Cheating from visual analisys: <h5 style="color:red">Cheating</h5>
+                    {% else %}
+                      Cheating from visual analisys: <h5 style="color:green">Not cheating</h5>
+                    {% endif %}
+                    {% if answer[-1]=='notlegit' %}
+                      Cheating from audio analisys: <h5 style="color:red">Cheating</h5>
+                    {% else %}
+                      Cheating from audio analisys: <h5 style="color:green">Not cheating</h5>
+                    {% endif %}
                 <hr/>
                 {% endfor %}
                 {% if answer[-1]|int>5  %}

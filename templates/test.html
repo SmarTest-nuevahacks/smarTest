@@ -5,6 +5,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/p5.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/addons/p5.dom.min.js"></script>
   <script src="https://unpkg.com/ml5@0.4.3/dist/ml5.min.js"></script>
+
 <script type="text/javascript">
   var start=new Date().getTime();
   var elapsed=new Date().getTime()-start;
@@ -15,7 +16,6 @@
   let video;
   let flippedVideo;
   let label = "";
-
 
   //sound
   let soundclassifier;
@@ -91,13 +91,11 @@
       result+=results[3].confidence;
     }
     i+=1;
-    elapsed=new Date().getTime()-start;
 
-    if((result/i<0.7) && (elapsed>3*60*1000)){//te warunki nigdy nie sa spelnione. czemu?
+    if(result/i<0.7) {
       document.getElementById('cheating').value='notlegit';
       // tu se wpisz wysylanie czitowania oczami
-    }
-    else{
+    } else{
       document.getElementById("cheating").value=result/i;
     }
     // Classifiy again!
@@ -106,7 +104,8 @@
   }
 
   //classify sound {
-  var j=0;
+  var j=1;
+  var soundResult = 0;
   // The model recognizing a sound will trigger this event
   function gotResultSound(error, results) {
     if (error) {
@@ -117,9 +116,15 @@
     // console.log(results[0]);
     soundlabel = results[0].label;
 
-    if(soundlabel=='speach'){
-      document.getElementById('voice').value=j;
-      //tutaj sobie wyslij ze czituje slownie
+    if (soundlabel == 'speach') {
+      soundResult += results[0].confidence;
+
+      if (soundResult/j > 0.7) {
+        document.getElementById('voice').value = 'notlegit';
+        //tutaj sobie wyslij ze czituje slownie
+      } else {
+        document.getElementById('voice').value = soundResult/j;
+      }
     }
     j+=1;
 

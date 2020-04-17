@@ -135,6 +135,7 @@
           <th style="width: 10%;"><b>End date</b></th>
           <th style="width: 10%;"><b>Total time [min]</b></th>
           <th style="width: 25%;"><b>Action</b></th>
+          <th style="width: 25%; padding: 5px;"><b>Results</b></th>
         </tr>
         {% for item in pastTests %}
         <tr>
@@ -146,7 +147,7 @@
           <th>
             <a style="margin-right: 10px;" href="/results/{{ item[5] }}"><button>Answers/Results</button></a>
           </th>
-          <th>{{per(item[5],username)}}%</th>
+          <th>{{ per(item[5],username)|round }}%</th>
         </tr>
         {% endfor %}
       </table>
