@@ -83,7 +83,8 @@ def savetestsolve():
     values=request.form.getlist('answers[]')
     testid=request.form['testid']
     cheating=request.form['cheating']
-    endSolveTest(session.get('username'),values,testid,cheating)
+    audio=request.form['voice']
+    endSolveTest(session.get('username'),values,testid,cheating,audio)
     return redirect(url_for('index'))
 
 

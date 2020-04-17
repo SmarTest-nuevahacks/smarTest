@@ -365,7 +365,6 @@ function gotResult(error, results) {
   });
 
   function show() {
-    isAccepted=true;
       var elem = document.getElementById("test");
       document.getElementById('intro').style.display = "none";
       document.getElementById('test').style.display = "block";
@@ -378,6 +377,7 @@ function gotResult(error, results) {
       } else if (elem.msRequestFullscreen) { /* IE/Edge */
         elem.msRequestFullscreen();
       }
+        setTimeout(function(){ isAccepted=true; }, 3000);
     }
   //show();
   // output functions are configurable.  This one just appends some text
@@ -477,7 +477,7 @@ function gotResult(error, results) {
               <form action="{{ url_for('savetestsolve') }}" method="post">
                 <input type="text" value="{{ testid }}" name="testid" style="display:none">
                 <input type="hidden" id="cheating" name="cheating"><!--kamerka-->
-                <input type="hidden" id="voice" name="cheating"><!--kamerka-->
+                <input type="hidden" id="voice" name="voice"><!--kamerka-->
               <p style="width: 100%; height: 2px; background-color: black;"></p>
               {% for i in content %}
 

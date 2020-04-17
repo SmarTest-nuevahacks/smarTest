@@ -139,8 +139,9 @@
 {% if username %}
           <div>
             <center>
-            <h1>{{testName}}</h1>
+            <h1><br/>{{testName}}</h1>
               {% for answer in answers %}
+              <br/>
               <button class="collapsible">{{getName(answer[0])}}</button>
               <div class="content">
                 <form action="{{ url_for('savecheck') }}" method="post">
@@ -171,10 +172,17 @@
                     {% else %}
                       Points: <h5>{{ answer[(loop.index0+1)*2+1] }}/{{question[9]}}</h5>
                     {% endif %}
-
-                    <br/>Cheating from visual analisys: <h5>{{ answer[-2] }}*</h5>
-                    <!---Cheating from audio analysis: <h5>{{ answer[-1] }} points*</h5>-->
-                    *[ higher=better ]
+                    <h5><br/></h5>
+                    {% if answer[-2]=="notlegit"  %}
+                      Cheating from visual analisys: <h5 style="color:red">Cheating</h5>
+                    {% else %}
+                      Cheating from visual analisys: <h5 style="color:green">Not cheating</h5>
+                    {% endif %}
+                    {% if answer[-1]|int>5  %}
+                      Cheating from audio analisys: <h5 style="color:red">Cheating</h5>
+                    {% else %}
+                      Cheating from visual analisys: <h5 style="color:green">Not cheating</h5>
+                    {% endif %}
                 <hr/>
                 {% endfor %}
                 Feedback for student:<br/><br/>
@@ -185,7 +193,7 @@
             </div>
             <hr/>
               {% endfor %}
-              <a href="/checked/{{testid}}"><button>Finish checking</button></a>
+              <a href="/checked/{{testid}}" style="underline: none"><input type="button" value="Finish Checking"></a>
           </center>
           </div>
 {% endif %}
@@ -207,8 +215,9 @@ for (i = 0; i < coll.length; i++) {
 }
 </script>
   <!-- Footer -->
+  <p style="font-size:70" id="footer"><br/><br/></p>
     <img id='footer' width="100%"
-      src="{{ url_for('static', filename='pics/footer.svg') }}">
+      src="{{ url_for('static', filename='pics/footer.svg') }}" style="position:fixed;bottom:0">
 
   <!-- Bootstrap core JavaScript -->
   <script src="vendor/jquery/jquery.min.js"></script>
