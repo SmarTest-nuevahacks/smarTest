@@ -130,7 +130,6 @@
   let flippedVideo;
   let label = "";
 
-
   //sound
   let soundclassifier;
   let soundlabel = 'background_noise';
@@ -228,12 +227,14 @@
       return;
     }
     // The results are in an array ordered by confidence.
-    // console.log(results[0]);
+    console.log(results[0]);
     soundlabel = results[0].label;
 
-    if(soundlabel=='speach'){
-      document.getElementById('voice').value=j;
+    if(soundlabel=='speach' && results[1].confidence > 0.8){
+      document.getElementById('voice').value = 'notlegit';
       //tutaj sobie wyslij ze czituje slownie
+    } else {
+      document.getElementById('voice').value = j;
     }
     j+=1;
 

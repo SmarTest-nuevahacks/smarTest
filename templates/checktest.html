@@ -178,10 +178,10 @@
                     {% else %}
                       Cheating from visual analisys: <h5 style="color:green">Not cheating</h5>
                     {% endif %}
-                    {% if answer[-1]|int>5  %}
+                    {% if answer[-1]=='notlegit' %}
                       Cheating from audio analisys: <h5 style="color:red">Cheating</h5>
                     {% else %}
-                      Cheating from visual analisys: <h5 style="color:green">Not cheating</h5>
+                      Cheating from audio analisys: <h5 style="color:green">Not cheating</h5>
                     {% endif %}
                 <hr/>
                 {% endfor %}
