@@ -2,9 +2,6 @@
 <html lang="en">
 
 <head>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/p5.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/addons/p5.dom.min.js"></script>
-<script src="https://unpkg.com/ml5@0.4.3/dist/ml5.min.js"></script>
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -175,14 +172,9 @@
                       Points: <h5>{{ answer[(loop.index0+1)*2+1] }}/{{question[9]}}</h5>
                     {% endif %}
 
-                    Cheating from visual analisys: <h5>{{ answer[-2] }} points*</h5>
-                    Cheating from audio analysis: <h5>{{ answer[-1] }} points*</h5>
-                    *[ lower=better ]
-                    {% if answer[-2]>40 or answer[-1]>20 %}
-                      <h3 style="color: red">Cheating<h3>
-                    {% else %}
-                      <h3 style="color: green">Not Cheating<h3>
-                    {% endif %}
+                    Cheating from visual analisys: <h5>{{ answer[-2] }}*</h5>
+                    <!---Cheating from audio analysis: <h5>{{ answer[-1] }} points*</h5>-->
+                    *[ higher=better ]
                 <hr/>
                 {% endfor %}
                 Feedback for student:<br/><br/>

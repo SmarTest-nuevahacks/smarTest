@@ -173,7 +173,7 @@ def getTestContent(id,username):
     db.close()
     return content
 
-def endSolveTest(username,answers,id):
+def endSolveTest(username,answers,id,cheating):
     db = sqlite3.connect("smartest.db")
     cursor = db.cursor()
     i=0
@@ -181,6 +181,8 @@ def endSolveTest(username,answers,id):
         sql="SELECT type from test_questions"+str(id)+" WHERE ind=?"
         cursor.execute(sql,(i+1,))
         type=cursor.fetchone()[0]
+        sql="UPDATE test_answers"+str(id)+" SET cheating_video=? WHERE student=?"
+        cursor.execute(sql,(str(cheating),username))
         if(type=="open" or type=="coding" or type=="drawn"):
             sql="UPDATE test_answers"+str(id)+" SET answer"+str(i+1)+"=? WHERE student=?"
             cursor.execute(sql,(answer,username))

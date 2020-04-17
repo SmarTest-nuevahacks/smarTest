@@ -82,7 +82,8 @@ def solvetest(id):
 def savetestsolve():
     values=request.form.getlist('answers[]')
     testid=request.form['testid']
-    endSolveTest(session.get('username'),values,testid)
+    cheating=request.form['cheating']
+    endSolveTest(session.get('username'),values,testid,cheating)
     return redirect(url_for('index'))
 
 
@@ -170,6 +171,7 @@ def addquestion():
         newFilename=""
         if 'file1' not in request.files:
             print("aaa")
+
         try:
             file = request.files['file1']
             if file.filename == '':
@@ -182,7 +184,6 @@ def addquestion():
             file=''
         # if user does not select file, browser also
         # submits an empty part without filename
-        
         name=request.form['name']
         points=request.form['points']
         type=request.form['type']
