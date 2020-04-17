@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>smarTest</title>
+  <link rel="icon" href="{{ url_for('static',filename='pics/favicon.png') }}" type="image/x-icon"/>
+  <!-- Bootstrap core CSS -->
+  <link href="{{ url_for('static',filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+  <!-- Custom fonts for this template -->
+  <link href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <link href="{{ url_for('static',filename='css/one-page-wonder.min.css') }}" rel="stylesheet">
+
+
+<body style="color: white;">
+  <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
+    <div class="container">
+      <a class="navbar-brand" href="/">smarTest</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+    {% if username %}
+    <li class="nav-item">
+        <a class="nav-link" href="/addtest">Add test</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#">Guide</a>
+    </li>
+      <li class="nav-item">
+          <a class="nav-link" href="/message">Messages</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/logout">Logout: {{ username }} </a>
+      </li>
+	  {% else %}
+          <li class="nav-item">
+            <a class="nav-link" href="#">Registration</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Login</a>
+          </li>
+	  {% endif %}
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+<center><h1 style="color: #75407a" class="display-4"><br/>Make your tests uncheatable!</h1></center>
+  <section>
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-6 order-lg-2">
+        <div class="p-5">
+          <img class="img-fluid" src="{{ url_for('static',filename='pics/icons1.png') }}" alt="">
+        </div>
+      </div>
+      <div class="col-lg-6 order-lg-1">
+        <div class="p-5">
+          <h2 class="display-4" style="color: #75407a">1. Don't share answers with anyone</h2>
+          <p style="text-align: justify; color: #75407a;">The easiest mistake is to tell students what they can expect. It's better to surprise them and prevent them from cheating!</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-6">
+        <div class="p-5">
+          <img class="img-fluid rounded-circle" src="{{ url_for('static',filename='pics/icons2.png') }}" alt="">
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="p-5">
+          <h2 class="display-4" style="color: #75407a">2. Create uncheatable questions</h2>
+          <p style="text-align: justify; color: #75407a;">Create questions, which require thinking and not only knowledge - they are much harder to be cheated by students because they have to think. They also reduce the likelihood of cheating as students aren't cored by the knowledge!</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+<div class="container">
+  <div class="row align-items-center">
+    <div class="col-lg-6 order-lg-2">
+      <div class="p-5">
+        <img class="img-fluid" src="{{ url_for('static',filename='pics/icons3.png') }}" alt="">
+      </div>
+    </div>
+    <div class="col-lg-6 order-lg-1">
+      <div class="p-5">
+        <h2 class="display-4" style="color: #75407a">3. Set a strict time limit</h2>
+        <p style="text-align: justify; color: #75407a;">Cheating takes a lot more time than simply writing answers so set a time limit that is just right to complete the answers!</p>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<section>
+<div class="container">
+  <div class="row align-items-center">
+    <div class="col-lg-6">
+      <div class="p-5">
+        <img class="img-fluid rounded-circle" src="{{ url_for('static',filename='pics/icons4.png') }}" alt="">
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="p-5">
+        <h2 class="display-4" style="color: #75407a">4. Ask your instituton admin for help</h2>
+        <p style="text-align: justify; color: #75407a;">Let your institution's IT admin help you with any problems you might have and ask for tutorials to better understand the program</p>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<section>
+<div class="container">
+  <div class="row align-items-center">
+    <div class="col-lg-6 order-lg-2">
+      <div class="p-5">
+        <img class="img-fluid" src="{{ url_for('static',filename='pics/icons5.png') }}" alt="">
+      </div>
+    </div>
+    <div class="col-lg-6 order-lg-1">
+      <div class="p-5">
+        <h2 class="display-4" style="color: #75407a">5. Ask your students for solutions, not answers</h2>
+        <p style="text-align: justify; color: #75407a;">If you ask your students for answers, they can simply copy those from the internet. However, if you ask for solutions you have more proof that it was their own work! And if not, it's easier to check for plaguirism</p>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<section>
+<div class="container">
+  <div class="row align-items-center">
+    <div class="col-lg-6">
+      <div class="p-5">
+        <img class="img-fluid rounded-circle" src="{{ url_for('static',filename='pics/icons6.png') }}" alt="">
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="p-5">
+        <h2 class="display-4" style="color: #75407a">6. Create the questions yourself</h2>
+        <p style="text-align: justify; color: #75407a;">Don't take questions from the internet, as in that case you are giving your studemts a resource to cheat from. Create your own, custom questions!</p>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+<p style="font-size: 50px;"><br/><br/><br/></p>
+  <!-- Footer -->
+  <img id='footer' style="position: fixed; bottom: 0; right: 0; left: 0;" width="100%" src="{{ url_for('static', filename='pics/footer.svg') }}">
+
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script type="text/javascript" src="{{ url_for('static',filename='js/map.js') }}"></script>
+
+</body>
+
+</html>

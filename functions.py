@@ -53,11 +53,10 @@ def makeQuestion(id,name,type,points,newFilename,option1,option2,option3,option4
 
 def create_end_test_sql(id,number):
     string="CREATE TABLE IF NOT EXISTS test_answers"+str(id)+"(student TEXT UNIQUE, feedback TEXT, "
-    for i in range(1,number+1):
+    for i in range(1,number):
         string+="answer"+str(i)+" TEXT, points"+str(i)+" TEXT"
-        if(i<number):
-            string+=","
-    string+=")"
+        string+=","
+    string+="cheating_video TEXT, cheating_audio TEXT)"
     return string
 
 def end_add_test(id,number,maxpoints,username):
@@ -174,7 +173,7 @@ def getTestContent(id,username):
     db.close()
     return content
 
-def endSolveTest(username,answers,id):
+def endSolveTest(username,answers,id,cheating,audio):
     db = sqlite3.connect("smartest.db")
     cursor = db.cursor()
     i=0
@@ -182,6 +181,10 @@ def endSolveTest(username,answers,id):
         sql="SELECT type from test_questions"+str(id)+" WHERE ind=?"
         cursor.execute(sql,(i+1,))
         type=cursor.fetchone()[0]
+        sql="UPDATE test_answers"+str(id)+" SET cheating_video=? WHERE student=?"
+        cursor.execute(sql,(str(cheating),username))
+        sql="UPDATE test_answers"+str(id)+" SET cheating_audio=? WHERE student=?"
+        cursor.execute(sql,(str(audio),username))
         if(type=="open" or type=="coding" or type=="drawn"):
             sql="UPDATE test_answers"+str(id)+" SET answer"+str(i+1)+"=? WHERE student=?"
             cursor.execute(sql,(answer,username))

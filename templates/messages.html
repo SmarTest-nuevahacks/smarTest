@@ -48,15 +48,24 @@
       <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav ml-auto">
     {% if username %}
+    {% if isTeacher(username) %}
+    <li class="nav-item">
+        <a class="nav-link" href="/addtest">Add test</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/guide">Guide</a>
+    </li>
       <li class="nav-item">
-          <a class="nav-link" href="/grades">Grades</a>
+          <a class="nav-link" href="#">Messages</a>
       </li>
-      <li class="nav-item">
-          <a class="nav-link" href="/message">Messages</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/logout">Logout: {{ username }} </a>
-      </li>
+    {% else %}
+    <li class="nav-item">
+        <a class="nav-link" href="#">Messages</a>
+    </li>
+    {% endif %}
+    <li class="nav-item">
+      <a class="nav-link" href="/logout">Logout: {{ username }} </a>
+    </li>
 	  {% else %}
           <li class="nav-item">
             <a class="nav-link" href="#">Registration</a>
@@ -69,7 +78,8 @@
       </div>
     </div>
   </nav>
-  
+  <img style="position: absolute; right: 0; top: 100; z-index: -50;" src="{{ url_for('static', filename='pics/planet.png') }}">
+
   <section style="width: 100%;margin: 0;">
     <table style="width: 100%; vertical-align: middle; text-align: left; border-bottom: 0px;">
       <tr style="height: 10%; text-align: left; border-bottom: 0px;">
@@ -89,11 +99,11 @@
                         document.getElementById('replyButton').hidden = false;
                         document.getElementById('forwardButton').hidden = false;
                         document.getElementById('composeMail').hidden = true;
-            
+
                         var title = 'Topic: ' + '{{ message[1] }}';
                         var sender = 'From: ' + '{{ message[3] }}';
                         var content = '{{ message[2] }}';
-            
+
                         document.getElementById('title').textContent = title;
                         document.getElementById('sender').textContent = sender;
                         document.getElementById('content').textContent = content;
@@ -142,6 +152,7 @@
                 document.getElementById('message').value = content;
               ">Forward</button>
             </div>
+            <br/>
             <p id='title' style="font-style: bold;">Select a message to show</p>
             <p id='sender' style="color: gray; margin-top: 0px; font-size: smaller;"></p>
             </br>
@@ -182,7 +193,7 @@
                 recipient = document.getElementById('chooseRecipient').value;
                 header = document.getElementById('topic').value;
                 content = document.getElementById('message').value;
-                
+
                 window.location.href = `/sendMessageRequest?username={{ username }}&recipient=${recipient}&header=${header}&content=${content}`;
 
               }

@@ -52,7 +52,24 @@ def index():
         return redirect(url_for('login'))
 
 
+@app.route('/guide')
+def guide():
+    if 'username' in session:
+        if isTeacher(session.get('username')):
+            return render_template("guide.html",username=session.get('username'))
+        else:
+            return render_template(
+                'student.html',
+                username = session.get('username'),
+                full_name = getName(session.get('username')),
+                done = checkIfTestsDone(getClassTests(session.get('username'), 'after'),session.get('username')),
+                tests = getClassTests(session.get('username'), 'after'),
+                pastTests = getClassTests(session.get('username'), 'before'),
+                per=getPercentage,
+                date = date.today().strftime("%Y-%m-%d"))
 
+    else:
+        return redirect(url_for('login'))
 
 #Solving Tests
 @app.route('/solvetest/<int:id>')
@@ -65,7 +82,9 @@ def solvetest(id):
 def savetestsolve():
     values=request.form.getlist('answers[]')
     testid=request.form['testid']
-    endSolveTest(session.get('username'),values,testid)
+    cheating=request.form['cheating']
+    audio=request.form['voice']
+    endSolveTest(session.get('username'),values,testid,cheating,audio)
     return redirect(url_for('index'))
 
 
@@ -153,15 +172,19 @@ def addquestion():
         newFilename=""
         if 'file1' not in request.files:
             print("aaa")
-        file = request.files['file1']
+
+        try:
+            file = request.files['file1']
+            if file.filename == '':
+                print("bbb")
+            if file and allowed_file(file.filename):
+                filename = secure_filename(file.filename)
+                newFilename =  newname(filename)
+                file.save(os.path.join(app.config['UPLOAD_FOLDER'], newFilename))
+        except:
+            file=''
         # if user does not select file, browser also
         # submits an empty part without filename
-        if file.filename == '':
-            print("bbb")
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            newFilename =  newname(filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], newFilename))
         name=request.form['name']
         points=request.form['points']
         type=request.form['type']
@@ -187,7 +210,8 @@ def message():
         "messages.html",
         username=session.get('username'),
         content=getMessages(session.get('username')),
-        users=getUsers())
+        users=getUsers(),
+        isTeacher=isTeacher)
 
 @app.route('/sendMessageRequest', methods=['GET', 'POST'])
 def sendMessageRequest():
