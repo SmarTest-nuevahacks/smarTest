@@ -170,15 +170,19 @@ def addquestion():
         newFilename=""
         if 'file1' not in request.files:
             print("aaa")
-        file = request.files['file1']
+        try:
+            file = request.files['file1']
+            if file.filename == '':
+                print("bbb")
+            if file and allowed_file(file.filename):
+                filename = secure_filename(file.filename)
+                newFilename =  newname(filename)
+                file.save(os.path.join(app.config['UPLOAD_FOLDER'], newFilename))
+        except:
+            file=''
         # if user does not select file, browser also
         # submits an empty part without filename
-        if file.filename == '':
-            print("bbb")
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            newFilename =  newname(filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], newFilename))
+        
         name=request.form['name']
         points=request.form['points']
         type=request.form['type']
