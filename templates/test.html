@@ -355,7 +355,7 @@
                   y = 2;
 
               function init() {
-                  canvas = document.getElementById('{{ loop.index0 + 1 }}');
+                  canvas = document.getElementById('{{ loop.index0 + 1 }}drawing');
                   ctx = canvas.getContext("2d");
                   w = canvas.width;
                   h = canvas.height;
@@ -397,7 +397,7 @@
               }
 
               function save() {
-                  var dataURL = canvas.toDataURL();
+                  var dataURL = document.getElementById('{{ loop.index0 + 1 }}drawing').toDataURL();
                   document.getElementById('{{ loop.index0 + 1 }}drawing').value = dataURL;
               }
 
@@ -432,7 +432,7 @@
                   }
               }
               </script>
-                  <canvas id="{{ loop.index0 + 1 }}" width="400" height="400" style="z-index: 100; border:2px solid;"></canvas>
+                  <canvas id="{{ loop.index0 + 1 }}drawing" width="400" height="400" style="z-index: 100; border:2px solid;"></canvas>
                   <!--
                   <div>Choose Color</div>
                   <div style="margin-bottom: 10px;">

@@ -187,16 +187,6 @@
                     {% endif %}
                 <hr/>
                 {% endfor %}
-                {% if answer[-1]|int>5  %}
-                  Cheating from audio analisys: <h5 style="color:red">Cheating</h5>
-                {% else %}
-                  Cheating from audio analisys: <h5 style="color:green">Not cheating</h5>
-                {% endif %}
-                {% if answer[-2]=="notlegit"  %}
-                  Cheating from visual analisys: <h5 style="color:red">Cheating</h5>
-                {% else %}
-                  Cheating from visual analisys: <h5 style="color:green">Not cheating</h5>
-                {% endif %}
                 <br/>
                 <hr/>
                 Feedback for student:<br/><br/>
