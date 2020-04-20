@@ -34,9 +34,14 @@
    <!-- Easy-Button -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.css">
   <script src="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.js"></script>
+
+  <!-- Material Design -->
+  <link href="https://unpkg.com/material-components-web@v4.0.0/dist/material-components-web.min.css" rel="stylesheet">
+  <script src="https://unpkg.com/material-components-web@v4.0.0/dist/material-components-web.min.js"></script>
+
 </head>
 
-<body style="color: white;">
+<body>
 
   <!-- Navigation -->
   <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
@@ -74,113 +79,132 @@
   </nav>
 
   <center>
-    <h1 style="margin: 20px;"><br/>Dashboard</h1>
+    <h1 style="margin: 20px; color: white;"><br/>Dashboard</h1>
   </center>
 
-      <h3 style="margin-left: 40px;">Unfinished tests</h3>
-      {% if test %}
-      <div>
-        <label style="margin-left: 40px;">{{ test[1] }}</label>
-        <a href="addtest" style="margin-left: 20px;"><button>Continue editing</button></a>
-        <a href="endAddTest"><button>Publish</button></a>
-      </div>
-      {% else %}
-        <p style="margin-left: 40px;">Nothing to show</p>
-      {% endif %}
+  <div class='mdc-card' style="margin-left: 40px; margin-right: 40px; padding: 40px;">
 
-      <h3 style="margin-left: 40px; margin-top: 40px;">Published tests</h3>
-      {% if published %}
-        <div style="margin-right: 40px; margin-left: 40px;">
-          <table style="width: 100%; background-color: white; color: black; opacity: 0.9;">
-            <tr style="background-color: gray;">
-              <th style="width: 15%;"><b>Name</b></th>
-              <th style="width: 30%;"><b>Description</b></th>
-              <th style="width: 10%;"><b>Start date</b></th>
-              <th style="width: 10%;"><b>End date</b></th>
-              <th style="width: 10%;"><b>Total time [min]</b></th>
-              <th style="width: 25%;"><b>Action</b></th>
-            </tr>
-            {% for item in published %}
-              <tr>
-                <th>{{ item[0] }}</th>
-                <th>{{ item[1] }}</th>
-                <th>{{ item[2] }}</th>
-                <th>{{ item[3] }}</th>
-                <th>{{ item[4] }}</th>
-                <th>
-                  {% if item[0] == test[1] %}
-                    <p style="margin: 0px;">Currently edited</p>
-                  {% else %}
-                    {% if item[2] <= date %}
-                      <p style="margin: 0px;">Underway</p>
-                    {% else %}
-                      <a style="margin-right: 10px;" href="/unpublishTest?testId={{item[5]}}"><button>Unpublish</button></a><a href="/deleteTest?testId={{item[5]}}"><button>Delete</button></a>
-                    {% endif %}
-                  {% endif %}
-                </th>
-              </tr>
-            {% endfor %}
-          </table>
-        </div>
-      {% else %}
-        <p style="margin-left: 40px;">Nothing to show</p>
-      {% endif %}
+    <h3>Unfinished tests</h3>
+    {% if test %}
+    <div>
+      <label>{{ test[1] }}</label>
+      <a href="addtest" style="margin-left: 20px;"><button class="mdc-button--raised">Continue editing</button></a>
+      <a href="endAddTest"><button class="mdc-button--raised">Publish</button></a>
+    </div>
+    {% else %}
+    <p>Nothing to show</p>
+    {% endif %}
+    
+    <h3 style="margin-top: 40px;">Published tests</h3>
+    {% if published %}
+    <div class="mdc-data-table">
+      <table class="mdc-data-table__table">
+        <thead>
+          <tr class="mdc-data-table__header-row">
+            <th class="mdc-data-table__header-cell" role="columnheader" style="width: 15%;">Name</td>
+            <th class="mdc-data-table__header-cell" role="columnheader" style="width: 35%;">Description</td>
+            <th class="mdc-data-table__header-cell" role="columnheader" style="width: 10%;">Start date</td>
+            <th class="mdc-data-table__header-cell" role="columnheader" style="width: 10%;">End date</td>
+            <th class="mdc-data-table__header-cell" role="columnheader" style="width: 10%;">Total time [min]</td>
+            <th class="mdc-data-table__header-cell" role="columnheader" style="width: 20%;">Action</td>
+          </tr>
+        </thead>
+        {% for item in published %}
+        <tbody class="mdc-data-table__content">
+          <tr class="mdc-data-table__row">
+            <td class="mdc-data-table__cell">{{ item[0] }}</td>
+            <td class="mdc-data-table__cell">{{ item[1] }}</td>
+            <td class="mdc-data-table__cell">{{ item[2] }}</td>
+            <td class="mdc-data-table__cell">{{ item[3] }}</td>
+            <td class="mdc-data-table__cell">{{ item[4] }}</td>
+            <td class="mdc-data-table__cell">
+              {% if item[0] == test[1] %}
+              <p style="margin: 0px;">Currently edited</p>
+              {% else %}
+              {% if item[2] <= date %}
+              <p style="margin: 0px;">Underway</p>
+              {% else %}
+              <a style="margin-right: 10px;" href="/unpublishTest?testId={{item[5]}}"><button
+                  class="mdc-button">Unpublish</button></a><a href="/deleteTest?testId={{item[5]}}"><button
+                  class="mdc-button">Delete</button></a>
+              {% endif %}
+              {% endif %}
+            </td>
+          </tr>
+        </tbody>
+        {% endfor %}
+      </table>
+    </div>
+    {% else %}
+    <p>Nothing to show</p>
+    {% endif %}
+    
+    <h3 style="margin-top: 40px;">Completed tests</h3>
+    {% if completed %}
+    <div class="mdc-data-table">
+      <table class="mdc-data-table__table">
+        <thead>
+          <tr class="mdc-data-table__header-row">
+            <th class="mdc-data-table__header-cell" role="columnheader" style="width: 15%;">Name</td>
+            <th class="mdc-data-table__header-cell" role="columnheader" style="width: 35%;">Description</td>
+            <th class="mdc-data-table__header-cell" role="columnheader" style="width: 10%;">Start date</td>
+            <th class="mdc-data-table__header-cell" role="columnheader" style="width: 10%;">End date</td>
+            <th class="mdc-data-table__header-cell" role="columnheader" style="width: 10%;">Total time [min]</td>
+            <th class="mdc-data-table__header-cell" role="columnheader" style="width: 20%;">Action</td>
+          </tr>
+        </thead>
+        {% for item in completed %}
+        <tbody class="mdc-data-table__content">
+          <tr class="mdc-data-table__row">
+            <td class="mdc-data-table__cell">{{ item[0] }}</td>
+            <td class="mdc-data-table__cell">{{ item[1] }}</td>
+            <td class="mdc-data-table__cell">{{ item[2] }}</td>
+            <td class="mdc-data-table__cell">{{ item[3] }}</td>
+            <td class="mdc-data-table__cell">{{ item[4] }}</td>
+            <td class="mdc-data-table__cell"><a href="/check/{{ item[5] }}"><button class="mdc-button">Check</button></a></td>
+          </tr>
+        </tbody>
+        {% endfor %}
+      </table>
+    </div>
+    {% else %}
+    <p>Nothing to show</p>
+    {% endif %}
+    
+    <h3 style="margin-top: 40px;">Checked tests</h3>
+    {% if checked %}
+    <div class="mdc-data-table">
+      <table class="mdc-data-table__table">
+        <thead>
+          <tr class="mdc-data-table__header-row">
+            <th class="mdc-data-table__header-cell" role="columnheader" style="width: 15%;">Name</td>
+            <th class="mdc-data-table__header-cell" role="columnheader" style="width: 35%;">Description</td>
+            <th class="mdc-data-table__header-cell" role="columnheader" style="width: 10%;">Start date</td>
+            <th class="mdc-data-table__header-cell" role="columnheader" style="width: 10%;">End date</td>
+            <th class="mdc-data-table__header-cell" role="columnheader" style="width: 10%;">Total time [min]</td>
+            <th class="mdc-data-table__header-cell" role="columnheader" style="width: 20%;">Action</td>
+          </tr>
+        </thead>
+        {% for item in checked %}
+        <tbody class="mdc-data-table__content">
+          <tr class="mdc-data-table__row">
+            <td class="mdc-data-table__cell">{{ item[0] }}</td>
+            <td class="mdc-data-table__cell">{{ item[1] }}</td>
+            <td class="mdc-data-table__cell">{{ item[2] }}</td>
+            <td class="mdc-data-table__cell">{{ item[3] }}</td>
+            <td class="mdc-data-table__cell">{{ item[4] }}</td>
+            <td class="mdc-data-table__cell"><a href="/check/{{ item[5] }}"><button style="margin-right: 20px;"
+                  class="mdc-button">Results</button></a></td>
+          </tr>
+        </tbody>
+        {% endfor %}
+      </table>
+    </div>
+    {% else %}
+    <p>Nothing to show</p>
+    {% endif %}
 
-      <h3 style="margin-left: 40px; margin-top: 40px;">Completed tests</h3>
-      {% if completed %}
-      <div style="margin-right: 40px; margin-left: 40px;">
-        <table style="width: 100%; background-color: white; color: black; opacity: 0.9;">
-          <tr style="background-color: gray;">
-            <th style="width: 15%;"><b>Name</b></th>
-            <th style="width: 30%;"><b>Description</b></th>
-            <th style="width: 10%;"><b>Start date</b></th>
-            <th style="width: 10%;"><b>End date</b></th>
-            <th style="width: 10%;"><b>Total time [min]</b></th>
-            <th style="width: 25%;"><b>Action</b></th>
-          </tr>
-          {% for item in completed %}
-          <tr>
-            <th>{{ item[0] }}</th>
-            <th>{{ item[1] }}</th>
-            <th>{{ item[2] }}</th>
-            <th>{{ item[3] }}</th>
-            <th>{{ item[4] }}</th>
-            <th><a href="/check/{{ item[5] }}"><button>Check</button></a></th>
-          </tr>
-          {% endfor %}
-        </table>
-      </div>
-      {% else %}
-      <p style="margin-left: 40px;">Nothing to show</p>
-      {% endif %}
-
-      <h3 style="margin-left: 40px; margin-top: 40px;">Checked tests</h3>
-      {% if checked %}
-      <div style="margin-right: 40px; margin-left: 40px;">
-        <table style="width: 100%; background-color: white; color: black; opacity: 0.9;">
-          <tr style="background-color: gray;">
-            <th style="width: 15%;"><b>Name</b></th>
-            <th style="width: 30%;"><b>Description</b></th>
-            <th style="width: 10%;"><b>Start date</b></th>
-            <th style="width: 10%;"><b>End date</b></th>
-            <th style="width: 10%;"><b>Total time [min]</b></th>
-            <th style="width: 25%;"><b>Action</b></th>
-          </tr>
-          {% for item in checked %}
-          <tr>
-            <th>{{ item[0] }}</th>
-            <th>{{ item[1] }}</th>
-            <th>{{ item[2] }}</th>
-            <th>{{ item[3] }}</th>
-            <th>{{ item[4] }}</th>
-            <th><a href="/check/{{ item[5] }}"><button style="margin-right: 20px;">Results</button></a></th>
-          </tr>
-          {% endfor %}
-        </table>
-      </div>
-      {% else %}
-      <p style="margin-left: 40px;">Nothing to show</p>
-      {% endif %}
+  </div>
 
   <!-- Footer -->
   <img src="{{ url_for('static',filename='pics/wall.png') }}" style="position: absolute; z-index: -100; bottom: 0; width: 100%">
