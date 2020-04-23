@@ -6,8 +6,8 @@ import boto3
 client= boto3.client(
     'ses',
     region_name='eu-central-1',
-    aws_access_key_id='AKIAJ4EWVK25M3TAYDQA',
-    aws_secret_access_key='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'
+    aws_access_key_id=ACCESS_KEY,
+    aws_secret_access_key=SECRET_KEY
 )
 
 def isInit():
