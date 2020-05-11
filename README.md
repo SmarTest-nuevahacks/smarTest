@@ -1,5 +1,5 @@
 ## smarTest
-#Nuevahacks Remote Learning Winner
+# Nuevahacks Remote Learning Winner
 Smartest is a webapp focused on creating cheat-free online tests and exams for remote learning.
 
 Installation steps:
