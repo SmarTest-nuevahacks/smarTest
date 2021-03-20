@@ -24,7 +24,7 @@ importlib-metadata==1.6.0
 ipaddress==1.0.17
 itsdangerous==1.1.0
 jams==0.3.4
-Jinja2==2.11.1
+Jinja2==2.11.3
 jsonschema==3.2.0
 keyring==18.0.1
 keyrings.alt==3.1.1
