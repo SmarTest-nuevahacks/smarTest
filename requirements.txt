@@ -30,7 +30,7 @@ keyring==18.0.1
 keyrings.alt==3.1.1
 kiwisolver==1.1.0
 llvmlite==0.31.0
-lxml==4.4.1
+lxml==4.6.3
 MarkupSafe==1.1.1
 matplotlib==2.2.4
 MIDIUtil==1.2.1
